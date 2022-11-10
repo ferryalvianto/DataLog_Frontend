@@ -45,6 +45,7 @@ export default function App() {
                             <AuthHeader />
                             <Routes>
                                 <Route path="/" element={<Home />} />
+                                <Route path="/home" element={<Home />} />
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/:businessname" element={<Business />} />
                                 <Route path="/:businessname/dashboard" element={<Dashboard />} />

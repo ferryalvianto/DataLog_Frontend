@@ -26,7 +26,7 @@ function Navbar() {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         localStorage.removeItem('isLoggedIn')
-        navigate('/')
+        navigate('/home')
         window.location.reload()
     }
 
@@ -71,7 +71,7 @@ function Navbar() {
                 <div className={`dlNavbar d-flex justify-content-between`} style={{ zIndex: '2' }}>
                     <div className={`d-flex align-items-center justify-content-between`}>
                         <div style={{ textDecoration: 'none', color: 'black', marginTop: '0.3rem', cursor: 'pointer' }} onClick={() => {
-                            navigate('/')
+                            navigate('/home')
                             window.location.reload()
                         }}>
                             <h1 style={{ fontFamily: 'Rockwell', letterSpacing: '-3pt' }}>DataLog</h1>

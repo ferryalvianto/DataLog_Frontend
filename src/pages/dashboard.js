@@ -95,7 +95,7 @@ export default function Dashboard() {
 				}
 			}
 		} else {
-			navigate('/')
+			navigate('/home')
 			window.location.reload()
 		}
 
