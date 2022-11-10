@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/DataLog_Frontend/static/css/main.46ae0b70.css",
-    "main.js": "/DataLog_Frontend/static/js/main.00171d82.js",
+    "main.js": "/DataLog_Frontend/static/js/main.ac8011d5.js",
     "static/media/SF-Pro-Display-Semibold.otf": "/DataLog_Frontend/static/media/SF-Pro-Display-Semibold.bf7136148b353272cc64.otf",
     "static/media/SF-Pro-Display-Medium.otf": "/DataLog_Frontend/static/media/SF-Pro-Display-Medium.3a44055dc74df7294663.otf",
     "static/media/SF-Pro-Display-Light.otf": "/DataLog_Frontend/static/media/SF-Pro-Display-Light.d7b8c1bd4c0103c25a6f.otf",
     "static/media/SF-Pro-Display-Regular.otf": "/DataLog_Frontend/static/media/SF-Pro-Display-Regular.66355e898805b00d84bb.otf",
     "index.html": "/DataLog_Frontend/index.html",
     "main.46ae0b70.css.map": "/DataLog_Frontend/static/css/main.46ae0b70.css.map",
-    "main.00171d82.js.map": "/DataLog_Frontend/static/js/main.00171d82.js.map"
+    "main.ac8011d5.js.map": "/DataLog_Frontend/static/js/main.ac8011d5.js.map"
   },
   "entrypoints": [
     "static/css/main.46ae0b70.css",
-    "static/js/main.00171d82.js"
+    "static/js/main.ac8011d5.js"
   ]
 }
