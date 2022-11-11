@@ -9,7 +9,7 @@ import { AllFactorsData } from '../TempData/RegressionData3';
 import Linechart from '../components/Charts/Linechart';
 
 export default function Prediction() {
-	const API_URL = 'http://localhost:8000/api/';
+	const API_URL = 'https://datalogwebapp.herokuapp.com/api/';
 	const [weatherForecast, setWeatherForecast] = useState({
 		labels: '',
 		datasets: [],

@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function Analysis() {
 	let { businessname } = useParams();
 
-	const API_URL = 'http://localhost:8000/api/';
+	const API_URL = 'https://datalogwebapp.herokuapp.com/api/';
 	const [wastage, setWastage] = useState({
 		labels: '',
 		datasets: [],

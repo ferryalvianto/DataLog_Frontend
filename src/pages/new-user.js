@@ -64,7 +64,7 @@ export default function NewUser() {
                         fd.append('client_id', response.data.db)
 
                         axios
-                            .post("http://127.0.0.1:8000/token", fd)
+                            .post("https://datalogwebapp.herokuapp.com/token", fd)
                             .then((response) => {
                                 console.log(response);
                                 localStorage.setItem("token", JSON.stringify(response.data.access_token));
