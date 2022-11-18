@@ -20,6 +20,9 @@ export default function Dashboard() {
 	const [revenueHistoryLabel, setRevenueHistoryLabel] = useState([]);
 	const [revenueHistoryData, setRevenueHistoryData] = useState([]);
 
+	console.log("revenueHistoryLabel",revenueHistoryLabel);
+	console.log("revenueHistoryData",revenueHistoryData);
+
 	const [revenueForecast, setRevenueForecast] = useState({
 		labels: '',
 		datasets: [],
@@ -46,8 +49,14 @@ export default function Dashboard() {
 					sessionStorage.clear()
 					setNewUser(user.newuser)
 					axios.get(API_URL + 'revenues').then((res) => {
-						setRevenueHistoryLabel(res.data.map((element) => element.ymd));
-						setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
+						setRevenueHistoryLabel([
+							...revenueHistoryLabel,
+							...res.data.map((element) => element.ymd),
+						]);
+						setRevenueHistoryData([
+							...revenueHistoryData,
+							...res.data.map((element) => element.revenue),
+						]);
 					});
 					axios.get(API_URL + 'revenue_forecast').then((res) => {
 						setRevenueForecast({
@@ -79,12 +88,14 @@ export default function Dashboard() {
 						});
 					});
 					axios.get(API_URL + 'forecasted_weather').then((res) => {
+						console.log("temp_max",res.data.map((element) => element.temp_max));
+						console.log("temp",res.data.map((element) => element.temp));
 						setWeatherForecast({
 							...weatherForecast,
 							labels: res.data.map((element) => element.dt_txt),
 							datasets: [
 								{
-									data: res.data.map((element) => element.temp),
+									data: res.data.map((element) => element.temp_max),
 									backgroundColor: '#FA8072',
 									borderColor: '#800000',
 									tension: 0.4,
@@ -98,9 +109,7 @@ export default function Dashboard() {
 			navigate('/home')
 			window.location.reload()
 		}
-
-
-	}, []);
+	},[]);
 
 	Chart.register(zoomPlugin);
 

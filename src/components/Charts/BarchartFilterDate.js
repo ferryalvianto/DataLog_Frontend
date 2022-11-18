@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as chartjs } from 'chart.js/auto';
 
@@ -6,13 +6,14 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 	const [cursor, setCursor] = useState('default');
 	const changeCursor = () => {
 		setCursor((prevState) => {
-			//console.log('mouse is pointer');
 			return 'pointer';
 		});
 	};
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
+
+	console.log("initialDate",initialDate.map((element)=>element));
 
 	const [chartData, setChartData] = useState({
 		labels: initialDate,
@@ -25,7 +26,9 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 				borderWidth: 1,
 			},
 		],
-	});
+	});	
+
+	console.log("chartData",chartData);
 
 	const filterData = () => {
 		const dates2 = [...initialDate];
