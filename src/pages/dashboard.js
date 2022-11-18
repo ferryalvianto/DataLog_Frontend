@@ -20,10 +20,6 @@ export default function Dashboard() {
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
-	const [revenueFilterDate, setRevenueFilterDate] = useState({
-		labels: '',
-		datasets: [],
-	});
 
 	const [revenueForecast, setRevenueForecast] = useState({
 		labels: '',
