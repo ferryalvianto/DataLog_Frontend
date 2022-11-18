@@ -6,14 +6,14 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 	const [cursor, setCursor] = useState('default');
 	const changeCursor = () => {
 		setCursor((prevState) => {
+			console.log('mouse is pointer');
 			return 'pointer';
 		});
 	};
-
+	console.log(initialDate);
+	console.log(initialDataPoint);
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
-
-	console.log("initialDate",initialDate.map((element)=>element));
 
 	const [chartData, setChartData] = useState({
 		labels: initialDate,
@@ -26,9 +26,24 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 				borderWidth: 1,
 			},
 		],
-	});	
+	});
 
-	console.log("chartData",chartData);
+	useEffect(()=>{
+		setChartData({
+			labels: initialDate,
+			datasets: [
+				{
+					label: label,
+					data: initialDataPoint,
+					backgroundColor: 'rgba(75,192,192,1)',
+					borderColor: 'black',
+					borderWidth: 1,
+				},
+			],
+		});
+	},[]);
+
+	console.log(chartData);
 
 	const filterData = () => {
 		const dates2 = [...initialDate];
