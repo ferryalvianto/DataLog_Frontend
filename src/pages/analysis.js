@@ -71,10 +71,14 @@ export default function Analysis() {
 						/>
 					</div>
 
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Store Heatmap</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<LeafletChart />
+					</div>
+
 				</div>
-			</div>
-			<div style={{ width: 1100, paddingLeft: '103px' }}>
-				<LeafletChart/>
 			</div>
 		</>
 	);

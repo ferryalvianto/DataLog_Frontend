@@ -12,8 +12,8 @@ var bounds = [
 ];
 
 const LeafletChart = () => {
-  return (
-    <div>
+	return (
+		<div style={{ height: '100%', width: '80%', display: 'inline-block' }} >
 			<MapContainer crs={L.CRS.Simple} bounds={bounds} zoom={0}>
 				<HeatmapLayer
 					points={leafletData}
@@ -25,12 +25,12 @@ const LeafletChart = () => {
 					url={require('../../Assets/Images/grocery_map.jpeg')}
 					bounds={[
 						[100, 0],
-						[0, 80],
+						[0, 100],
 					]}
 				/>
 			</MapContainer>
 		</div>
-  )
+	)
 }
 
 export default LeafletChart
