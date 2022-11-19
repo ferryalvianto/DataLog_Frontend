@@ -6,6 +6,7 @@ import Barchart from '../components/Charts/Barchart';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
+import LeafletChart from '../components/Charts/LeafletChart';
 
 export default function Analysis() {
 	let { businessname } = useParams();
@@ -68,6 +69,13 @@ export default function Analysis() {
 							displayTitle={true}
 							titleText="Wastage Product"
 						/>
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Store Heatmap</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<LeafletChart />
 					</div>
 
 				</div>

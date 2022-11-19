@@ -87,13 +87,13 @@ export default function TrainModel() {
 					</button>
 				</div>
 
-				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '25rem' }} className='text-center' id='loadingText'>
+				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '8rem' }} className='text-center' id='loadingText'>
 					<h1 style={{ fontSize: '800%' }}>􀌗</h1>
 					<h2 style={{ padding: '1rem' }}>Please wait, your CSV file is being uploaded to the cloud...</h2>
 				</div>
 
-				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '25rem' }} className='text-center' id='doneText'>
-					<h1 style={{ fontSize: '800%' }}>􀢓</h1>
+				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '8rem' }} className='text-center' id='doneText'>
+					<h1 style={{ fontSize: '500%' }}>􀢓</h1>
 					<h2 style={{ padding: '1rem' }}>Your file has been uploaded to the cloud</h2>
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
 						<button className={`btn bttn2`}
