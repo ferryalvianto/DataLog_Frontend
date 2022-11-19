@@ -45,13 +45,13 @@ const Linechart = ({ chartData, hidden, displayLegend, displayTitle, titleText }
 				},
 			},
 			legend: {
-                display: displayLegend,
-            },
+				display: displayLegend,
+			},
 			title: {
-                display: displayTitle,
-                text: titleText,
-				position:'bottom'
-            }
+				display: displayTitle,
+				text: titleText,
+				position: 'bottom'
+			}
 		},
 	};
 
@@ -62,8 +62,16 @@ const Linechart = ({ chartData, hidden, displayLegend, displayTitle, titleText }
 
 	return (
 		<>
-			<Line ref={chartRef} data={chartData} options={options} />
-			<button className={`btn`} onClick={handleReset} hidden={hidden}>Reset Zoom</button>
+			<div style={{ height: '100%', width: '70%', display: 'inline-block' }} >
+				<Line ref={chartRef} data={chartData} options={options} />
+
+				<div style={{width:'40%', display: 'inline-block', padding:'2rem' }}>
+					<button className={`btn bttn`} onClick={handleReset} hidden={hidden}>
+						Reset Zoom
+					</button>
+				</div>
+
+			</div>
 		</>
 	);
 };

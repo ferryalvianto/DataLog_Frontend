@@ -64,20 +64,34 @@ export default function Prediction() {
 	return (
 		<>
 			<Navbar />
-			<div
-				style={{ width: 700, paddingLeft: '103px' }}
-				className={`align-items-center dashboardTemplate`}
-			>
-				<Linechart chartData={regression} hidden={false} />
-			</div>
-			<div style={{ width: 700, paddingLeft: '103px' }}>
-				<Linechart
-					chartData={weatherForecast}
-					hidden={true}
-					displayLegend={false}
-					displayTitle={true}
-					titleText="Temperature Forecast"
-				/>
+
+			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100%' }} className={`dashboardTemplate`}>
+				<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+					<div style={{ padding: '1rem' }}>
+						<h1>
+							Predictions
+						</h1>
+					</div>
+					
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Regression Analysis</h2>
+					</div>
+					<div style={{ padding: '1rem' }}>
+						<Linechart chartData={regression} hidden={false} />
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Temperature Forecast</h2>
+					</div>
+					<div style={{ padding: '1rem' }}>
+						<Linechart
+							chartData={weatherForecast}
+							hidden={true}
+							displayLegend={false}
+							displayTitle={true}
+						/>
+					</div>
+				</div>
 			</div>
 		</>
 	);

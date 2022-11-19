@@ -57,7 +57,7 @@ export default function App() {
                                 <Route path="/:businessname/new-user" element={<NewUser />} />
                                 {/* <Route path="*" element={<Home />} /> */}
                                 <Route path="/form" element={<Rating />} />
-                                <Route path="/feedback" element={<SentimentAnalysis />} />
+                                <Route path="/:businessname/feedback" element={<SentimentAnalysis />} />
                                 <Route path='/badpage' element={<BadPage />} />
                             </Routes>
                         </>

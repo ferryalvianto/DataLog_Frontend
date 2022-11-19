@@ -60,10 +60,9 @@ export default function TrainModel() {
 		<>
 			<Navbar />
 			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100vh' }} className={`dashboardTemplate`}>
-				{/* <h1>Which model do you want to train?</h1> */}
-				<div id='chooseDiv' style={{ display: 'block' }}>
-					<h1>Choose a CSV file to upload</h1>
-					<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'flex' }}>
+				<div id='chooseDiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+					<h1 style={{padding:'1rem'}}>Choose a CSV file to upload</h1>
+					<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
 						<input
 							type="file"
 							accept=".csv"

@@ -37,29 +37,40 @@ export default function Analysis() {
 	return (
 		<>
 			<Navbar />
-			<div
-				style={{ width: 1100, paddingLeft: '103px' }}
-				className={`align-items-center dashboardTemplate`}
-			>
-				<h1>Market basket analysis</h1>
-				<Heatmap xlabelsProp={xLabels} ylabelsProp={yLabels} />
-			</div>
 
-			<div
-				style={{ width: 700, paddingLeft: '103px' }}
-				className={`align-items-center dashboardTemplate`}
-			>
-				<h1>Transaction Speed</h1>
-				<GaugeChart />
-			</div>
+			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100%' }} className={`dashboardTemplate`}>
+				<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+					<div style={{ padding: '1rem' }}>
+						<h1>Analysis</h1>
+					</div>
 
-			<div style={{ width: 1100, paddingLeft: '103px' }}>
-				<Barchart
-					chartData={wastage}
-					displayLegend={false}
-					displayTitle={true}
-					titleText="Wastage Product"
-				/>
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Market Basket Analysis</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<Heatmap xlabelsProp={xLabels} ylabelsProp={yLabels} />
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Transaction Speed</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<GaugeChart />
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Wastage Analysis</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<Barchart
+							chartData={wastage}
+							displayLegend={false}
+							displayTitle={true}
+							titleText="Wastage Product"
+						/>
+					</div>
+
+				</div>
 			</div>
 		</>
 	);
