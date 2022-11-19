@@ -1,6 +1,8 @@
 import Navbar from '../components/navbar';
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import moment from "moment";
+import Moment from "react-moment";
 
 export default function TrainModel() {
 	let params = useParams();
@@ -9,6 +11,7 @@ export default function TrainModel() {
 	const navigate = useNavigate()
 	let files = []
 	let blobs = []
+    const [dateValue, setDate] = useState('');
 
 	useEffect(() => {
 		if ('user' in localStorage) {
@@ -20,21 +23,27 @@ export default function TrainModel() {
 		}
 	}, [])
 
+	const onChangeDate = (e) => {
+		const newDate = setDate(e.target.value)
+		setDate(newDate)
+		console.log(e.target.value)
+	}
+
 
 	function selectOption(e) {
 		e.preventDefault()
-		const option = e.target.value; 
+		const option = e.target.value;
 		files = []
 
-		if(option.includes('Action Log')){
+		if (option.includes('Action Log')) {
 			document.getElementById('actionlog').style.display = `block`
 			document.getElementById('inventorylog').style.display = `none`
 			document.getElementById('paymenttype').style.display = `none`
 			document.getElementById('uploadFileBtn').style.display = `none`
 
 		}
-		
-		if(option.includes('Payment Type')){
+
+		if (option.includes('Payment Type')) {
 			document.getElementById('paymenttype').style.display = `block`
 			document.getElementById('actionlog').style.display = `none`
 			document.getElementById('inventorylog').style.display = `none`
@@ -42,7 +51,7 @@ export default function TrainModel() {
 
 		}
 
-		if(option.includes('Inventory Log')){
+		if (option.includes('Inventory Log')) {
 			document.getElementById('inventorylog').style.display = `block`
 			document.getElementById('actionlog').style.display = `none`
 			document.getElementById('paymenttype').style.display = `none`
@@ -146,18 +155,30 @@ export default function TrainModel() {
 			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100vh' }} className={`dashboardTemplate`}>
 
 				<div id='chooseDiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+
 					<h1 style={{ padding: '1rem' }}>Choose a CSV file to upload</h1>
+
+					<div style={{ padding: '1rem' }} id='datediv'>
+						<h2 style={{ padding: '1rem' }}>When was the file you want to upload generated?</h2>
+						<input
+							type="date"
+							max={new Date().toISOString().split("T")[0]}
+							onChange={(e) => onChangeDate(e)}
+							className='sel'
+							style={{border: '2px solid black', width:'50%'}}
+						/>
+					</div>
 
 					<h2 style={{ padding: '1rem' }}>Which file do you want to upload?</h2>
 					<div style={{ width: '50%', display: 'inline-flex' }}>
-						<select className='sel' style={{border: '2px solid black'}}onChange={(e) => selectOption(e)}>
+						<select className='sel' style={{ border: '2px solid black' }} onChange={(e) => selectOption(e)}>
 							<option name="Action">Action Log</option>
 							<option name="Payment">Payment Type</option>
 							<option name="Inventory">Inventory Log</option>
 						</select>
 					</div>
 
-					<div style={{ padding: '1rem', display: 'none'  }} id='actionlog'>
+					<div style={{ padding: '1rem', display: 'none' }} id='actionlog'>
 						<h3>Upload the Action Log Report</h3>
 						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
 							<input
@@ -176,7 +197,7 @@ export default function TrainModel() {
 						</div>
 					</div>
 
-					<div style={{ padding: '1rem', display: 'none'  }} id='paymenttype'>
+					<div style={{ padding: '1rem', display: 'none' }} id='paymenttype'>
 						<h3>Upload the Payment Type Report</h3>
 						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
 							<input
