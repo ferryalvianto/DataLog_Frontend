@@ -22,7 +22,7 @@ export default function Prediction() {
 				labels: res.data.map((element) => element.dt_txt),
 				datasets: [
 					{
-						data: res.data.map((element) => element.temp),
+						data: res.data.map((element) => element.temp_min),
 						backgroundColor: '#FA8072',
 						borderColor: '#800000',
 						tension: 0.4,

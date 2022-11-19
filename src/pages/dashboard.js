@@ -1,26 +1,32 @@
 import Navbar from '../components/navbar';
 import BarchartFilterDate from '../components/Charts/BarchartFilterDate';
 import Barchart from '../components/Charts/Barchart';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Chart } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import Linechart from '../components/Charts/Linechart';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Dashboard() {
 	const params = useParams();
 
-	const [newUser, setNewUser] = useState(false)
-	let user = []
+	const [newUser, setNewUser] = useState(false);
+	let user = [];
 
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	const API_URL = 'https://datalogwebapp.herokuapp.com/api/';
-	const [revenueHistoryLabel, setRevenueHistoryLabel] = useState([]);
-	const [revenueHistoryData, setRevenueHistoryData] = useState([]);
+
+	const inputRef1 = useRef();
+	const inputRef2 = useRef();
 
 	const [revenueForecast, setRevenueForecast] = useState({
+		labels: '',
+		datasets: [],
+	});
+
+	const [revenue, setRevenue] = useState({
 		labels: '',
 		datasets: [],
 	});
@@ -37,17 +43,31 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		if ('user' in localStorage) {
-			user = JSON.parse(localStorage.getItem('user'))
+			user = JSON.parse(localStorage.getItem('user'));
 			if (params.businessname != user.db.toLowerCase()) {
-				sessionStorage.setItem('url', params.businessname)
-				navigate('/badpage')
+				sessionStorage.setItem('url', params.businessname);
+				navigate('/badpage');
 			} else {
-				if ('user' in localStorage && (params.businessname == user.db.toLowerCase())) {
-					sessionStorage.clear()
-					setNewUser(user.newuser)
+				if (
+					'user' in localStorage &&
+					params.businessname == user.db.toLowerCase()
+				) {
+					sessionStorage.clear();
+					setNewUser(user.newuser);
 					axios.get(API_URL + 'revenues').then((res) => {
-						setRevenueHistoryLabel(res.data.map((element) => element.ymd));
-						setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
+						setRevenue({
+							...revenue,
+							labels: res.data.map((element) => element.ymd),
+							datasets: [
+								{
+									label: 'Revenue History',
+									data: res.data.map((element) => element.revenue),
+									backgroundColor: 'rgba(54, 162, 235,0.8)',
+									borderColor: 'black',
+									borderWidth: 1,
+								},
+							],
+						});
 					});
 					axios.get(API_URL + 'revenue_forecast').then((res) => {
 						setRevenueForecast({
@@ -79,12 +99,20 @@ export default function Dashboard() {
 						});
 					});
 					axios.get(API_URL + 'forecasted_weather').then((res) => {
+						console.log(
+							'temp_max',
+							res.data.map((element) => element.temp_max)
+						);
+						console.log(
+							'temp',
+							res.data.map((element) => element.temp)
+						);
 						setWeatherForecast({
 							...weatherForecast,
 							labels: res.data.map((element) => element.dt_txt),
 							datasets: [
 								{
-									data: res.data.map((element) => element.temp),
+									data: res.data.map((element) => element.temp_max),
 									backgroundColor: '#FA8072',
 									borderColor: '#800000',
 									tension: 0.4,
@@ -95,12 +123,52 @@ export default function Dashboard() {
 				}
 			}
 		} else {
-			navigate('/home')
-			window.location.reload()
+			navigate('/home');
+			window.location.reload();
 		}
-
-
 	}, []);
+
+	const filterData = () => {
+		let value1 = inputRef1.current.value;
+		let value2 = inputRef2.current.value;
+
+		axios
+			.get(API_URL + 'revenues/?start_date='+value1+'&end_date='+value2)
+			.then((res) => {
+				console.log(res.data);
+				setRevenue({
+					...revenue,
+					labels: res.data.map((element) => element.ymd),
+					datasets: [
+						{
+							label: 'Revenue History',
+							data: res.data.map((element) => element.dailyRevenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
+			});
+	};
+
+	const resetData = () => {
+		axios.get(API_URL + 'revenues').then((res) => {
+			setRevenue({
+				...revenue,
+				labels: res.data.map((element) => element.ymd),
+				datasets: [
+					{
+						label: 'Revenue History',
+						data: res.data.map((element) => element.revenue),
+						backgroundColor: 'rgba(54, 162, 235,0.8)',
+						borderColor: 'black',
+						borderWidth: 1,
+					},
+				],
+			});
+		});
+	};
 
 	Chart.register(zoomPlugin);
 
@@ -142,11 +210,16 @@ export default function Dashboard() {
 					</div>
 
 					<div style={{ width: 500 }}>
-						<BarchartFilterDate
-							initialDate={revenueHistoryLabel}
-							initialDataPoint={revenueHistoryData}
-							label={'Revenue'}
+						<Barchart
+							chartData={revenue}
+							displayLegend={false}
+							displayTitle={true}
+							titleText="Revenue History"
 						/>
+						<input type="date" ref={inputRef1} />
+						<input type="date" ref={inputRef2} />
+						<button onClick={filterData}>Filter</button>
+						<button onClick={resetData}>Reset</button>
 					</div>
 				</div>
 				<div
