@@ -16,18 +16,18 @@ const LeafletChart = () => {
 					[0, 100],
 				]}
 			>
-				<HeatmapLayer
-					points={leafletData}
-					longitudeExtractor={(m) => m.coordinates[0]}
-					latitudeExtractor={(m) => m.coordinates[1]}
-					intensityExtractor={(m) => m.quantity}
-				/>
 				<ImageOverlay
 					url={require('../../Assets/Images/grocery_map.jpeg')}
 					bounds={[
 						[100, 0],
 						[0, 80],
 					]}
+				/>
+				<HeatmapLayer
+					points={leafletData}
+					longitudeExtractor={(m) => m.coordinates[0]}
+					latitudeExtractor={(m) => m.coordinates[1]}
+					intensityExtractor={(m) => m.quantity}
 				/>
 			</MapContainer>
 		</div>
