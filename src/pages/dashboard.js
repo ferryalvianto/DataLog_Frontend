@@ -104,15 +104,15 @@ export default function Dashboard() {
 							res.data.map((element) => element.temp_max)
 						);
 						console.log(
-							'temp',
-							res.data.map((element) => element.temp)
+							'temp_avg',
+							res.data.map((element) => element.temp_avg)
 						);
 						setWeatherForecast({
 							...weatherForecast,
 							labels: res.data.map((element) => element.dt_txt),
 							datasets: [
 								{
-									data: res.data.map((element) => element.temp_max),
+									data: res.data.map((element) => element.temp_avg),
 									backgroundColor: '#FA8072',
 									borderColor: '#800000',
 									tension: 0.4,

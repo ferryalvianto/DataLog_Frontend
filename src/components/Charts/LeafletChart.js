@@ -6,15 +6,16 @@ import './Leafletchart.css';
 import { HeatmapLayer } from 'react-leaflet-heatmap-layer-v3';
 import { leafletData } from '../../TempData/LeafletData';
 
-var bounds = [
-	[100, 0],
-	[0, 100],
-];
-
 const LeafletChart = () => {
-  return (
-    <div>
-			<MapContainer crs={L.CRS.Simple} bounds={bounds} zoom={0}>
+	return (
+		<div>
+			<MapContainer
+				crs={L.CRS.Simple}
+				bounds={[
+					[100, 0],
+					[0, 100],
+				]}
+			>
 				<HeatmapLayer
 					points={leafletData}
 					longitudeExtractor={(m) => m.coordinates[0]}
@@ -30,7 +31,7 @@ const LeafletChart = () => {
 				/>
 			</MapContainer>
 		</div>
-  )
-}
+	);
+};
 
-export default LeafletChart
+export default LeafletChart;
