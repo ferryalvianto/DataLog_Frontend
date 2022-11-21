@@ -1,133 +1,80 @@
 import Navbar from '../components/navbar';
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
-import moment from "moment";
-import Moment from "react-moment";
+import userService from "../services/user.service"
 
 export default function TrainModel() {
 	let params = useParams();
-	let file, user
-	let reader = new FileReader(); //this for convert to Base64
+	let file, id_paymenttype, id_inventorylog, year, month, day, dateValue
+	let reader = new FileReader()
 	const navigate = useNavigate()
-	let files = []
-	let blobs = []
-    const [dateValue, setDate] = useState('');
+	let [user, setUser] = useState('')
 
 	useEffect(() => {
 		if ('user' in localStorage) {
-			user = JSON.parse(localStorage.getItem('user'))
-			if (params.businessname != user.db.toLowerCase()) {
+			setUser(JSON.parse(localStorage.getItem('user')))
+			if (params.businessname != JSON.parse(localStorage.getItem('user')).db.toLowerCase()) {
 				sessionStorage.setItem('url', params.businessname)
 				navigate('/badpage')
 			}
+		} else {
+			navigate('/login')
 		}
 	}, [])
 
 	const onChangeDate = (e) => {
-		const newDate = setDate(e.target.value)
-		setDate(newDate)
-		console.log(e.target.value)
-	}
-
-
-	function selectOption(e) {
-		e.preventDefault()
-		const option = e.target.value;
-		files = []
-
-		if (option.includes('Action Log')) {
-			document.getElementById('actionlog').style.display = `block`
-			document.getElementById('inventorylog').style.display = `none`
-			document.getElementById('paymenttype').style.display = `none`
-			document.getElementById('uploadFileBtn').style.display = `none`
-
-		}
-
-		if (option.includes('Payment Type')) {
-			document.getElementById('paymenttype').style.display = `block`
-			document.getElementById('actionlog').style.display = `none`
-			document.getElementById('inventorylog').style.display = `none`
-			document.getElementById('uploadFileBtn').style.display = `none`
-
-		}
-
-		if (option.includes('Inventory Log')) {
-			document.getElementById('inventorylog').style.display = `block`
-			document.getElementById('actionlog').style.display = `none`
-			document.getElementById('paymenttype').style.display = `none`
-			document.getElementById('uploadFileBtn').style.display = `none`
-		}
+		dateValue = e.target.value
+		year = dateValue.substring(0, 4)
+		month = dateValue.substring(5, 7)
+		day = dateValue.substring(8, 10)
+		console.log(month + day + year)
+		document.getElementById('paymenttype').style.display = `block`
 	}
 
 	function choosefile(e) {
-		file = e.target.files[0]; //the file
+		file = e.target.files[0]
 		if (file && file.name.toLowerCase().includes('actionlog')) {
-			files.push(file.name)
-			blobs.push(file)
 			document.getElementById('fileSelected').innerText = `Selected file: ${file.name}`
 			document.getElementById('fileSelected').style.display = `block`
-			// document.getElementById('paymenttype').style.display = `block`
 			document.getElementById('uploadFileBtn').style.display = `flex`
-
-			if (files.length > 1) {
-				document.getElementById('uploadFile').innerText = `Upload ${files.join(', ')}`
-			}
-			else {
-				document.getElementById('uploadFile').innerText = `Upload ${files.toString()}`
-			}
+			document.getElementById('uploadFile').innerText = `Upload ${files.toString()}`
 		} else {
 			alert('Please choose an Action Log Report')
 		}
 	}
 
 	function choosefile2(e) {
-		file = e.target.files[0]; //the file
-		if (file && file.name.toLowerCase().includes('paymenttype')) {
-			files.push(file.name)
-			blobs.push(file)
+		file = e.target.files[0]
+		if (file && file.name.includes('Payment_Summary_') && file.name.includes(month + '_' + day + '_' + year)) {
 			document.getElementById('fileSelected2').innerText = `Selected file: ${file.name}`
 			document.getElementById('fileSelected2').style.display = `block`
-			// document.getElementById('inventorylog').style.display = `block`
 			document.getElementById('uploadFileBtn').style.display = `flex`
-			if (files.length > 1) {
-				document.getElementById('uploadFile').innerText = `Upload ${files.join(', ')}`
-			}
-			else {
-				document.getElementById('uploadFile').innerText = `Upload ${files.toString()}`
-			}
+			document.getElementById('uploadFile').innerText = `Upload ${file.name}`
 		} else {
 			alert('Please choose a Payment Type Report')
 		}
 	}
 
 	function choosefile3(e) {
-		file = e.target.files[0]; //the file
-		if (file && file.name.toLowerCase().includes('inventorylog')) {
-			files.push(file.name)
-			blobs.push(file)
+		file = e.target.files[0]
+		if (file && file.name.includes('Inventory_Log_') && file.name.includes(month + '_' + day + '_' + year)) {
 			document.getElementById('fileSelected3').innerText = `Selected file: ${file.name}`
 			document.getElementById('fileSelected3').style.display = `block`
-			document.getElementById('uploadFileBtn').style.display = `flex`
-			if (files.length > 1) {
-				document.getElementById('uploadFile').innerText = `Upload ${files.join(', ')}`
-			}
-			else {
-				document.getElementById('uploadFile').innerText = `Upload ${files.toString()}`
-			}
+			document.getElementById('uploadFileBtn2').style.display = `flex`
+			document.getElementById('uploadFile2').innerText = `Upload ${file.name}`
 		} else {
 			alert('Please choose an Inventory Log Report')
 		}
 	}
 
-	function uploadfile(e) {
+	function uploadPayment(e) {
 		document.getElementById('uploadFileBtn').style.display = `none`
 		document.getElementById('chooseDiv').style.display = `none`
-		document.getElementById('filesconfimration').style.display = `none`
+		document.getElementById('datediv').style.display = `none`
 
 		reader.readAsDataURL(file); //start conversion...
 		reader.onload = function (e) {
 			document.getElementById('loadingText').style.display = `block`
-
 			//.. once finished..
 			var rawLog = reader.result.split(',')[1]; //extract only the file data part
 			var dataSend = {
@@ -140,42 +87,86 @@ export default function TrainModel() {
 			) //send to Api
 				.then((res) => res.json())
 				.then((response) => {
-					console.log(response); //See response
+					id_paymenttype = response.id
 					document.getElementById('loadingText').style.display = `none`
-					document.getElementById('doneText').style.display = `block`
+					document.getElementById('chooseDiv').style.display = `block`
+					document.getElementById('inventorylog').style.display = `block`
+					document.getElementById('paymenttype').style.display = `block`
+					document.getElementById('paymentupload').style.display = `none`
+					document.getElementById('paymentuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
 				})
 				.catch((e) => console.log(e)); // Or Error in console
 		}
+	}
 
+	function uploadInventory(e) {
+		document.getElementById('uploadFileBtn2').style.display = `none`
+		document.getElementById('chooseDiv').style.display = `none`
+		document.getElementById('datediv').style.display = `none`
+
+		reader.readAsDataURL(file)
+		reader.onload = function (e) {
+			document.getElementById('loadingText').style.display = `block`
+			var rawLog = reader.result.split(',')[1]
+			var dataSend = {
+				dataReq: { data: rawLog, name: file.name, type: file.type },
+				fname: 'uploadFilesToGoogleDrive',
+			}
+			fetch(
+				'https://script.google.com/macros/s/AKfycbw0dR0qBlv03k5b0Pv8GZlNTMm94XGpJfEL9jE4bLI8BToI_NrWoU9giC0RVNPbBSCJAw/exec', //your AppsScript URL
+				{ method: 'POST', body: JSON.stringify(dataSend) }
+			)
+				.then((res) => res.json())
+				.then((response) => {
+					// console.log(response)
+					id_inventorylog = response.id
+
+					console.log(user.db)
+					console.log(id_inventorylog)
+					console.log(id_paymenttype)
+					console.log(dateValue)
+
+					userService.cleanCSV(user.db, id_inventorylog, id_paymenttype, year, month, day)
+						.then((resp) => {
+							console.log(resp)
+							document.getElementById('loadingText').style.display = `none`
+							document.getElementById('chooseDiv').style.display = `block`
+							document.getElementById('inventorylog').style.display = `block`
+							document.getElementById('invetoryupload').style.display = `none`
+							document.getElementById('invetoryuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
+							document.getElementById('doneText').style.display = `block`
+							document.getElementById('uploadSuccess').style.display = `block`
+						})
+						.catch((err) => {
+							console.log(err)
+							document.getElementById('loadingText').style.display = `none`
+							document.getElementById('doneText').style.display = `block`
+							document.getElementById('uploadSuccess').style.display = `none`
+							document.getElementById('uploadFail').style.display = `block`
+						})
+				})
+				.catch((e) => console.log(e))
+		}
 	}
 
 	return (
 		<>
 			<Navbar />
 			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100vh' }} className={`dashboardTemplate`}>
-
 				<div id='chooseDiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
-
-					<h1 style={{ padding: '1rem' }}>Choose a CSV file to upload</h1>
+					<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+						<h1 style={{ padding: '1rem' }}>Train Model</h1>
+					</div>
 
 					<div style={{ padding: '1rem' }} id='datediv'>
 						<h2 style={{ padding: '1rem' }}>When was the file you want to upload generated?</h2>
 						<input
 							type="date"
-							max={new Date().toISOString().split("T")[0]}
+							max={new Date().toLocaleDateString('en-ca')}
 							onChange={(e) => onChangeDate(e)}
 							className='sel'
-							style={{border: '2px solid black', width:'50%'}}
+							style={{ border: '2px solid black', width: '50%' }}
 						/>
-					</div>
-
-					<h2 style={{ padding: '1rem' }}>Which file do you want to upload?</h2>
-					<div style={{ width: '50%', display: 'inline-flex' }}>
-						<select className='sel' style={{ border: '2px solid black' }} onChange={(e) => selectOption(e)}>
-							<option name="Action">Action Log</option>
-							<option name="Payment">Payment Type</option>
-							<option name="Inventory">Inventory Log</option>
-						</select>
 					</div>
 
 					<div style={{ padding: '1rem', display: 'none' }} id='actionlog'>
@@ -198,8 +189,8 @@ export default function TrainModel() {
 					</div>
 
 					<div style={{ padding: '1rem', display: 'none' }} id='paymenttype'>
-						<h3>Upload the Payment Type Report</h3>
-						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
+						<h3 id='paymentuploadtxt'>Upload the Payment Summary Report</h3>
+						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }} id='paymentupload'>
 							<input
 								type="file"
 								accept=".csv"
@@ -217,8 +208,8 @@ export default function TrainModel() {
 					</div>
 
 					<div style={{ padding: '1rem', display: 'none' }} id='inventorylog'>
-						<h3>Upload the Inventory Log Report</h3>
-						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
+						<h3 id='invetoryuploadtxt'>Upload the Inventory Log Report</h3>
+						<div id='invetoryupload' className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
 							<input
 								type="file"
 								accept=".csv"
@@ -236,34 +227,39 @@ export default function TrainModel() {
 					</div>
 				</div>
 
-				<div id='confirmationdiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
-					<h5 id='filesconfimration'></h5>
+				<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'none' }} id='uploadFileBtn' >
+					<button className={`btn bttn`} onClick={(e) => uploadPayment(e)}>
+						<label htmlFor="uploadFile" id='uploadFile' style={{ width: '50%', cursor: 'pointer' }}>
+							Upload Payment Type Report
+						</label>
+					</button>
 				</div>
 
-				<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'none' }} id='uploadFileBtn' >
-					<button className={`btn bttn`} onClick={(e) => uploadfile(e)}>
-						<label htmlFor="uploadFile" id='uploadFile' style={{ width: '50%', cursor: 'pointer' }}>
-							Upload CSVs & Train Model
+				<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'none' }} id='uploadFileBtn2' >
+					<button className={`btn bttn`} onClick={(e) => uploadInventory(e)}>
+						<label htmlFor="uploadFile" id='uploadFile2' style={{ width: '50%', cursor: 'pointer' }}>
+							Upload Payment Type Report
 						</label>
 					</button>
 				</div>
 
 				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '8rem' }} className='text-center' id='loadingText'>
 					<h1 style={{ fontSize: '800%' }}>􀌗</h1>
-					{files.length > 1 ? (
-						<h2 style={{ padding: '1rem' }}>Please wait, your CSV files are being uploaded to the cloud...</h2>
-					) : (
-						<h2 style={{ padding: '1rem' }}>Please wait, your CSV file is being uploaded to the cloud...</h2>
-					)}
+					<h2 style={{ padding: '1rem' }}>Please stay on this page and do not refresh the page.</h2>
+					<h2 style={{ padding: '1rem' }}>Your CSV file is being uploaded to the cloud...</h2>
 				</div>
 
-				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '8rem' }} className='text-center' id='doneText'>
-					<h1 style={{ fontSize: '500%' }}>􀢓</h1>
-					{files.length > 1 ? (
-						<h2 style={{ padding: '1rem' }}>Your files have been uploaded to the cloud</h2>
-					) : (
+				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '2rem' }} className='text-center' id='doneText'>
+					<div id='uploadSuccess'>
+						<h1 style={{ fontSize: '500%' }}>􀢓</h1>
 						<h2 style={{ padding: '1rem' }}>Your file has been uploaded to the cloud</h2>
-					)}
+					</div>
+
+					<div id='uploadFail' style={{display:'none'}}>
+						<h1 style={{ fontSize: '500%' }}>􀌓</h1>
+						<h2 style={{ padding: '1rem' }}>Failed uploading to cloud. Please try again.</h2>
+					</div>
+
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
 						<button className={`btn bttn2`}
 							onClick={() => {
