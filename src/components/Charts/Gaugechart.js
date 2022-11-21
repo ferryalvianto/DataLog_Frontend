@@ -8,28 +8,32 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Gaugechart = () => {
 	const [gaugeData, setGaugeData] = useState(0);
-	const [name, setName]=useState('Employee name');
+	const [name, setName] = useState('Employee name');
 	const handleClick = (index) => {
 		setGaugeData(GaugeData[index].transactionSpeed);
 		setName(GaugeData[index].employeeName);
 	};
 	return (
 		<>
-			<GaugeChart
-				id="gauge-chart3"
-				nrOfLevels={7}
-				colors={['#66CCFF', '#0000CC']}
-				arcWidth={0.3}
-				percent={gaugeData}
-				textColor={'#000000'}
-			/>
-			<DropdownButton id="dropdown-item-button" title={name}>
-				{GaugeData.map((element, index) => (
-					<Dropdown.Item as="button" onClick={() => handleClick(index)}>
-						{element.employeeName}
-					</Dropdown.Item>
-				))}
-			</DropdownButton>
+			<div style={{ height: '100%', width: '50%', display: 'inline-block' }} >
+
+				<GaugeChart
+					id="gauge-chart3"
+					nrOfLevels={7}
+					colors={['#66CCFF', '#0000CC']}
+					arcWidth={0.3}
+					percent={gaugeData}
+					textColor={'#000000'}
+				/>
+				<DropdownButton id="dropdown-item-button" title={name}>
+					{GaugeData.map((element, index) => (
+						<Dropdown.Item as="button" onClick={() => handleClick(index)}>
+							{element.employeeName}
+						</Dropdown.Item>
+					))}
+				</DropdownButton>
+			</div>
+
 		</>
 	);
 };

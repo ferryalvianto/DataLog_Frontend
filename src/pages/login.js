@@ -73,7 +73,11 @@ export default function Login(props) {
                                     </button>
                                 </div>
                             </form>
-                            <p style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>Interested in trying DataLog? Get FREE demo <a href='/register' style={{ textDecoration: "underline" }}>here</a>.</p>
+                            <p style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>Interested in trying DataLog? Get FREE demo
+                                <a href="mailto:inquiry@datalog.com?subject=InformationRequest&body=I'd like to learn more about DataLog and to get a demo." style={{ width: '50%', textDecoration: 'underline', marginLeft: '0.5rem', marginRight: '1rem' }}>
+                                    here
+                                </a>.
+                            </p>
                         </div>
                     </div>
                 </div>

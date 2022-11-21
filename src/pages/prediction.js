@@ -22,7 +22,7 @@ export default function Prediction() {
 		datasets: [],
 	});
 
-	const get_weather_forecast_api=()=>{
+	const get_weather_forecast_api = () => {
 		axios.get(LOCAL_API_URL + 'forecasted_weather').then((res) => {
 			setWeatherForecast({
 				...weatherForecast,
@@ -37,7 +37,7 @@ export default function Prediction() {
 				],
 			});
 		});
-	}
+	};
 
 	const get_quantity_forecast_api = () => {
 		axios.get(LOCAL_API_URL + 'quantity_forecast').then((res) => {
@@ -218,9 +218,60 @@ export default function Prediction() {
 	Chart.register(zoomPlugin);
 	return (
 		<>
-		<Navbar />
-			<div style={{}} className={`d-flex align-items-center dashboardTemplate`}>
+			<Navbar />
+			<div
+				style={{
+					paddingRight: '4rem',
+					paddingLeft: '8rem',
+					paddingTop: '2rem',
+					paddingBottom: '2rem',
+					height: '100%',
+				}}
+				className={`dashboardTemplate`}
+			>
 				<div
+					style={{
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexDirection: 'column',
+					}}
+					className="text-center"
+				>
+					<div style={{ padding: '1rem' }}>
+						<h1>Predictions</h1>
+					</div>
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Regression Analysis</h2>
+					</div>
+					<div style={{ padding: '1rem' }}>
+						<Linechart chartData={regression} hidden={false} />
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Temperature Forecast</h2>
+					</div>
+					<div style={{ padding: '1rem' }}>
+					<Linechart
+						chartData={weatherForecast}
+						hidden={true}
+						displayLegend={false}
+						displayTitle={true}
+						maintainAspectRatio={true}
+						titleText="Temperature Forecast"
+					/>
+					</div>
+					<div style={{ padding: '1rem' }}>
+					<Linechart
+							chartData={quantityForecast}
+							displayLegend={true}
+							hidden={false}
+							displayTitle={true}
+							maintainAspectRatio={true}
+							titleText="Category Quantity Forecast"
+						/>
+					</div>
+				</div>
+				{/* <div
 					style={{}}
 					className={`d-flex d-flex justify-content-baseline text-start leftDashboard`}
 				>
@@ -238,7 +289,7 @@ export default function Prediction() {
 					className={`d-flex justify-content-between text-start rightDashboard`}
 					style={{}}
 				>
-					<div style={{ paddingLeft: '1rem' , height:'100vh'}}>
+					<div style={{ paddingLeft: '1rem', height: '100vh' }}>
 						<Linechart
 							chartData={quantityForecast}
 							displayLegend={true}
@@ -248,7 +299,7 @@ export default function Prediction() {
 							titleText="Category Quantity Forecast"
 						/>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</>
 	);

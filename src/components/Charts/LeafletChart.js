@@ -8,7 +8,7 @@ import { leafletData } from '../../TempData/LeafletData';
 
 const LeafletChart = () => {
 	return (
-		<div>
+		<div style={{ height: '100%', width: '80%', display: 'inline-block' }}>
 			<MapContainer
 				crs={L.CRS.Simple}
 				bounds={[
@@ -16,11 +16,17 @@ const LeafletChart = () => {
 					[0, 100],
 				]}
 			>
+				<HeatmapLayer
+					points={leafletData}
+					longitudeExtractor={(m) => m.coordinates[0]}
+					latitudeExtractor={(m) => m.coordinates[1]}
+					intensityExtractor={(m) => m.quantity}
+				/>
 				<ImageOverlay
 					url={require('../../Assets/Images/grocery_map.jpeg')}
 					bounds={[
 						[100, 0],
-						[0, 80],
+						[0, 100],
 					]}
 				/>
 				<HeatmapLayer
@@ -33,5 +39,4 @@ const LeafletChart = () => {
 		</div>
 	);
 };
-
 export default LeafletChart;

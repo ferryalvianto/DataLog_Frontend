@@ -132,7 +132,7 @@ function Navbar() {
                             </div>
                         </div>
                         <div onClick={() => {
-                            // navigate('/profile')
+                            navigate(`/${url}/feedback`)
                         }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isfeedback ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀿌</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀿋</h2>)}
