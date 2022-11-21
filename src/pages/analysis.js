@@ -5,7 +5,7 @@ import GaugeChart from '../components/Charts/Gaugechart';
 import Barchart from '../components/Charts/Barchart';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 import LeafletChart from '../components/Charts/LeafletChart';
 
 export default function Analysis() {
@@ -17,7 +17,7 @@ export default function Analysis() {
 		datasets: [],
 	});
 
-	useEffect(() => {
+	const get_wastage_products = () => {
 		axios.get(API_URL + 'wastage').then((res) => {
 			setWastage({
 				...wastage,
@@ -33,37 +33,70 @@ export default function Analysis() {
 				],
 			});
 		});
+	};
+
+	useEffect(() => {
+		get_wastage_products();
 	}, []);
 
 	return (
 		<>
 			<Navbar />
 			<div
-				style={{ width: 1100, paddingLeft: '103px' }}
-				className={`align-items-center dashboardTemplate`}
+				style={{
+					paddingRight: '4rem',
+					paddingLeft: '8rem',
+					paddingTop: '2rem',
+					paddingBottom: '2rem',
+					height: '100%',
+				}}
+				className={`dashboardTemplate`}
 			>
-				<h1>Market basket analysis</h1>
-				<Heatmap xlabelsProp={xLabels} ylabelsProp={yLabels} />
-			</div>
+				<div
+					style={{
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexDirection: 'column',
+					}}
+					className="text-center"
+				>
+					<div style={{ padding: '1rem' }}>
+						<h1>Analysis</h1>
+					</div>
 
-			<div
-				style={{ width: 700, paddingLeft: '103px' }}
-				className={`align-items-center dashboardTemplate`}
-			>
-				<h1>Transaction Speed</h1>
-				<GaugeChart />
-			</div>
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Market Basket Analysis</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<Heatmap xlabelsProp={xLabels} ylabelsProp={yLabels} />
+					</div>
 
-			<div style={{ width: 1100, paddingLeft: '103px' }}>
-				<Barchart
-					chartData={wastage}
-					displayLegend={false}
-					displayTitle={true}
-					titleText="Wastage Product"
-				/>
-			</div>
-			<div style={{ width: 1100, paddingLeft: '103px' }}>
-				<LeafletChart/>
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Transaction Speed</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<GaugeChart />
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Wastage Analysis</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<Barchart
+							chartData={wastage}
+							displayLegend={false}
+							displayTitle={true}
+							titleText="Wastage Product"
+						/>
+					</div>
+
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Store Heatmap</h2>
+					</div>
+					<div style={{ padding: '1rem 2rem' }}>
+						<LeafletChart />
+					</div>
+				</div>
 			</div>
 		</>
 	);

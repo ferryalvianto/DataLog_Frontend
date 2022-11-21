@@ -15,7 +15,7 @@ function Heatmap({ xlabelsProp, ylabelsProp }) {
 			<div className="box">
 				<HeatMap
 					// background={'#70c9f0'}
-					// height={24}
+					height={24}
 					// squares={true}
 					data={data}
 					xLabels={xlabelsProp}
@@ -28,7 +28,7 @@ function Heatmap({ xlabelsProp, ylabelsProp }) {
 						fontSize: '11.5px',
 						color: '#444',
 					})}
-					// cellRender={value => value && <div>{value}</div>} //show value of cell
+					cellRender={value => value && <div>{value}</div>} //show value of cell
 					// onClick={(x, y) => alert(`Clicked ${x}, ${y}`)}
 				/>
 			</div>
