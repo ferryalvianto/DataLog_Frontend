@@ -74,7 +74,7 @@ export default function Dashboard() {
 	}
 
 	const get_weather_forecast_api=()=>{
-		axios.get(LOCAL_API_URL + 'forecasted_weather').then((res) => {
+		axios.get(API_URL + 'forecasted_weather').then((res) => {
 			setWeatherForecast({
 				...weatherForecast,
 				labels: res.data.map((element) => element.dt_txt),
