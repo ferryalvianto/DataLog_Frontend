@@ -9,6 +9,15 @@ export default function TrainModel() {
 	let reader = new FileReader()
 	const navigate = useNavigate()
 	let [user, setUser] = useState('')
+	let [todo, setTodo] = useState('Upload CSV files for Organic Acres and Be Fresh to train models')
+	let [bf, setBF] = useState(false)
+	let [oa, setOA] = useState(false)
+
+	let today = new Date();
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0')
+	let yyyy = today.getFullYear();
+	today = mm + '/' + dd + '/' + yyyy;
 
 	useEffect(() => {
 		if ('user' in localStorage) {
@@ -17,6 +26,36 @@ export default function TrainModel() {
 				sessionStorage.setItem('url', params.businessname)
 				navigate('/badpage')
 			}
+			// else {
+			// 	userService.getUploadLog(JSON.parse(localStorage.getItem('user')).db.toString(), yyyy.toString(), mm.toString(), dd.toString())
+			// 		.then((resp) => {
+			// 			console.log(resp.data)
+			// 			if (resp.data == '1') {
+			// 				setTodo('Upload CSV files for Organic Acres to train models.')
+			// 				setBF(true)
+			// 			}
+			// 			else if (resp.data == '0') {
+			// 				setTodo('Upload CSV files for Be Fresh-Cypress to train models.')
+			// 				setOA(true)
+			// 			}
+			// 			else if (resp.data == 'Train models now.') {
+			// 				setTodo('Train models now')
+			// 				setOA(true)
+			// 				setBF(true)
+			// 				document.getElementById('doneText').style.display = `block`
+			// 				document.getElementById('uploadSuccess').style.display = `block`
+			// 				document.getElementById('trainBtn').style.display = `block`
+			// 				document.getElementById('uploadAnotherBtn').style.display = `none`
+			// 				document.getElementById('datediv').style.display = `none`
+			// 			}
+			// 			else {
+			// 				setTodo('Upload CSV files for Organic Acres and Be Fresh to train models')
+			// 			}
+			// 		})
+			// 		.catch((err) => {
+			// 			console.log(err)
+			// 		})
+			// }
 		} else {
 			navigate('/login')
 		}
@@ -28,42 +67,155 @@ export default function TrainModel() {
 		month = dateValue.substring(5, 7)
 		day = dateValue.substring(8, 10)
 		console.log(month + day + year)
-		document.getElementById('paymenttype').style.display = `block`
+		checkLog()
 	}
 
-	function choosefile(e) {
-		file = e.target.files[0]
-		if (file && file.name.toLowerCase().includes('actionlog')) {
-			document.getElementById('fileSelected').innerText = `Selected file: ${file.name}`
-			document.getElementById('fileSelected').style.display = `block`
-			document.getElementById('uploadFileBtn').style.display = `flex`
-			document.getElementById('uploadFile').innerText = `Upload ${files.toString()}`
-		} else {
-			alert('Please choose an Action Log Report')
-		}
+	function checkLog() {
+		userService.getUploadLog(JSON.parse(localStorage.getItem('user')).db.toString(), year.toString(), month.toString(), day.toString())
+			.then((resp) => {
+				console.log(resp.data)
+
+				if (resp.data == '1') {
+					setTodo('Upload CSV files for Organic Acres to train models.')
+					setBF(true)
+				}
+				else if (resp.data == '0') {
+					setTodo('Upload CSV files for Be Fresh-Cypress to train models.')
+					setOA(true)
+				}
+				else if (resp.data == 'Train models now.') {
+					setTodo('Train models now')
+					setOA(true)
+					setBF(true)
+					document.getElementById('doneText').style.display = `block`
+					document.getElementById('uploadSuccess').style.display = `block`
+					document.getElementById('trainBtn').style.display = `block`
+					document.getElementById('uploadAnotherBtn').style.display = `none`
+					document.getElementById('datediv').style.display = `none`
+				}
+				else {
+					setTodo('Upload CSV files for Organic Acres and Be Fresh to train models')
+				}
+
+				if (!bf || !oa) {
+					document.getElementById('paymenttype').style.display = `block`
+				}
+				if (resp.data == '0' && !bf) {
+					document.getElementById('paymenttype').style.display = `block`
+					document.getElementById('paymentuploadtxt').innerText = `Upload the Payment Summary Report for Be Fresh`
+					document.getElementById('invetoryuploadtxt').innerText = `Upload the Inventory Log Report for Organic Acres`
+				}
+				if (resp.data == '1' && !oa) {
+					document.getElementById('paymenttype').style.display = `block`
+					document.getElementById('paymentuploadtxt').innerText = `Upload the Payment Summary Report for Organic Acres`
+					document.getElementById('invetoryuploadtxt').innerText = `Upload the Inventory Log Report for Be Fresh`
+				}
+				// else {
+				// 	alert('You have uploaded CSV files for the selected dates.')
+				// }
+			})
+			.catch((err) => {
+				console.log(err)
+			})
 	}
+
+	// function choosefile(e) {
+	// 	file = e.target.files[0]
+	// 	if (file && file.name.toLowerCase().includes('actionlog')) {
+	// 		document.getElementById('fileSelected').innerText = `Selected file: ${file.name}`
+	// 		document.getElementById('fileSelected').style.display = `block`
+	// 		document.getElementById('uploadFileBtn').style.display = `flex`
+	// 		document.getElementById('uploadFile').innerText = `Upload ${file.name}`
+	// 	} else {
+	// 		alert('Please choose an Action Log Report')
+	// 	}
+	// }
 
 	function choosefile2(e) {
 		file = e.target.files[0]
-		if (file && file.name.includes('Payment_Summary_') && file.name.includes(month + '_' + day + '_' + year)) {
-			document.getElementById('fileSelected2').innerText = `Selected file: ${file.name}`
-			document.getElementById('fileSelected2').style.display = `block`
-			document.getElementById('uploadFileBtn').style.display = `flex`
-			document.getElementById('uploadFile').innerText = `Upload ${file.name}`
-		} else {
-			alert('Please choose a Payment Type Report')
+
+		if (!bf && !oa) {
+			if (file && file.name.includes('Payment_Summary_')) {
+				if (file.name.includes(month + '_' + day + '_' + year)) {
+					document.getElementById('fileSelected2').innerText = `Selected file: ${file.name}`
+					document.getElementById('fileSelected2').style.display = `block`
+					document.getElementById('uploadFileBtn').style.display = `flex`
+					document.getElementById('uploadFile').innerText = `Upload ${file.name}`
+				}
+				else {
+					alert('Report date does not match with the date you selected previously.')
+				}
+			} else {
+				alert('Please choose a Payment Summary Report')
+			}
+		}
+
+		if (!bf && oa) {
+			if (file && file.name.includes('Payment_Summary_') && file.name.includes('Be_Fresh')) {
+				if (file.name.includes(month + '_' + day + '_' + year)) {
+					document.getElementById('fileSelected2').innerText = `Selected file: ${file.name}`
+					document.getElementById('fileSelected2').style.display = `block`
+					document.getElementById('uploadFileBtn').style.display = `flex`
+					document.getElementById('uploadFile').innerText = `Upload ${file.name}`
+				}
+				else {
+					alert('Report date does not match with the date you selected previously.')
+				}
+			} else {
+				alert('Please choose a Payment Summary Report for Be Fresh')
+			}
+		}
+
+		if (bf && !oa) {
+			if (file && file.name.includes('Payment_Summary_') && file.name.includes('Organic_Acres')) {
+				if (file.name.includes(month + '_' + day + '_' + year)) {
+					document.getElementById('fileSelected2').innerText = `Selected file: ${file.name}`
+					document.getElementById('fileSelected2').style.display = `block`
+					document.getElementById('uploadFileBtn').style.display = `flex`
+					document.getElementById('uploadFile').innerText = `Upload ${file.name}`
+				}
+				else {
+					alert('Report date does not match with the date you selected previously.')
+				}
+			} else {
+				alert('Please choose a Payment Summary Report for Organic Acres')
+			}
 		}
 	}
 
 	function choosefile3(e) {
 		file = e.target.files[0]
-		if (file && file.name.includes('Inventory_Log_') && file.name.includes(month + '_' + day + '_' + year)) {
-			document.getElementById('fileSelected3').innerText = `Selected file: ${file.name}`
-			document.getElementById('fileSelected3').style.display = `block`
-			document.getElementById('uploadFileBtn2').style.display = `flex`
-			document.getElementById('uploadFile2').innerText = `Upload ${file.name}`
-		} else {
-			alert('Please choose an Inventory Log Report')
+		if (!bf && !oa) {
+			if (file && file.name.includes('Inventory_Log_') && file.name.includes(month + '_' + day + '_' + year)) {
+				document.getElementById('fileSelected3').innerText = `Selected file: ${file.name}`
+				document.getElementById('fileSelected3').style.display = `block`
+				document.getElementById('uploadFileBtn2').style.display = `flex`
+				document.getElementById('uploadFile2').innerText = `Upload ${file.name}`
+			} else {
+				alert('Please choose an Inventory Log Report')
+			}
+		}
+
+		if (!bf && oa) {
+			if (file && file.name.includes('Inventory_Log_') && file.name.includes(month + '_' + day + '_' + year) && file.name.includes('Be_Fresh')) {
+				document.getElementById('fileSelected3').innerText = `Selected file: ${file.name}`
+				document.getElementById('fileSelected3').style.display = `block`
+				document.getElementById('uploadFileBtn2').style.display = `flex`
+				document.getElementById('uploadFile2').innerText = `Upload ${file.name}`
+			} else {
+				alert('Please choose an Inventory Log Report for Be Fresh')
+			}
+		}
+
+		if (bf && !oa) {
+			if (file && file.name.includes('Inventory_Log_') && file.name.includes(month + '_' + day + '_' + year) && file.name.includes('Organic_Acres')) {
+				document.getElementById('fileSelected3').innerText = `Selected file: ${file.name}`
+				document.getElementById('fileSelected3').style.display = `block`
+				document.getElementById('uploadFileBtn2').style.display = `flex`
+				document.getElementById('uploadFile2').innerText = `Upload ${file.name}`
+			} else {
+				alert('Please choose an Inventory Log Report for Organic Acres')
+			}
 		}
 	}
 
@@ -95,7 +247,7 @@ export default function TrainModel() {
 					document.getElementById('paymentupload').style.display = `none`
 					document.getElementById('paymentuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
 				})
-				.catch((e) => console.log(e)); // Or Error in console
+				.catch((e) => console.log(e))
 		}
 	}
 
@@ -129,6 +281,7 @@ export default function TrainModel() {
 					userService.cleanCSV(user.db, id_inventorylog, id_paymenttype, year, month, day)
 						.then((resp) => {
 							console.log(resp)
+							checkLog()
 							document.getElementById('loadingText').style.display = `none`
 							document.getElementById('chooseDiv').style.display = `block`
 							document.getElementById('inventorylog').style.display = `block`
@@ -136,6 +289,7 @@ export default function TrainModel() {
 							document.getElementById('invetoryuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
 							document.getElementById('doneText').style.display = `block`
 							document.getElementById('uploadSuccess').style.display = `block`
+
 						})
 						.catch((err) => {
 							console.log(err)
@@ -149,6 +303,21 @@ export default function TrainModel() {
 		}
 	}
 
+	function trainModels(e) {
+		document.getElementById('loadingText').style.display = `block`
+
+		userService.trainModels(JSON.parse(localStorage.getItem('user')).db.toString(), year.toString(), month.toString(), day.toString())
+			.then((res) => {
+				console.log(res)
+				document.getElementById('loadingText').style.display = `none`
+				document.getElementById('doneText').style.display = `block`
+				document.getElementById('uploadSuccess').style.display = `none`
+				document.getElementById('uploadFail').style.display = `none`
+				document.getElementById('trainDone').style.display = `block`
+			})
+			.catch((e) => console.log(e))
+	}
+
 	return (
 		<>
 			<Navbar />
@@ -156,6 +325,7 @@ export default function TrainModel() {
 				<div id='chooseDiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
 					<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
 						<h1 style={{ padding: '1rem' }}>Train Model</h1>
+						<h2 style={{ padding: '1rem' }} id='todo'>{todo}</h2>
 					</div>
 
 					<div style={{ padding: '1rem' }} id='datediv'>
@@ -169,7 +339,7 @@ export default function TrainModel() {
 						/>
 					</div>
 
-					<div style={{ padding: '1rem', display: 'none' }} id='actionlog'>
+					{/* <div style={{ padding: '1rem', display: 'none' }} id='actionlog'>
 						<h3>Upload the Action Log Report</h3>
 						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
 							<input
@@ -186,7 +356,7 @@ export default function TrainModel() {
 							</button>
 							<p id='fileSelected' style={{ width: '100%', paddingLeft: '2rem', justifySelf: 'center', alignSelf: 'center' }}>No files selected</p>
 						</div>
-					</div>
+					</div> */}
 
 					<div style={{ padding: '1rem', display: 'none' }} id='paymenttype'>
 						<h3 id='paymentuploadtxt'>Upload the Payment Summary Report</h3>
@@ -252,12 +422,17 @@ export default function TrainModel() {
 				<div style={{ display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '2rem' }} className='text-center' id='doneText'>
 					<div id='uploadSuccess'>
 						<h1 style={{ fontSize: '500%' }}>􀢓</h1>
-						<h2 style={{ padding: '1rem' }}>Your file has been uploaded to the cloud</h2>
+						<h2 style={{ padding: '1rem' }}>Your files has been uploaded to the cloud</h2>
 					</div>
 
-					<div id='uploadFail' style={{display:'none'}}>
+					<div id='uploadFail' style={{ display: 'none' }}>
 						<h1 style={{ fontSize: '500%' }}>􀌓</h1>
 						<h2 style={{ padding: '1rem' }}>Failed uploading to cloud. Please try again.</h2>
+					</div>
+
+					<div id='trainDone' style={{ display: 'none' }}>
+						<h1 style={{ fontSize: '500%' }}>􀢓</h1>
+						<h2 style={{ padding: '1rem' }}>Models have been trained.</h2>
 					</div>
 
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
@@ -271,10 +446,18 @@ export default function TrainModel() {
 								Go to Dashboard
 							</label>
 						</button>
+
 						<div style={{ padding: '1rem' }}></div>
-						<button className={`btn bttn`} onClick={(e) => window.location.reload()}>
+
+						<button className={`btn bttn`} onClick={(e) => window.location.reload()} id='uploadAnotherBtn' style={{ display: 'block' }}>
 							<label htmlFor="uploadFile" id='uploadFileAgain' style={{ width: '100%', cursor: 'pointer' }}>
 								Upload Another File
+							</label>
+						</button>
+
+						<button className={`btn bttn`} onClick={(e) => trainModels(e)} id='trainBtn' style={{ display: 'none' }}>
+							<label htmlFor="trainModels" id='trainModelsLabel' style={{ width: '100%', cursor: 'pointer' }}>
+								Train Models
 							</label>
 						</button>
 					</div>

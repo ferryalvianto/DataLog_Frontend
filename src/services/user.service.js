@@ -18,6 +18,40 @@ class UserService {
         })
     }
 
+    async getUploadDateLog(db, yyyy, mm, dd) {
+        return axios.get(API_URL + '/upload_date_log', {
+            params: {
+                'db': db,
+                'yyyy':yyyy,
+                'mm':mm,
+                'dd':dd
+            }
+        })
+    }
+
+    async getUploadLog(db, yyyy, mm, dd) {
+        return axios.get(API_URL + '/upload_log', {
+            params: {
+                'db': db,
+                'yyyy':yyyy,
+                'mm':mm,
+                'dd':dd
+            }
+        })
+    }
+
+
+    async trainModels(db, yyyy, mm, dd) {
+        return axios.get(API_URL + '/train_models', {
+            params: {
+                'db': db,
+                'yyyy':yyyy,
+                'mm':mm,
+                'dd':dd
+            }
+        })
+    }
+
 }
 
 export default new UserService();
