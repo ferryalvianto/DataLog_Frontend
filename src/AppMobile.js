@@ -8,6 +8,7 @@ import "./scss/App.scss";
 import Home from "./pages/home";
 import NotSupported from "./components/warning/not-supported";
 import Navbar from './components/navbar';
+import Rating from "./pages/Rating";
 
 export default function AppMobile() {
     return (
@@ -18,6 +19,7 @@ export default function AppMobile() {
                         <Route path="/" element={<Home />} />
                         <Route path="/not-supported" element={<NotSupported />} />
                         <Route path="*" element={<NotSupported />} />
+                        <Route path="/form" element={<Rating />} />
                         {/* <Route render={() => <Redirect to={{pathname: "/not-supported"}} />} /> */}
                     </Routes>
                 </main>

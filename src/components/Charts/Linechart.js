@@ -2,9 +2,11 @@ import React, { useRef } from 'react';
 import { Chart, Line } from 'react-chartjs-2';
 import { Chart as chartjs } from 'chart.js/auto';
 import { resetZoom } from 'chartjs-plugin-zoom';
+import { bottomNavigationActionClasses } from '@mui/material';
 
-const Linechart = ({ chartData, hidden, displayLegend, displayTitle, titleText }) => {
+const Linechart = ({ chartData, hidden, displayLegend, displayTitle, titleText, maintainAspectRatio }) => {
 	const options = {
+		maintainAspectRatio: maintainAspectRatio,
 		scales: {
 			x: {
 				grid: {
@@ -45,8 +47,9 @@ const Linechart = ({ chartData, hidden, displayLegend, displayTitle, titleText }
 				},
 			},
 			legend: {
-				display: displayLegend,
-			},
+                display: displayLegend,
+				// position: 'bottom',
+            },
 			title: {
 				display: displayTitle,
 				text: titleText,

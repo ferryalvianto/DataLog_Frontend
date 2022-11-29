@@ -18,6 +18,7 @@ export default function Dashboard() {
 
 	// const API_URL = 'https://datalogwebapp.herokuapp.com/api/';
 	const API_URL = 'http://127.0.0.1:8000/api/'
+	const LOCAL_API_URL = 'http://localhost:8000/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
@@ -32,15 +33,63 @@ export default function Dashboard() {
 		datasets: [],
 	});
 
-	const [quantityForecast, setQuantityForecast] = useState({
-		labels: '',
-		datasets: [],
-	});
-
 	const [weatherForecast, setWeatherForecast] = useState({
 		labels: '',
 		datasets: [],
 	});
+
+	const get_revenue_history_api=()=>{
+		axios.get(API_URL + 'revenues').then((res) => {
+			setRevenue({
+				...revenue,
+				labels: res.data.map((element) => element.ymd),
+				datasets: [
+					{
+						label: 'Revenue History',
+						data: res.data.map((element) => element.revenue),
+						backgroundColor: 'rgba(54, 162, 235,0.8)',
+						borderColor: 'black',
+						borderWidth: 1,
+					},
+				],
+			});
+		});
+	}
+
+	const get_revenue_forecast_api=()=>{
+		axios.get(API_URL + 'revenue_forecast').then((res) => {
+			setRevenueForecast({
+				...revenueForecast,
+				labels: res.data.map((element) => element.Date),
+				datasets: [
+					{
+						label: 'Revenue Forecast',
+						data: res.data.map((element) => element.PredictedRevenue),
+						backgroundColor: 'rgba(54, 162, 235,0.8)',
+						borderColor: 'black',
+						borderWidth: 1,
+					},
+				],
+			});
+		});
+	}
+
+	const get_weather_forecast_api=()=>{
+		axios.get(API_URL + 'forecasted_weather').then((res) => {
+			setWeatherForecast({
+				...weatherForecast,
+				labels: res.data.map((element) => element.dt_txt),
+				datasets: [
+					{
+						data: res.data.map((element) => element.temp_avg),
+						backgroundColor: '#FA8072',
+						borderColor: '#800000',
+						tension: 0.4,
+					},
+				],
+			});
+		});
+	}
 
 	useEffect(() => {
 		if ('user' in localStorage) {
@@ -55,66 +104,50 @@ export default function Dashboard() {
 				) {
 					sessionStorage.clear();
 					setNewUser(user.newuser);
-					axios.get(API_URL + 'revenues', {
-						params: {
-							'db': user.db
-						}
-					})
-						.then((res) => {
-							setRevenue({
-								...revenue,
-								labels: res.data.map((element) => element.ymd),
-								datasets: [
-									{
-										label: 'Revenue History',
-										data: res.data.map((element) => element.revenue),
-										backgroundColor: 'rgba(54, 162, 235,0.8)',
-										borderColor: 'black',
-										borderWidth: 1,
-									},
-								],
-							});
+					axios.get(API_URL + 'revenues').then((res) => {
+						setRevenue({
+							...revenue,
+							labels: res.data.map((element) => element.ymd),
+							datasets: [
+								{
+									label: 'Revenue History',
+									data: res.data.map((element) => element.revenue),
+									backgroundColor: 'rgba(54, 162, 235,0.8)',
+									borderColor: 'black',
+									borderWidth: 1,
+								},
+							],
 						});
-					axios.get(API_URL + 'revenue_forecast', {
-						params: {
-							'db': user.db
-						}
-					})
-						.then((res) => {
-							console.log(res)
-							setRevenueForecast({
-								...revenueForecast,
-								labels: res.data.map((element) => element.Date),
-								datasets: [
-									{
-										label: 'Revenue Forecast',
-										data: res.data.map((element) => element.PredictedRevenue),
-										backgroundColor: 'rgba(54, 162, 235,0.8)',
-										borderColor: 'black',
-										borderWidth: 1,
-									},
-								],
-							});
+					});
+					axios.get(API_URL + 'revenue_forecast').then((res) => {
+						setRevenueForecast({
+							...revenueForecast,
+							labels: res.data.map((element) => element.Date),
+							datasets: [
+								{
+									label: 'Revenue Forecast',
+									data: res.data.map((element) => element.PredictedRevenue),
+									backgroundColor: 'rgba(54, 162, 235,0.8)',
+									borderColor: 'black',
+									borderWidth: 1,
+								},
+							],
 						});
-					axios.get(API_URL + 'quantity_forecast', {
-						params: {
-							'db': user.db
-						}
-					})
-						.then((res) => {
-							setQuantityForecast({
-								...quantityForecast,
-								labels: res.data.map((element) => element.Date),
-								datasets: [
-									{
-										label: 'Dairy',
-										data: res.data.map((element) => element.predicted_quantity),
-										backgroundColor: '#DAA520',
-										borderColor: '#FFD700',
-									},
-								],
-							});
+					});
+					axios.get(API_URL + 'quantity_forecast').then((res) => {
+						setQuantityForecast({
+							...quantityForecast,
+							labels: res.data.map((element) => element.Date),
+							datasets: [
+								{
+									label: 'Dairy',
+									data: res.data.map((element) => element.predicted_quantity),
+									backgroundColor: '#DAA520',
+									borderColor: '#FFD700',
+								},
+							],
 						});
+					});
 					axios.get(API_URL + 'forecasted_weather').then((res) => {
 						console.log(
 							'temp_max',
@@ -259,18 +292,11 @@ export default function Dashboard() {
 						</div>
 						<div style={{ width: 500 }}>
 							<Linechart
-								chartData={quantityForecast}
-								hidden={true}
-								displayTitle={true}
-								titleText="Category Quantity Forecast"
-							/>
-						</div>
-						<div style={{ width: 500 }}>
-							<Linechart
 								chartData={weatherForecast}
 								hidden={true}
 								displayLegend={false}
 								displayTitle={true}
+								maintainAspectRatio={true}
 								titleText="Temperature Forecast"
 							/>
 						</div>
