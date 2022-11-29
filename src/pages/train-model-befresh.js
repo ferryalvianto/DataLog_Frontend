@@ -100,6 +100,7 @@ export default function TrainModelBeFresh() {
 					document.getElementById('todo').style.display = `none`
 					document.getElementById('uploadAnotherBtn').style.display = `none`
 					document.getElementById('paymenttype').style.display = `none`
+					document.getElementById('inventorylog').style.display = `none`
 					document.getElementById('doneText').style.display = `block`
 					document.getElementById('uploadSuccess').style.display = `block`
 					document.getElementById('trainBtn').style.display = `block`
@@ -362,7 +363,7 @@ export default function TrainModelBeFresh() {
 				document.getElementById('trainBtn').style.display = `none`
 				document.getElementById('doneText').style.display = `block`
 				document.getElementById('trainDone').style.display = `block`
-				document.getElementById('trainresults').innerText = `${res.data}`
+				document.getElementById('trainresults').innerText = `${res.data[0]}\n${res.data[1]}`
 			})
 			.catch((e) => console.log(e))
 	}

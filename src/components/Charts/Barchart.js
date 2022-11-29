@@ -10,25 +10,31 @@ const Barchart = ({ chartData, displayLegend, displayTitle, titleText }) => {
 		});
 	};
 
-	const  options= {
-        plugins: {
-            legend: {
-                display: displayLegend,
-            },
+	const options = {
+		plugins: {
+			legend: {
+				display: displayLegend,
+			},
 			title: {
-                display: displayTitle,
-                text: titleText,
-				position:'bottom'
-            }
-        }
-    }
+				display: displayTitle,
+				text: titleText,
+				position: 'bottom'
+			}
+		}
+	}
 	return (
-		<Bar
-			data={chartData}
-			onMouseEnter={changeCursor}
-			options={options}
-			style={{ cursor: cursor }}
-		/>
+		<>
+			<div style={{ height: '100%', width: '100%', display: 'inline-block', margin:'2rem' }} >
+				<Bar
+					data={chartData}
+					onMouseEnter={changeCursor}
+					options={options}
+					style={{ cursor: cursor }}
+				/>
+			</div>
+		</>
+
+
 	);
 };
 

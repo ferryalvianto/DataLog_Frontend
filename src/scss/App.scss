@@ -169,9 +169,9 @@ html {
     background-color: #f7f7f7;
     padding: 1rem;
     margin: 1rem;
-    -moz-border-radius: 2em;
-    -webkit-border-radius: 2em;
-    border-radius: 2em;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    border-radius: 0.5em;
     // -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     // -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     // box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
@@ -179,9 +179,9 @@ html {
 
   #cardBackground {
     border-radius: 2em;
-    background-color: rgba(143, 143, 143, 0.3);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     padding: 2rem;
     padding-left: 5rem;
     padding-right: 5rem;
@@ -290,6 +290,34 @@ html {
     height: 100vh;
     overflow-y: scroll;
     background-color: rgb(234, 234, 234);
+  }
+
+  .patternDiv {
+    background-color: #f7f5e6;
+    opacity: 1;
+    background-image: radial-gradient(circle at center center, #f3dabe, #f3dabe), repeating-radial-gradient(circle at center center, #96bfeb, #f3dabe, 350px, transparent 250px, transparent 100px);
+    background-blend-mode: multiply;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    animation: ripple 60s infinite;
+    z-index: -1;
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(150%);
+    }
+
+    50% {
+      transform: scale(100%);
+    }
+
+    100% {
+      transform: scale(150%);
+    }
   }
 }
 

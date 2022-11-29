@@ -19,7 +19,7 @@ export default function AppMobile() {
                         <Route path="/" element={<Home />} />
                         <Route path="/not-supported" element={<NotSupported />} />
                         <Route path="*" element={<NotSupported />} />
-                        <Route path="/form" element={<Rating />} />
+                        <Route path="/befresh/form" element={<Rating />} />
                         {/* <Route render={() => <Redirect to={{pathname: "/not-supported"}} />} /> */}
                     </Routes>
                 </main>

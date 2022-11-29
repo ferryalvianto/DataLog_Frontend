@@ -3,9 +3,14 @@ import RatingForm from '../components/RatingForm';
 
 const Rating = () => {
 	return (
-		<div style={{ width: 700 , marginTop:'90px', marginLeft:'10px', marginRight:'10px'}}>
-			<RatingForm />
+		<div style={{ padding: '2rem', width: '100vw' }}>
+			<div id='formdiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+				<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+					<RatingForm />
+				</div>
+			</div>
 		</div>
+
 	);
 };
 
