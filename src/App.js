@@ -56,7 +56,7 @@ export default function App() {
                                 <Route path="/not-supported" element={<NotSupported />} />
                                 <Route path="/:businessname/new-user" element={<NewUser />} />
                                 {/* <Route path="*" element={<Home />} /> */}
-                                <Route path="/form" element={<Rating />} />
+                                <Route path="/befresh/form" element={<Rating />} />
                                 <Route path="/:businessname/feedback" element={<SentimentAnalysis />} />
                                 <Route path='/badpage' element={<BadPage />} />
                             </Routes>

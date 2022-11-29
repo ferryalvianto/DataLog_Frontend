@@ -65,7 +65,7 @@ const Linechart = ({ chartData, hidden, displayLegend, displayTitle, titleText, 
 
 	return (
 		<>
-			<div style={{ height: '100%', width: '70%', display: 'inline-block' }} >
+			<div style={{ height: '100%', width: '100%', display: 'inline-block', margin:'2rem' }} >
 				<Line ref={chartRef} data={chartData} options={options} />
 
 				<div style={{width:'40%', display: 'inline-block', padding:'2rem' }}>
