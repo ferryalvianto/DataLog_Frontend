@@ -3,11 +3,13 @@ import { xLabels, yLabels } from '../TempData/HeatmapData';
 import Heatmap from '../components/Charts/Heatmap';
 import GaugeChart from '../components/Charts/Gaugechart';
 import Barchart from '../components/Charts/Barchart';
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Chart } from 'chart.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import LeafletChart from '../components/Charts/LeafletChart';
+import Table from 'react-bootstrap/Table';
+import { map } from 'leaflet';
 
 export default function Analysis() {
 	let { businessname } = useParams();
@@ -18,10 +20,7 @@ export default function Analysis() {
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 
-	const [general_products, setGeneralProducts] = useState({
-		labels: '',
-		datasets: [],
-	});
+	const [general_products, setGeneralProducts] = useState([]);
 
 	const [wastage, setWastage] = useState({
 		labels: '',
@@ -46,71 +45,36 @@ export default function Analysis() {
 		});
 	};
 
-	const get_general_products_api=()=>{
-		axios.get(API_URL + 'general_products').then((res) => {
-			setGeneralProducts({
-				...general_products,
-				labels: res.data.map((element) => element.Date),
-				datasets: [
-					{
-						label: 'Produce',
-						data: res.data.map((element) => element.Quantity),
-						backgroundColor: 'rgba(54, 162, 235,0.8)',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
-			});
+	const get_general_products_api = () => {
+		axios.get(LOCAL_API_URL + 'revenues').then((res) => {
+			console.log(res.data);
+			setGeneralProducts(res.data);
 		});
-	}
+	};
 
 	useEffect(() => {
 		get_wastage_products();
 		get_general_products_api();
 	}, []);
 
-	// const filterData = () => {
-	// 	let value1 = inputRef1.current.value;
-	// 	let value2 = inputRef2.current.value;
+	const filterData = () => {
+		let value1 = inputRef1.current.value;
+		let value2 = inputRef2.current.value;
 
-	// 	axios
-	// 		.get(API_URL + 'revenues/?start_date='+value1+'&end_date='+value2)
-	// 		.then((res) => {
-	// 			console.log(res.data);
-	// 			setRevenue({
-	// 				...revenue,
-	// 				labels: res.data.map((element) => element.ymd),
-	// 				datasets: [
-	// 					{
-	// 						label: 'Revenue History',
-	// 						data: res.data.map((element) => element.dailyRevenue),
-	// 						backgroundColor: 'rgba(54, 162, 235,0.8)',
-	// 						borderColor: 'black',
-	// 						borderWidth: 1,
-	// 					},
-	// 				],
-	// 			});
-	// 		});
-	// };
+		axios
+			.get(LOCAL_API_URL + 'revenues/?start_date=' + value1 + '&end_date=' + value2)
+			.then((res) => {
+				console.log(res.data);
+				setGeneralProducts(res.data);
+			});
+	};
 
-	// const resetData = () => {
-	// 	axios.get(API_URL + 'revenues').then((res) => {
-	// 		setRevenue({
-	// 			...revenue,
-	// 			labels: res.data.map((element) => element.ymd),
-	// 			datasets: [
-	// 				{
-	// 					label: 'Revenue History',
-	// 					data: res.data.map((element) => element.revenue),
-	// 					backgroundColor: 'rgba(54, 162, 235,0.8)',
-	// 					borderColor: 'black',
-	// 					borderWidth: 1,
-	// 				},
-	// 			],
-	// 		});
-	// 	});
-	// };
-
+	const resetData = () => {
+		axios.get(LOCAL_API_URL + 'revenues').then((res) => {
+			console.log(res.data);
+			setGeneralProducts(res.data);
+		});
+	};
 	return (
 		<>
 			<Navbar />
@@ -168,18 +132,34 @@ export default function Analysis() {
 					<div style={{ padding: '1rem 2rem' }}>
 						<LeafletChart />
 					</div>
-					<div style={{ width: 500 }}>
-						<Barchart
-							chartData={general_products}
-							displayLegend={false}
-							displayTitle={true}
-							titleText="General Products"
-						/>
-						{/* <input type="date" ref={inputRef1} />
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>List Of Low-selling Products</h2>
+						<br/>
+						<input type="date" ref={inputRef1} />
 						<input type="date" ref={inputRef2} />
 						<button onClick={filterData}>Filter</button>
-						<button onClick={resetData}>Reset</button> */}
+						<button onClick={resetData}>Reset</button>
 					</div>
+					<Table striped bordered hover>
+						<thead>
+							<tr>
+								{/* <th>Category</th> */}
+								{/* <th>Product Name</th> */}
+								{/* <th>Quantity</th> */}
+								{/* <th>Date</th> */}
+								<th>Date</th>
+								<th>Revenue</th>
+							</tr>
+						</thead>
+						<tbody>
+							{general_products.map((item, index) => (
+								<tr key={index}>
+									<td>{item.ymd}</td>
+									<td>{item.revenue}</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
 				</div>
 			</div>
 		</>
