@@ -16,8 +16,8 @@ export default function Dashboard() {
 
 	const navigate = useNavigate();
 
-	// const API_URL = 'https://datalogwebapp.herokuapp.com/api/';
-	const API_URL = 'http://127.0.0.1:8000/api/'
+	const API_URL = 'https://datalogwebapp.herokuapp.com/api/';
+	// const API_URL = 'http://127.0.0.1:8000/api/'
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
