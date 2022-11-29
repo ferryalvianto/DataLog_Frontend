@@ -41,11 +41,13 @@ export default function AuthHeader() {
                             localStorage.clear()
                             sessionStorage.clear()
                             navigate('/login')
+                            window.location.reload()
 
                         } else {
                             localStorage.clear()
                             sessionStorage.clear()
                             navigate('/')
+                            window.location.reload()
                         }
                     }
                 })

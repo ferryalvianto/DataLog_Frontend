@@ -101,6 +101,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/dashboard`)
+                            window.location.reload()
                         }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isdashboard ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀦳</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀦲</h2>)}
@@ -109,6 +110,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/prediction`)
+                            window.location.reload()
                         }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isprediction ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀜍</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀜎</h2>)}
@@ -117,6 +119,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/analysis`)
+                            window.location.reload()
                         }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isanalysis ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀦌</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀥜</h2>)}
@@ -125,6 +128,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/train-model`)
+                            window.location.reload()
                         }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {istrainmodel ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀧓</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀫥</h2>)}
@@ -133,6 +137,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/feedback`)
+                            window.location.reload()
                         }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isfeedback ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀿌</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀿋</h2>)}

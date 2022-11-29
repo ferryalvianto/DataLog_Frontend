@@ -56,6 +56,14 @@ const RatingForm = () => {
 	};
 	return (
 		<>
+			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100vh' }} className={`dashboardTemplate`}>
+				<div id='chooseDiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+					<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+						<h1 style={{ fontSize: '800%', padding: '1rem' }}>􀥺</h1>
+						<h1 style={{ padding: '1rem' }}>Nothing to see here...</h1>
+					</div>
+				</div>
+			</div>
 			<Form>
 				<Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
 					<StyledRating

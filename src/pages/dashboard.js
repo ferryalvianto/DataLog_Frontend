@@ -81,6 +81,7 @@ export default function Dashboard() {
 						}
 					})
 						.then((res) => {
+							console.log(res)
 							setRevenueForecast({
 								...revenueForecast,
 								labels: res.data.map((element) => element.Date),
