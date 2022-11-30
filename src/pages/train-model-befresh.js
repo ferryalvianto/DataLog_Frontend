@@ -374,6 +374,9 @@ export default function TrainModelBeFresh() {
 				document.getElementById('trainDone').style.display = `block`
 				document.getElementById('trainresults').innerText = `${res.data[0]}\n${res.data[1]}`
 			})
+			.catch((e)=>{
+				console.log(e)
+			})
 	}
 
 	return (
