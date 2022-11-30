@@ -7,7 +7,7 @@ const API_URL = 'https://datalogwebapp.herokuapp.com/api'
 class UserService {
 
     async cleanCSV(db, id_inventory, id_payment, year, month, day) {
-        return axios.get(API_URL + '/clean_csv', {
+        return await axios.get(API_URL + '/clean_csv', {
             params: {
                 'db': db,
                 'id_inventory': id_inventory,
@@ -20,7 +20,7 @@ class UserService {
     }
 
     async getUploadDateLog(db, yyyy, mm, dd) {
-        return axios.get(API_URL + '/upload_date_log', {
+        return await axios.get(API_URL + '/upload_date_log', {
             params: {
                 'db': db,
                 'yyyy':yyyy,
@@ -31,7 +31,7 @@ class UserService {
     }
 
     async getUploadLog(db, yyyy, mm, dd) {
-        return axios.get(API_URL + '/upload_log', {
+        return await axios.get(API_URL + '/upload_log', {
             params: {
                 'db': db,
                 'yyyy':yyyy,
@@ -43,14 +43,11 @@ class UserService {
 
 
     async trainModels(db, yyyy, mm, dd) {
-        return axios.get(API_URL + '/train_models', {
-            params: {
-                'db': db,
-                'yyyy':yyyy,
-                'mm':mm,
-                'dd':dd
-            }
-        })
+        return await axios.post(API_URL + `/train_models?db=${db}&yyyy=${yyyy}&mm=${mm}&dd=${dd}`)
+    }
+
+    async getTrainingStatus(db){
+
     }
 
 }

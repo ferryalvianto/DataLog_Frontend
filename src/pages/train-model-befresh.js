@@ -365,14 +365,14 @@ export default function TrainModelBeFresh() {
 		userService.trainModels(JSON.parse(localStorage.getItem('user')).db.toString(), year.toString(), month.toString(), day.toString())
 			.then((res) => {
 				console.log(res)
-				setDone(true)
-				document.getElementById('uploadSuccess').style.display = `none`
-				document.getElementById('uploadFail').style.display = `none`
-				document.getElementById('loadingText').style.display = `none`
-				document.getElementById('trainBtn').style.display = `none`
-				document.getElementById('doneText').style.display = `block`
-				document.getElementById('trainDone').style.display = `block`
-				document.getElementById('trainresults').innerText = `${res.data[0]}\n${res.data[1]}`
+				// setDone(true)
+				// document.getElementById('uploadSuccess').style.display = `none`
+				// document.getElementById('uploadFail').style.display = `none`
+				// document.getElementById('loadingText').style.display = `none`
+				// document.getElementById('trainBtn').style.display = `none`
+				// document.getElementById('doneText').style.display = `block`
+				// document.getElementById('trainDone').style.display = `block`
+				// document.getElementById('trainresults').innerText = `${res.data[0]}\n${res.data[1]}`
 			})
 			.catch((e)=>{
 				console.log(e)
