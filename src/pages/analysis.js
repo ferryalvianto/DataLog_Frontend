@@ -13,7 +13,7 @@ export default function Analysis() {
 	let { businessname } = useParams();
 
 	const API_URL = 'https://datalogwebapp.herokuapp.com/api/'
-	const LOCAL_API_URL = 'http://localhost:8000/api/';
+	// const API_URL = 'http://localhost:8000/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();

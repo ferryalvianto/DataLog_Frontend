@@ -121,6 +121,15 @@ export default function TrainModelBeFresh() {
 					alert(resp.data[0] + ' ' + resp.data[1])
 					document.getElementById('paymenttype').style.display = `none`
 				}
+				if(resp.data == 'No files for selected date has been uploaded.'){
+					setOA(false)
+					setBF(false)
+					document.getElementById('paymenttype').style.display = `block`
+					document.getElementById('uploadAnotherBtn').style.display = `block`
+					document.getElementById('doneText').style.display = `none`
+					document.getElementById('uploadSuccess').style.display = `none`
+					document.getElementById('trainBtn').style.display = `none`
+				}
 				else {
 					setTodo('Upload CSV files for Organic Acres and Be Fresh to train models')
 				}
@@ -365,7 +374,6 @@ export default function TrainModelBeFresh() {
 				document.getElementById('trainDone').style.display = `block`
 				document.getElementById('trainresults').innerText = `${res.data[0]}\n${res.data[1]}`
 			})
-			.catch((e) => console.log(e))
 	}
 
 	return (
