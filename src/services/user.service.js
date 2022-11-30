@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 
 // const API_URL = 'http://127.0.0.1:8000/api'
-const API_URL = 'https://datalogwebapp.herokuapp.com/api'
+const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
 
 class UserService {
 

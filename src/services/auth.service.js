@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 
-const API_URL = 'https://datalogwebapp.herokuapp.com/api'
+const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
 
 
 class AuthService {

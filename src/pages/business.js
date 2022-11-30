@@ -41,7 +41,7 @@ export default function Business() {
             fd.append('client_id', sessionStorage.getItem('name'))
 
             axios
-                .post("https://datalogwebapp.herokuapp.com/token", fd)
+                .post("https://datalogwebapp.herokuapp.com/datalog/token", fd)
                 .then((response) => {
                     console.log(response);
                     localStorage.setItem("token", JSON.stringify(response.data.access_token));

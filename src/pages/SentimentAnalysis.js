@@ -4,7 +4,7 @@ import Piechart from '../components/Charts/Piechart';
 import axios from 'axios';
 
 const SentimentAnalysis = () => {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/api'
+	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
 	const [sentimentData, setSentimentData] = useState({
 		labels: '',
 		datasets: [],

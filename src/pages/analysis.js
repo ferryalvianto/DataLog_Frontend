@@ -12,7 +12,7 @@ import LeafletChart from '../components/Charts/LeafletChart';
 export default function Analysis() {
 	let { businessname } = useParams();
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/api/'
+	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
 	// const API_URL = 'http://localhost:8000/api/';
 
 	const inputRef1 = useRef();
