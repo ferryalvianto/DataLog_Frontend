@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Rating from '@mui/material/Rating';
@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router';
 
 const RatingForm = () => {
 	const navigate = useNavigate()
+	const [isMobile, setMobile] = useState(false)
 	const [value, setValue] = useState(5);
 	const StyledRating = styled(Rating)(({ theme }) => ({
 		'& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -58,58 +59,116 @@ const RatingForm = () => {
 	const handleChange = (event) => {
 		setTextArea(event.target.value);
 	};
+
+	useEffect(() => {
+		if ((navigator.userAgent.match(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
+			setMobile(true)
+			document.getElementById('formdiv').style.height = 'auto'
+		} else {
+			setMobile(false)
+			document.getElementById('formdiv').style.height = '95vh'
+
+		}
+	}, [])
+
 	return (
-		<div style={{ height: '95vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-			<div className='patternDiv'></div>
-			<div className='card' id='cardBackground' style={{ width: '90vw', display: 'flex',  alignItems: 'center' , cursor:'pointer' }} onClick={(e) => { 
-				// window.open('https://www.befresh.ca/', '_blank') 
-				}}>
-				<img src={"https://www.befresh.ca/wrdp/wp-content/uploads/2017/12/BeFresh_Web_LogoArtboard-1@2x.png"} style={{height:'auto', width:'40%', filter:'invert(1)'}} />
-			</div>
-			<div className='card' id='cardBackground' style={{ width: '90vw' }}>
-				<Form>
-					<Form.Group controlId="exampleForm.ControlTextarea1" className='text-start'>
-						<h2 style={{ margin: '1rem' }}>How was your experience at our store?</h2>
-						<StyledRating
-							name="rating"
-							value={value}
-							onChange={(event, newValue) => {
-								setValue(newValue);
-							}}
-							IconContainerComponent={IconContainer}
-							getLabelText={(value) => customIcons[value].label}
-							highlightSelectedOnly
-							style={{ margin: '1rem' }}
-						/>
-						<div style={{ display: 'flex', margin: '1rem', alignItems: 'center' }}>
-							<h2 style={{ width: '50%' }}>Select location:</h2>
-							<div style={{ width: '50%' }}>
-								<select className='sel' onChange={(e) => { setLocation(e.target.value) }}>
-									<option name="CY">Be Fresh–Cypress</option>
-									<option name="OA">Organic Acres–Main St.</option>
-								</select>
-							</div>
+		<>
+			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }} id='formdiv'>
+
+				<div className='patternDiv'></div>
+
+				{isMobile ?
+					(
+						<div className='card' id='cardBackground' style={{ width: '100vw', display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={(e) => {
+							// window.open('https://www.befresh.ca/', '_blank') 
+						}}>
+							<img src={"https://www.befresh.ca/wrdp/wp-content/uploads/2017/12/BeFresh_Web_LogoArtboard-1@2x.png"} style={{ height: 'auto', width: '100%', filter: 'invert(1)' }} />
 						</div>
-						<Form.Control
-							as="textarea"
-							name="comment"
-							rows={5}
-							placeholder="Enter your feedback here 􀌲"
-							value={textArea}
-							onChange={handleChange}
-							style={{ padding: '1rem' }}
-						/>
-					</Form.Group>
-					<div style={{ margin: '1rem' }}></div>
-					<Button variant="primary" type="submit" className={`btn bttn`}>
-						Submit
-					</Button>
-				</Form>
+
+					) : (
+						<div className='card' id='cardBackground' style={{ width: '90vw', display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={(e) => {
+							// window.open('https://www.befresh.ca/', '_blank') 
+						}}>
+							<img src={"https://www.befresh.ca/wrdp/wp-content/uploads/2017/12/BeFresh_Web_LogoArtboard-1@2x.png"} style={{ height: 'auto', width: '40%', filter: 'invert(1)' }} />
+						</div>
+					)}
+
+				<div className='card' id='cardBackground' style={{ width: '100vw', padding: '2rem' }}>
+					<Form>
+						<Form.Group controlId="exampleForm.ControlTextarea1" className='text-start'>
+							{isMobile ? (<>
+								<h2 style={{ marginTop: '1rem', marginBottom: '1rem' }}>How was your experience at our store?</h2>
+								<div style={{ marginTop: '1rem', marginBottom: '1rem',  width: '90vw', display: 'flex', alignItems: 'center' }}
+								>
+									<StyledRating
+										name="rating"
+										value={value}
+										onChange={(event, newValue) => {
+											setValue(newValue);
+										}}
+										IconContainerComponent={IconContainer}
+										getLabelText={(value) => customIcons[value].label}
+										highlightSelectedOnly
+									/>
+								</div>
+							</>) : (<>
+								<div style={{ display: 'flex', marginTop: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
+									<h2 style={{ marginTop: '1rem', marginBottom: '1rem', width: '50%' }}>How was your experience at our store?</h2>
+									<StyledRating
+										name="rating"
+										value={value}
+										onChange={(event, newValue) => {
+											setValue(newValue);
+										}}
+										IconContainerComponent={IconContainer}
+										getLabelText={(value) => customIcons[value].label}
+										highlightSelectedOnly
+										style={{ marginTop: '1rem', marginBottom: '1rem', width: '50%' }}
+									/>
+								</div>
+							</>)}
+
+							{isMobile ? (<>
+								<h2 style={{ marginTop: '1rem', marginBottom: '1rem' }}>Select location:</h2>
+								<div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+									<select className='sel' onChange={(e) => { setLocation(e.target.value) }}>
+										<option name="CY">Be Fresh–Cypress</option>
+										<option name="OA">Organic Acres–Main St.</option>
+									</select>
+								</div>
+							</>) : (<>
+								<div style={{ display: 'flex', marginTop: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
+									<h2 style={{ width: '50%' }}>Select location:</h2>
+									<div style={{ width: '50%' }}>
+										<select className='sel' onChange={(e) => { setLocation(e.target.value) }}>
+											<option name="CY">Be Fresh–Cypress</option>
+											<option name="OA">Organic Acres–Main St.</option>
+										</select>
+									</div>
+								</div>
+							</>)}
+							<Form.Control
+								as="textarea"
+								name="comment"
+								rows={8}
+								placeholder="Enter your feedback here 􀌲"
+								value={textArea}
+								onChange={handleChange}
+								style={{ padding: '1rem', marginTop: '1rem', marginBottom: '1rem' }}
+							/>
+						</Form.Group>
+						<div style={{ marginTop: '1rem', marginBottom: '1rem' }}></div>
+						<Button variant="primary" type="submit" className={`btn bttn`}>
+							Submit
+						</Button>
+					</Form>
+				</div>
+				<div style={{ marginTop: '1rem', marginBottom: '1rem', cursor: 'pointer' }} onClick={(e) => { window.open('/', '_blank') }}>
+					<h5>Analysis by DataLog</h5 >
+				</div>
 			</div>
-			<div style={{ margin: '1rem', cursor: 'pointer' }} onClick={(e) => { window.open('/', '_blank') }}>
-				<h5>Analysis by DataLog</h5 >
-			</div>
-		</div>
+		</>
+
 	);
 };
 

@@ -13,14 +13,12 @@ import Rating from "./pages/Rating";
 export default function AppMobile() {
     return (
             <div className="App">
-                <Navbar/>
                 <main>
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/befresh/form" element={<Rating />} />
                         <Route path="/not-supported" element={<NotSupported />} />
                         <Route path="*" element={<NotSupported />} />
-                        <Route path="/befresh/form" element={<Rating />} />
-                        {/* <Route render={() => <Redirect to={{pathname: "/not-supported"}} />} /> */}
                     </Routes>
                 </main>
             </div>

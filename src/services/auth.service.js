@@ -33,6 +33,13 @@ class AuthService {
             }
         })
     }
-}
+
+    async getTrainingLog(db){
+        return axios.get(API_URL + `/get_training?db=${db}`)
+    }
+
+    async updateTrainingLog(db){
+        return axios.post(API_URL + `/update_training_log?db=${db}`)
+    }}
 
 export default new AuthService();

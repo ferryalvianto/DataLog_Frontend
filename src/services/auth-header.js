@@ -33,6 +33,31 @@ export default function AuthHeader() {
                 authService.getCurrentUser().then((response) => {
                     if (response.status == 200) {
                         console.log(response.status)
+
+                        if ('timer' in localStorage) {
+                            setInterval(function () {
+                                authService.getTrainingLog(user.db.toString()).then((res) => {
+                                    console.log(res)
+                                    if (res.data != '0' && (res.data[0] = '1')) {
+                                        localStorage.removeItem('timer')
+                                        alert('Models have been trained!􁙌')
+                                        if (confirm('Click OK to see results')) {
+                                            alert(res.data[1])
+                                            authService.updateTrainingLog(user.db.toString()).then((res) => {
+                                                window.location.reload()
+                                            })
+                                        }
+                                    }
+                                    if (res.data=='0'){
+                                        localStorage.removeItem('timer')
+                                    }
+                                }).catch((e) => {clearInterval()})
+                            }, 30000)
+                        } else{
+                            clearInterval()
+                        }
+
+
                     }
                 }).catch((error) => {
                     if (error.message.includes('401')) {

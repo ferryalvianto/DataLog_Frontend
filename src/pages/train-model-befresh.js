@@ -359,12 +359,11 @@ export default function TrainModelBeFresh() {
 		document.getElementById('uploadFileBtn2').style.display = `none`
 		document.getElementById('chooseDiv').style.display = `none`
 		document.getElementById('datediv').style.display = `none`
-		document.getElementById('loadingmessage').innerText = `We are training the models right now...`
-		document.getElementById('loadingText').style.display = `block`
 
 		userService.trainModels(JSON.parse(localStorage.getItem('user')).db.toString(), year.toString(), month.toString(), day.toString())
 			.then((res) => {
 				console.log(res)
+				localStorage.setItem('timer', 'timer')
 				setDone(true)
 				document.getElementById('uploadSuccess').style.display = `none`
 				document.getElementById('uploadFail').style.display = `none`
@@ -372,8 +371,6 @@ export default function TrainModelBeFresh() {
 				document.getElementById('trainBtn').style.display = `none`
 				document.getElementById('doneText').style.display = `block`
 				document.getElementById('trainDone').style.display = `block`
-				localStorage.setItem('taskID', res.data.task_id)
-				document.getElementById('trainresults').innerText = `Save this task id:\n${res.data.task_id}`
 			})
 			.catch((e)=>{
 				console.log(e)
@@ -492,9 +489,10 @@ export default function TrainModelBeFresh() {
 					</div>
 
 					<div id='trainDone' style={{ display: 'none' }}>
-						<h1 style={{ fontSize: '500%' }}>􀢓</h1>
-						<h2 style={{ padding: '1rem' }}>Models have been trained.</h2>
-						<h2 style={{ padding: '1rem' }} id='trainresults'>Results</h2>
+						<h1 style={{ fontSize: '500%' }}>􀠩</h1>
+						<h2 style={{ padding: '1rem' }}>The models are being trained right now...</h2>
+						<h2 style={{ padding: '1rem' }}>This might take some time.</h2>
+						<h2 style={{ padding: '1rem' }}>You'll receive an alert when it is done</h2>
 					</div>
 
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>

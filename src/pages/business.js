@@ -81,7 +81,7 @@ export default function Business() {
                         <div style={{ width: '100vw' }}>
                             <div className="col-md-12" style={{ padding: '1rem 5rem', display: 'flex', justifyContent: 'center' }}>
                                 <div className={`card card-container`} id={`cardBackground`}>
-                                    <h1 className="text-center">{`${sessionStorage.getItem('name')}`} Customer Login</h1>
+                                    <h1 className="text-center">{`${sessionStorage.getItem('name')}`} Admin Login</h1>
                                     <form className="row g-3" style={{ marginTop: '0.5rem' }} onSubmit={continueLogin}>
                                         <h6 id='alertInput' style={{ display: 'none', color: 'red', paddingTop: '0' }}>Please enter your username and password.</h6>
                                         <div className="col-12">
