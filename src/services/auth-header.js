@@ -52,7 +52,7 @@ export default function AuthHeader() {
                                         localStorage.removeItem('timer')
                                     }
                                 }).catch((e) => {clearInterval()})
-                            }, 30000)
+                            }, 10000)
                         } else{
                             clearInterval()
                         }
