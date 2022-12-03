@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Chart } from 'chart.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import LeafletChart from '../../../components/Charts/LeafletChart';
+import Table from 'react-bootstrap/Table';
 
 export default function BeFreshAnalysis() {
 	// let { businessname } = useParams();
@@ -19,10 +20,7 @@ export default function BeFreshAnalysis() {
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 
-	const [general_products, setGeneralProducts] = useState({
-		labels: '',
-		datasets: [],
-	});
+	const [general_products, setGeneralProducts] = useState([]);
 
 	const [wastage, setWastage] = useState({
 		labels: '',
@@ -48,69 +46,70 @@ export default function BeFreshAnalysis() {
 	};
 
 	const get_general_products_api = () => {
-		axios.get(API_URL + 'general_products').then((res) => {
-			setGeneralProducts({
-				...general_products,
-				labels: res.data.map((element) => element.Date),
-				datasets: [
-					{
-						label: 'Produce',
-						data: res.data.map((element) => element.Quantity),
-						backgroundColor: 'rgba(54, 162, 235,0.8)',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
+		axios
+			.get(API_URL + 'general_products', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				setGeneralProducts(res.data);
 			});
-		});
 	};
 
 	useEffect(() => {
-		get_wastage_products();
-		get_general_products_api();
+		if ('user' in localStorage) {
+			user = JSON.parse(localStorage.getItem('user'));
+			if (params.businessname != user.db.toLowerCase()) {
+				sessionStorage.setItem('url', params.businessname);
+				navigate('/badpage');
+				window.location.reload();
+			} else {
+				if (
+					'user' in localStorage &&
+					params.businessname == user.db.toLowerCase()
+				) {
+					sessionStorage.clear();
+					get_wastage_products();
+					get_general_products_api();
+				}
+			}
+		} else {
+			navigate('/home');
+			window.location.reload();
+		}
 	}, []);
 
-	// const filterData = () => {
-	// 	let value1 = inputRef1.current.value;
-	// 	let value2 = inputRef2.current.value;
+	const filterData = () => {
+		let value1 = inputRef1.current.value;
+		let value2 = inputRef2.current.value;
 
-	// 	axios
-	// 		.get(API_URL + 'revenues/?start_date='+value1+'&end_date='+value2)
-	// 		.then((res) => {
-	// 			console.log(res.data);
-	// 			setRevenue({
-	// 				...revenue,
-	// 				labels: res.data.map((element) => element.ymd),
-	// 				datasets: [
-	// 					{
-	// 						label: 'Revenue History',
-	// 						data: res.data.map((element) => element.dailyRevenue),
-	// 						backgroundColor: 'rgba(54, 162, 235,0.8)',
-	// 						borderColor: 'black',
-	// 						borderWidth: 1,
-	// 					},
-	// 				],
-	// 			});
-	// 		});
-	// };
+		axios
+			.get(API_URL + 'general_products_by_date', {
+				params: {
+					db: "BeFresh",
+					start_date: value1,
+					end_date: value2,
+				},
+			})
+			.then((res) => {
+				console.log(res.data);
+				// setGeneralProducts(res.data);
+			});
+	};
 
-	// const resetData = () => {
-	// 	axios.get(API_URL + 'revenues').then((res) => {
-	// 		setRevenue({
-	// 			...revenue,
-	// 			labels: res.data.map((element) => element.ymd),
-	// 			datasets: [
-	// 				{
-	// 					label: 'Revenue History',
-	// 					data: res.data.map((element) => element.revenue),
-	// 					backgroundColor: 'rgba(54, 162, 235,0.8)',
-	// 					borderColor: 'black',
-	// 					borderWidth: 1,
-	// 				},
-	// 			],
-	// 		});
-	// 	});
-	// };
+	const resetData = () => {
+		axios
+			.get(API_URL + 'general_products', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				console.log(res.data);
+				// setGeneralProducts(res.data);
+			});
+	};
 
 	return (
 		<>
@@ -168,18 +167,34 @@ export default function BeFreshAnalysis() {
 					<div style={{ padding: '1rem 2rem' }}>
 						<LeafletChart />
 					</div>
-					<div style={{ width: 500 }}>
-						<Barchart
-							chartData={general_products}
-							displayLegend={false}
-							displayTitle={true}
-							titleText="General Products"
-						/>
-						{/* <input type="date" ref={inputRef1} />
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>List Of Low-selling Products</h2>
+						<br />
+						<input type="date" ref={inputRef1} />
 						<input type="date" ref={inputRef2} />
 						<button onClick={filterData}>Filter</button>
-						<button onClick={resetData}>Reset</button> */}
+						<button onClick={resetData}>Reset</button>
 					</div>
+					<Table striped bordered hover>
+						<thead>
+							<tr>
+								<th>Category</th>
+								<th>Product Name</th>
+								<th>Quantity</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{general_products.map((item, index) => (
+								<tr key={index}>
+									<td>{item.Category}</td>
+									<td>{item.Name}</td>
+									<td>{item.Quantity}</td>
+									<td>{item.Date}</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
 				</div>
 			</div>
 		</>
