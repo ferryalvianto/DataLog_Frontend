@@ -28,7 +28,12 @@ export default function BeFreshAnalysis() {
 	});
 
 	const get_wastage_products = () => {
-		axios.get(API_URL + 'wastage').then((res) => {
+		axios.get(API_URL + 'wastage', {
+			params: {
+				db: user.db,
+			},
+		})
+		.then((res) => {
 			setWastage({
 				...wastage,
 				labels: res.data.map((element) => element._id),
