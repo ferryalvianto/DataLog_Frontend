@@ -11,7 +11,7 @@ function Navbar() {
     const [url, setUrl] = useState('')
     const navigate = useNavigate()
     const isHome = useMatch('/')
-    const isHome2 = useMatch('/home')
+    // const isHome2 = useMatch('/home')
     const islogin = useMatch('/login')
     const isbusinessname = useMatch('/:businessname')
     const isdashboard = useMatch('/:businessname/dashboard')
@@ -31,7 +31,7 @@ function Navbar() {
     }
 
     useEffect(() => {
-        if ((isHome || isHome2)
+        if (isHome
             && !(navigator.userAgent.match(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
             setShowLoginBtn(true)
         } else {
