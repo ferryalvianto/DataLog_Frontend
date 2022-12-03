@@ -46,8 +46,12 @@ class UserService {
         return await axios.post(API_URL + `/train_models?db=${db}&yyyy=${yyyy}&mm=${mm}&dd=${dd}`)
     }
 
-    async getTrainingStatus(db){
+    async getTrainingLog(db){
+        return axios.get(API_URL + `/get_training?db=${db}`)
+    }
 
+    async updateTrainingLog(db){
+        return axios.post(API_URL + `/update_training_log?db=${db}`)
     }
 
 }

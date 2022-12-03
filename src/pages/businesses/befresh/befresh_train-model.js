@@ -1,9 +1,8 @@
-import Navbar from '../components/navbar';
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
-import userService from "../services/user.service"
+import userService from "../../../services/user.service"
 
-export default function TrainModelBeFresh() {
+export default function BeFreshTrainModel() {
 	// let params = useParams();
 	let file, id_paymenttype, id_inventorylog, dateValue
 	let reader = new FileReader()
@@ -27,40 +26,6 @@ export default function TrainModelBeFresh() {
 	useEffect(() => {
 		if ('user' in localStorage) {
 			setUser(JSON.parse(localStorage.getItem('user')))
-			// if (params.businessname != JSON.parse(localStorage.getItem('user')).db.toLowerCase()) {
-			// 	sessionStorage.setItem('url', params.businessname)
-			// 	navigate('/badpage')
-			// }
-			// else {
-			// 	userService.getUploadLog(JSON.parse(localStorage.getItem('user')).db.toString(), yyyy.toString(), mm.toString(), dd.toString())
-			// 		.then((resp) => {
-			// 			console.log(resp.data)
-			// 			if (resp.data == '1') {
-			// 				setTodo('Upload CSV files for Organic Acres to train models.')
-			// 				setBF(true)
-			// 			}
-			// 			else if (resp.data == '0') {
-			// 				setTodo('Upload CSV files for Be Fresh-Cypress to train models.')
-			// 				setOA(true)
-			// 			}
-			// 			else if (resp.data == 'Train models now.') {
-			// 				setTodo('Train models now')
-			// 				setOA(true)
-			// 				setBF(true)
-			// 				document.getElementById('doneText').style.display = `block`
-			// 				document.getElementById('uploadSuccess').style.display = `block`
-			// 				document.getElementById('trainBtn').style.display = `block`
-			// 				document.getElementById('uploadAnotherBtn').style.display = `none`
-			// 				document.getElementById('datediv').style.display = `none`
-			// 			}
-			// 			else {
-			// 				setTodo('Upload CSV files for Organic Acres and Be Fresh to train models')
-			// 			}
-			// 		})
-			// 		.catch((err) => {
-			// 			console.log(err)
-			// 		})
-			// }
 		} else {
 			navigate('/login')
 		}
@@ -113,7 +78,7 @@ export default function TrainModelBeFresh() {
 					alert(resp.data[0] + ' ' + resp.data[1])
 					document.getElementById('paymenttype').style.display = `none`
 				}
-				if(resp.data=='Files and models have been uploaded and trained on the selected date.'){
+				if (resp.data == 'Files and models have been uploaded and trained on the selected date.') {
 					alert('Files and models have been uploaded and trained on the selected date.')
 					document.getElementById('paymenttype').style.display = `none`
 				}
@@ -121,7 +86,7 @@ export default function TrainModelBeFresh() {
 					alert(resp.data[0] + ' ' + resp.data[1])
 					document.getElementById('paymenttype').style.display = `none`
 				}
-				if(resp.data == 'No files for selected date has been uploaded.'){
+				if (resp.data == 'No files for selected date has been uploaded.') {
 					setOA(false)
 					setBF(false)
 					document.getElementById('paymenttype').style.display = `block`
@@ -147,9 +112,6 @@ export default function TrainModelBeFresh() {
 					document.getElementById('paymentuploadtxt').innerText = `Upload the Payment Summary Report for Organic Acres`
 					document.getElementById('invetoryuploadtxt').innerText = `Upload the Inventory Log Report for Organic Acres`
 				}
-				// else {
-				// 	alert('You have uploaded CSV files for the selected dates.')
-				// }
 			})
 			.catch((err) => {
 				console.log(err)
@@ -372,7 +334,7 @@ export default function TrainModelBeFresh() {
 				document.getElementById('doneText').style.display = `block`
 				document.getElementById('trainDone').style.display = `block`
 			})
-			.catch((e)=>{
+			.catch((e) => {
 				console.log(e)
 			})
 	}
@@ -508,21 +470,21 @@ export default function TrainModelBeFresh() {
 										} else {
 											if (res.data == '1') {
 												alert('CSV files for Organic Acres are needed to complete training the models.')
-												if (confirm('Are you sure you want to leave this page?')) {
+												if (confirm(`You'll need to re-upload the files again.\nAre you sure you want to leave this page?`)) {
 													navigate(`/${url}/dashboard`)
 													window.location.reload()
 												}
 											}
 											if (res.data == '0') {
 												alert('CSV files for Be Fresh are needed to complete training the models.')
-												if (confirm('Are you sure you want to leave this page?')) {
+												if (confirm(`You'll need to re-upload the files again.\nAre you sure you want to leave this page?`)) {
 													navigate(`/${url}/dashboard`)
 													window.location.reload()
 												}
 											}
 											if (res.data == 'Train models now.') {
-												alert('We will train the models in the background. You may need to manually refresh your page in few minutes')
-												if (confirm('Are you sure you want to leave this page?')) {
+												alert('')
+												if (confirm(`You'll need to comeback to this page to train the models.\nAre you sure you want to leave this page?`)) {
 													navigate(`/${url}/dashboard`)
 													window.location.reload()
 												}

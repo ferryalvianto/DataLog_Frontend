@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import authService from "./auth.service";
+import userService from "./user.service";
 import { useNavigate, Link, useMatch, useParams } from 'react-router-dom'
 import React from 'react';
 
@@ -36,14 +37,14 @@ export default function AuthHeader() {
 
                         if ('timer' in localStorage) {
                             setInterval(function () {
-                                authService.getTrainingLog(user.db.toString()).then((res) => {
+                                userService.getTrainingLog(user.db.toString()).then((res) => {
                                     console.log(res)
                                     if (res.data != '0' && (res.data[0] = '1')) {
                                         localStorage.removeItem('timer')
-                                        alert('Models have been trained!􁙌')
+                                        alert('Models have been trained!')
                                         if (confirm('Click OK to see results')) {
-                                            alert(res.data[1])
-                                            authService.updateTrainingLog(user.db.toString()).then((res) => {
+                                            alert(res.data[1][0] +'\n' +res.data[1][1])
+                                            userService.updateTrainingLog(user.db.toString()).then((res) => {
                                                 window.location.reload()
                                             })
                                         }
@@ -61,16 +62,14 @@ export default function AuthHeader() {
                     }
                 }).catch((error) => {
                     if (error.message.includes('401')) {
+                        localStorage.clear()
+                        sessionStorage.clear()
                         alert('Your session has expired')
                         if (confirm('Do you want to log in again?')) {
-                            localStorage.clear()
-                            sessionStorage.clear()
                             navigate('/login')
                             window.location.reload()
 
                         } else {
-                            localStorage.clear()
-                            sessionStorage.clear()
                             navigate('/')
                             window.location.reload()
                         }

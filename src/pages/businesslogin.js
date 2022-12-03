@@ -4,7 +4,7 @@ import BinaryBackground from '../components/backgrounds/binarybackground'
 import Navbar from '../components/navbar';
 import axios from 'axios';
 
-export default function Business() {
+export default function BusinessLogin() {
     const params = useParams();
     const navigate = useNavigate();
     const [isBusinessReady, setBusinessReady] = useState(false);

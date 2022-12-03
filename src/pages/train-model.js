@@ -1,7 +1,7 @@
 import Navbar from '../components/navbar';
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
-import TrainModelBeFresh from './train-model-befresh';
+import BeFreshTrainModel from './businesses/befresh/befresh_train-model';
 
 export default function TrainModel() {
 	let params = useParams();
@@ -22,7 +22,7 @@ export default function TrainModel() {
 		<div id='trainmodeldiv'>
 			<Navbar />
 
-			{(user.db == 'BeFresh') && (<TrainModelBeFresh />)}
+			{(user.db == 'BeFresh') && (<BeFreshTrainModel />)}
 
 			{(user.db == 'DataLog') && (
 				<div>

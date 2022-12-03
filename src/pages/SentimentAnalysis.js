@@ -1,55 +1,41 @@
-import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
-import Piechart from '../components/Charts/Piechart';
-import axios from 'axios';
+import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import BeFreshSentimentAnalysis from './businesses/befresh/befresh_SentimentAnalysis';
 
-const SentimentAnalysis = () => {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
-	const [sentimentData, setSentimentData] = useState({
-		labels: '',
-		datasets: [],
-	});
-
+export default function Analysis() {
+	let params = useParams();
+	let [user, setUser] = useState('')
 	useEffect(() => {
-		axios.get(API_URL + '/sentiments').then((res) => {
-			setSentimentData({
-				...sentimentData,
-				labels: res.data.map((element) => element._id),
-				datasets: [
-					{
-						data: res.data.map((element) => element.Total_Count),
-						backgroundColor: [
-							'rgba(75,192,192,1)',
-							'#ecf0f1',
-							'#50AF95',
-							'#f3ba2f',
-							'#2a71d0',
-						],
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
-			});
-		});
-	}, []);
+		if ('user' in localStorage) {
+			setUser(JSON.parse(localStorage.getItem('user')))
+			if (params.businessname != JSON.parse(localStorage.getItem('user')).db.toLowerCase()) {
+				sessionStorage.setItem('url', params.businessname)
+				navigate('/badpage')
+			}
+		} else {
+			navigate('/login')
+		}
+	}, [])
 
 	return (
-		<>
+		<div id='sentimentanalysisdiv'>
 			<Navbar />
-			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100%' }} className={`dashboardTemplate`}>
-				<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
-					<div style={{  padding: '1rem' }}>
-						<h1>
-							Sentiment Analysis
-						</h1>
-					</div>
-					<div style={{  padding: '1rem' }}>
-						<Piechart chartData={sentimentData} />
+
+			{(user.db == 'BeFresh') && (<BeFreshSentimentAnalysis />)}
+
+			{(user.db == 'DataLog') && (
+				<div>
+					<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100vh' }} className={`dashboardTemplate`}>
+						<div id='chooseDiv' style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+							<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
+								<h1 style={{ fontSize: '800%', padding:'1rem' }}>􀥺</h1>
+								<h1 style={{ padding: '1rem' }}>Nothing to see here...</h1>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</>
-	);
-};
-
-export default SentimentAnalysis;
+			)}
+		</div>
+	)
+}

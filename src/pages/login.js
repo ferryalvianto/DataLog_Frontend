@@ -16,10 +16,12 @@ export default function Login(props) {
     useEffect(() => {
         authService.getDatabases().then(
             res => {
-                console.log(res.data)
+                // console.log(res.data)
                 setBusinesses(res.data)
             }
-        )
+        ).catch((e)=>{
+            console.log(e)
+        })
     }, [])
 
     function continueLogin(e) {

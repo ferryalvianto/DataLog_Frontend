@@ -6,17 +6,17 @@ import {
 import "./scss/App.scss";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from "./pages/login";
-import Business from "./pages/business";
+import BusinessLogin from "./pages/businesslogin";
 import Home from "./pages/home";
 import NotSupported from "./components/warning/not-supported";
 import Dashboard from './pages/dashboard';
 import Analysis from './pages/analysis';
-import Prediction from './pages/prediction';
+import Prediction from './pages/prediction.js';
 import TrainModel from './pages/train-model';
 import WindowWarning from "./components/warning/warning";
 // import CustomerFeedback from './pages/customerFeedback';
 // import Navbar from './components/navbar';
-import SentimentAnalysis from './pages/SentimentAnalysis';
+import SentimentAnalysis from './pages/sentimentanalysis';
 import Rating from "./pages/Rating";
 import NewUser from "./pages/new-user";
 import AuthHeader from "./services/auth-header";
@@ -47,7 +47,7 @@ export default function App() {
                                 <Route path="/" element={<Home />} />
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/login" element={<Login />} />
-                                <Route path="/:businessname" element={<Business />} />
+                                <Route path="/:businessname" element={<BusinessLogin />} />
                                 <Route path="/:businessname/dashboard" element={<Dashboard />} />
                                 <Route path="/:businessname/analysis" element={<Analysis />} />
                                 <Route path="/:businessname/prediction" element={<Prediction />} />
