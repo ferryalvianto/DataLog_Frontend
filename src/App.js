@@ -16,7 +16,7 @@ import TrainModel from './pages/train-model';
 import WindowWarning from "./components/warning/warning";
 // import CustomerFeedback from './pages/customerFeedback';
 // import Navbar from './components/navbar';
-import SentimentAnalysis from './pages/sentimentanalysis';
+import SentimentAnalysis from './pages/SentimentAnalysis';
 import Rating from "./pages/Rating";
 import NewUser from "./pages/new-user";
 import AuthHeader from "./services/auth-header";
