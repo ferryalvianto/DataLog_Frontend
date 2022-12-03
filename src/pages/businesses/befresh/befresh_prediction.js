@@ -7,10 +7,14 @@ import { TemperatureData } from '../../../TempData/RegressionData1';
 import { InflationData } from '../../../TempData/RegressionData2';
 import { AllFactorsData } from '../../../TempData/RegressionData3';
 import Linechart from '../../../components/Charts/Linechart';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function BeFreshPrediction() {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
-	// const API_URL = 'http://localhost:8000/api/';
+	const params = useParams();
+	let user = [];
+
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const [weatherForecast, setWeatherForecast] = useState({
 		labels: '',
@@ -40,150 +44,177 @@ export default function BeFreshPrediction() {
 	};
 
 	const get_quantity_forecast_api = () => {
-		axios.get(API_URL + 'quantity_forecast').then((res) => {
-			console.log(res.data);
-			setQuantityForecast({
-				...quantityForecast,
-				labels: res.data
-					.filter((item) => item.Category === 'Bakery')
-					.map((element) => element.Date),
-				datasets: [
-					{
-						label: 'BOH',
-						data: res.data
-							.filter((item) => item.Category === 'BOH')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#D2691E',
-						borderColor: '#FF7F50',
-					},
-					{
-						label: 'Bakery',
-						data: res.data
-							.filter((item) => item.Category === 'Bakery')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#DAA520',
-						borderColor: '#FFD700',
-					},
-					{
-						label: 'Be Fresh Meals',
-						data: res.data
-							.filter((item) => item.Category === 'Be Fresh Meals')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#006400',
-						borderColor: '#556B2F',
-					},
-					{
-						label: 'Be Fresh Products',
-						data: res.data
-							.filter((item) => item.Category === 'Be Fresh Products')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#FF00FF',
-						borderColor: '#FFB6C1',
-					},
-					{
-						label: 'Beverages',
-						data: res.data
-							.filter((item) => item.Category === 'Beverages')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#0000CD',
-						borderColor: '#87CEFA',
-					},
-					{
-						label: 'Coffee Bar',
-						data: res.data
-							.filter((item) => item.Category === 'Coffee Bar')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#663300',
-						borderColor: '#996633',
-					},
-					{
-						label: 'Dairy',
-						data: res.data
-							.filter((item) => item.Category === 'Dairy')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#003300',
-						borderColor: '#33CC33',
-					},
-					{
-						label: 'Deli',
-						data: res.data
-							.filter((item) => item.Category === 'Deli')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#8B0000',
-						borderColor: '#DC143C',
-					},
-					{
-						label: 'Fresh Prep',
-						data: res.data
-							.filter((item) => item.Category === 'Fresh Prep')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#8B008B',
-						borderColor: '#9400D3',
-					},
-					{
-						label: 'Grocery',
-						data: res.data
-							.filter((item) => item.Category === 'Grocery')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#8B0000',
-						borderColor: '#FF0000',
-					},
-					{
-						label: 'Health & Beauty',
-						data: res.data
-							.filter((item) => item.Category === 'Health & Beauty')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#2F4F4F',
-						borderColor: '#696969',
-					},
-					{
-						label: 'Health & Home',
-						data: res.data
-							.filter((item) => item.Category === 'Health & Home')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#7CFC00',
-						borderColor: '#ADFF2F',
-					},
-					{
-						label: 'Heat & Eat',
-						data: res.data
-							.filter((item) => item.Category === 'Heat & Eat')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#FF4500',
-						borderColor: '#FFA07A',
-					},
-					{
-						label: 'Meat & Seafood',
-						data: res.data
-							.filter((item) => item.Category === 'Meat & Seafood')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#EEE8AA',
-						borderColor: '#F4A460',
-					},
-					{
-						label: 'Produce',
-						data: res.data
-							.filter((item) => item.Category === 'Produce')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#008080',
-						borderColor: '#40E0D0',
-					},
-					{
-						label: 'Snacks',
-						data: res.data
-							.filter((item) => item.Category === 'Snacks')
-							.map((element) => element.predicted_quantity),
-						backgroundColor: '#DAA520',
-						borderColor: '#FFFF00',
-					},
-				],
+		axios
+			.get(API_URL + 'quantity_forecast', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				console.log(res.data);
+				setQuantityForecast({
+					...quantityForecast,
+					labels: res.data
+						.filter((item) => item.Category === 'Bakery')
+						.map((element) => element.Date),
+					datasets: [
+						{
+							label: 'BOH',
+							data: res.data
+								.filter((item) => item.Category === 'BOH')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#D2691E',
+							borderColor: '#FF7F50',
+						},
+						{
+							label: 'Bakery',
+							data: res.data
+								.filter((item) => item.Category === 'Bakery')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#DAA520',
+							borderColor: '#FFD700',
+						},
+						{
+							label: 'Be Fresh Meals',
+							data: res.data
+								.filter((item) => item.Category === 'Be Fresh Meals')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#006400',
+							borderColor: '#556B2F',
+						},
+						{
+							label: 'Be Fresh Products',
+							data: res.data
+								.filter((item) => item.Category === 'Be Fresh Products')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#FF00FF',
+							borderColor: '#FFB6C1',
+						},
+						{
+							label: 'Beverages',
+							data: res.data
+								.filter((item) => item.Category === 'Beverages')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#0000CD',
+							borderColor: '#87CEFA',
+						},
+						{
+							label: 'Coffee Bar',
+							data: res.data
+								.filter((item) => item.Category === 'Coffee Bar')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#663300',
+							borderColor: '#996633',
+						},
+						{
+							label: 'Dairy',
+							data: res.data
+								.filter((item) => item.Category === 'Dairy')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#003300',
+							borderColor: '#33CC33',
+						},
+						{
+							label: 'Deli',
+							data: res.data
+								.filter((item) => item.Category === 'Deli')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#8B0000',
+							borderColor: '#DC143C',
+						},
+						{
+							label: 'Fresh Prep',
+							data: res.data
+								.filter((item) => item.Category === 'Fresh Prep')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#8B008B',
+							borderColor: '#9400D3',
+						},
+						{
+							label: 'Grocery',
+							data: res.data
+								.filter((item) => item.Category === 'Grocery')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#8B0000',
+							borderColor: '#FF0000',
+						},
+						{
+							label: 'Health & Beauty',
+							data: res.data
+								.filter((item) => item.Category === 'Health & Beauty')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#2F4F4F',
+							borderColor: '#696969',
+						},
+						{
+							label: 'Health & Home',
+							data: res.data
+								.filter((item) => item.Category === 'Health & Home')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#7CFC00',
+							borderColor: '#ADFF2F',
+						},
+						{
+							label: 'Heat & Eat',
+							data: res.data
+								.filter((item) => item.Category === 'Heat & Eat')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#FF4500',
+							borderColor: '#FFA07A',
+						},
+						{
+							label: 'Meat & Seafood',
+							data: res.data
+								.filter((item) => item.Category === 'Meat & Seafood')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#EEE8AA',
+							borderColor: '#F4A460',
+						},
+						{
+							label: 'Produce',
+							data: res.data
+								.filter((item) => item.Category === 'Produce')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#008080',
+							borderColor: '#40E0D0',
+						},
+						{
+							label: 'Snacks',
+							data: res.data
+								.filter((item) => item.Category === 'Snacks')
+								.map((element) => element.predicted_quantity),
+							backgroundColor: '#DAA520',
+							borderColor: '#FFFF00',
+						},
+					],
+				});
+			})
+			.catch((e) => {
+				console.log(e);
 			});
-		});
 	};
 
 	useEffect(() => {
-		get_quantity_forecast_api();
-		get_weather_forecast_api();
+		if ('user' in localStorage) {
+			user = JSON.parse(localStorage.getItem('user'));
+			if (params.businessname != user.db.toLowerCase()) {
+				sessionStorage.setItem('url', params.businessname);
+				navigate('/badpage');
+				window.location.reload();
+			} else {
+				if (
+					'user' in localStorage &&
+					params.businessname == user.db.toLowerCase()
+				) {
+					sessionStorage.clear();
+					get_quantity_forecast_api();
+					get_weather_forecast_api();
+				}
+			}
+		} else {
+			navigate('/home');
+			window.location.reload();
+		}
 	}, []);
 
 	const [regression, setRegression] = useState({
@@ -251,17 +282,17 @@ export default function BeFreshPrediction() {
 						<h2>Temperature Forecast</h2>
 					</div>
 					<div style={{ padding: '1rem' }}>
-					<Linechart
-						chartData={weatherForecast}
-						hidden={true}
-						displayLegend={false}
-						displayTitle={true}
-						maintainAspectRatio={true}
-						titleText="Temperature Forecast"
-					/>
+						<Linechart
+							chartData={weatherForecast}
+							hidden={true}
+							displayLegend={false}
+							displayTitle={true}
+							maintainAspectRatio={true}
+							titleText="Temperature Forecast"
+						/>
 					</div>
 					<div style={{ padding: '1rem' }}>
-					<Linechart
+						<Linechart
 							chartData={quantityForecast}
 							displayLegend={true}
 							hidden={false}

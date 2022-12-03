@@ -3,7 +3,9 @@ import Piechart from '../../../components/Charts/Piechart';
 import axios from 'axios';
 
 const BeFreshSentimentAnalysis = () => {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
+	const API_URL = 'http://localhost:8000/datalog/api/';
+
 	const [sentimentData, setSentimentData] = useState({
 		labels: '',
 		datasets: [],
@@ -34,14 +36,28 @@ const BeFreshSentimentAnalysis = () => {
 
 	return (
 		<>
-			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100%' }} className={`dashboardTemplate`}>
-				<div style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} className='text-center'>
-					<div style={{  padding: '1rem' }}>
-						<h1>
-							Sentiment Analysis
-						</h1>
+			<div
+				style={{
+					paddingRight: '4rem',
+					paddingLeft: '8rem',
+					paddingTop: '2rem',
+					paddingBottom: '2rem',
+					height: '100%',
+				}}
+				className={`dashboardTemplate`}
+			>
+				<div
+					style={{
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexDirection: 'column',
+					}}
+					className="text-center"
+				>
+					<div style={{ padding: '1rem' }}>
+						<h1>Sentiment Analysis</h1>
 					</div>
-					<div style={{  padding: '1rem' }}>
+					<div style={{ padding: '1rem' }}>
 						<Piechart chartData={sentimentData} />
 					</div>
 				</div>
