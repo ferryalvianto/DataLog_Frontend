@@ -14,8 +14,8 @@ export default function BeFreshDashboard() {
 
 	const navigate = useNavigate();
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
-	// const API_URL = 'http://127.0.0.1:8000/api/'
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
@@ -36,171 +36,221 @@ export default function BeFreshDashboard() {
 	});
 
 	const get_revenue_history_api = () => {
-		axios.get(API_URL + 'revenues').then((res) => {
-			setRevenue({
-				...revenue,
-				labels: res.data.map((element) => element.ymd),
-				datasets: [
-					{
-						label: 'Revenue History',
-						data: res.data.map((element) => element.revenue),
-						backgroundColor: 'rgba(54, 162, 235,0.8)',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
+		axios
+			.get(API_URL + 'revenues', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				setRevenue({
+					...revenue,
+					labels: res.data.map((element) => element.ymd),
+					datasets: [
+						{
+							label: 'Revenue History',
+							data: res.data.map((element) => element.revenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
+			})
+			.catch((e) => {
+				console.log(e);
 			});
-		}).catch((e) => {
-			console.log(e)
-		})
-	}
+	};
 
 	const get_revenue_forecast_api = () => {
-		axios.get(API_URL + 'revenue_forecast').then((res) => {
-			setRevenueForecast({
-				...revenueForecast,
-				labels: res.data.map((element) => element.Date),
-				datasets: [
-					{
-						label: 'Revenue Forecast',
-						data: res.data.map((element) => element.PredictedRevenue),
-						backgroundColor: 'rgba(54, 162, 235,0.8)',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
+		axios
+			.get(API_URL + 'revenue_forecast', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				console.log(res.data);
+				setRevenueForecast({
+					...revenueForecast,
+					labels: res.data.map((element) => element.date),
+					datasets: [
+						{
+							label: 'BeFresh Cypress',
+							data: res.data.map((element) => element.CY_predictedRevenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+						{
+							label: 'Organic Acres',
+							data: res.data.map((element) => element.OA_predictedRevenue),
+							backgroundColor: '#006400',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
+			})
+			.catch((e) => {
+				console.log(e);
 			});
-		}).catch((e) => {
-			console.log(e)
-		})
-	}
+	};
 
 	const get_weather_forecast_api = () => {
-		axios.get(API_URL + 'forecasted_weather').then((res) => {
-			setWeatherForecast({
-				...weatherForecast,
-				labels: res.data.map((element) => element.dt_txt),
-				datasets: [
-					{
-						data: res.data.map((element) => element.temp_avg),
-						backgroundColor: '#FA8072',
-						borderColor: '#800000',
-						tension: 0.4,
-					},
-				],
+		axios
+			.get(API_URL + 'forecasted_weather')
+			.then((res) => {
+				setWeatherForecast({
+					...weatherForecast,
+					labels: res.data.map((element) => element.dt_txt),
+					datasets: [
+						{
+							data: res.data.map((element) => element.temp_avg),
+							backgroundColor: '#FA8072',
+							borderColor: '#800000',
+							tension: 0.4,
+						},
+					],
+				});
+			})
+			.catch((e) => {
+				console.log(e);
 			});
-		}).catch((e) => {
-			console.log(e)
-		})
-	}
+	};
 
 	useEffect(() => {
 		if ('user' in localStorage) {
 			user = JSON.parse(localStorage.getItem('user'));
 			if (params.businessname != user.db.toLowerCase()) {
 				sessionStorage.setItem('url', params.businessname);
-				navigate('/badpage')
-				window.location.reload()
+				navigate('/badpage');
+				window.location.reload();
 			} else {
 				if (
 					'user' in localStorage &&
 					params.businessname == user.db.toLowerCase()
 				) {
-					sessionStorage.clear()
+					sessionStorage.clear();
+					get_revenue_history_api();
+					get_revenue_forecast_api();
+					get_weather_forecast_api();
 
-					axios.get(API_URL + 'revenues', {
-						params: {
-							'db': user.db,
-						}
-					}).then((res) => {
-						setRevenue({
-							...revenue,
-							labels: res.data.map((element) => element.ymd),
-							datasets: [
-								{
-									label: 'Revenue History',
-									data: res.data.map((element) => element.revenue),
-									backgroundColor: 'rgba(54, 162, 235,0.8)',
-									borderColor: 'black',
-									borderWidth: 1,
-								},
-							],
-						});
-					}).catch((e) => {
-						console.log(e)
-					})
+					// axios
+					// 	.get(API_URL + 'revenues', {
+					// 		params: {
+					// 			db: user.db,
+					// 		},
+					// 	})
+					// 	.then((res) => {
+					// 		setRevenue({
+					// 			...revenue,
+					// 			labels: res.data.map((element) => element.ymd),
+					// 			datasets: [
+					// 				{
+					// 					label: 'Revenue History',
+					// 					data: res.data.map((element) => element.revenue),
+					// 					backgroundColor: 'rgba(54, 162, 235,0.8)',
+					// 					borderColor: 'black',
+					// 					borderWidth: 1,
+					// 				},
+					// 			],
+					// 		});
+					// 	})
+					// 	.catch((e) => {
+					// 		console.log(e);
+					// 	});
 
-					axios.get(API_URL + 'revenue_forecast', {
-						params: {
-							'db': user.db,
-						}
-					}).then((res) => {
-						console.log(res.data)
-						setRevenueForecast({
-							...revenueForecast,
-							labels: res.data.map((element) => element.date),
-							datasets: [
-								{
-									label: 'Revenue Forecast',
-									data: res.data.map((element) => element.CY_predictedRevenue),
-									backgroundColor: 'rgba(54, 162, 235,0.8)',
-									borderColor: 'black',
-									borderWidth: 1,
-								},
-							],
-						});
-					}).catch((e) => {
-						console.log(e)
-					})
+					// axios
+					// 	.get(API_URL + 'revenue_forecast', {
+					// 		params: {
+					// 			db: user.db,
+					// 		},
+					// 	})
+					// 	.then((res) => {
+					// 		console.log(res.data);
+					// 		setRevenueForecast({
+					// 			...revenueForecast,
+					// 			labels: res.data.map((element) => element.date),
+					// 			datasets: [
+					// 				{
+					// 					label: 'Revenue Forecast',
+					// 					data: res.data.map(
+					// 						(element) => element.CY_predictedRevenue
+					// 					),
+					// 					backgroundColor: 'rgba(54, 162, 235,0.8)',
+					// 					borderColor: 'black',
+					// 					borderWidth: 1,
+					// 				},
+					// 				{
+					// 					label: 'Revenue Forecast',
+					// 					data: res.data.map(
+					// 						(element) => element.OA_predictedRevenue
+					// 					),
+					// 					backgroundColor: '#006400',
+					// 					borderColor: 'black',
+					// 					borderWidth: 1,
+					// 				},
+					// 			],
+					// 		});
+					// 	})
+					// 	.catch((e) => {
+					// 		console.log(e);
+					// 	});
 
-					axios.get(API_URL + 'quantity_forecast', {
-						params: {
-							'db': user.db,
-						}
-					}).then((res) => {
-						setQuantityForecast({
-							...quantityForecast,
-							labels: res.data.map((element) => element.Date),
-							datasets: [
-								{
-									label: 'Dairy',
-									data: res.data.map((element) => element.predicted_quantity),
-									backgroundColor: '#DAA520',
-									borderColor: '#FFD700',
-								},
-							],
-						});
-					}).catch((e) => {
-						console.log(e)
-					})
+					// axios
+					// 	.get(API_URL + 'quantity_forecast', {
+					// 		params: {
+					// 			db: user.db,
+					// 		},
+					// 	})
+					// 	.then((res) => {
+					// 		setQuantityForecast({
+					// 			...quantityForecast,
+					// 			labels: res.data.map((element) => element.Date),
+					// 			datasets: [
+					// 				{
+					// 					label: 'Dairy',
+					// 					data: res.data.map((element) => element.predicted_quantity),
+					// 					backgroundColor: '#DAA520',
+					// 					borderColor: '#FFD700',
+					// 				},
+					// 			],
+					// 		});
+					// 	})
+					// 	.catch((e) => {
+					// 		console.log(e);
+					// 	});
 
-					axios.get(API_URL + 'forecasted_weather').then((res) => {
-						console.log(
-							'temp_max',
-							res.data.map((element) => element.temp_max)
-						);
-						console.log(
-							'temp',
-							res.data.map((element) => element.temp)
-						);
-						setWeatherForecast({
-							...weatherForecast,
-							labels: res.data.map((element) => element.dt_txt),
-							datasets: [
-								{
-									data: res.data.map((element) => element.temp_max),
-									backgroundColor: '#FA8072',
-									borderColor: '#800000',
-									tension: 0.4,
-								},
-							],
-						});
-					}).catch((e) => {
-						console.log(e)
-					})
+					// axios
+					// 	.get(API_URL + 'forecasted_weather')
+					// 	.then((res) => {
+					// 		console.log(
+					// 			'temp_max',
+					// 			res.data.map((element) => element.temp_max)
+					// 		);
+					// 		console.log(
+					// 			'temp',
+					// 			res.data.map((element) => element.temp)
+					// 		);
+					// 		setWeatherForecast({
+					// 			...weatherForecast,
+					// 			labels: res.data.map((element) => element.dt_txt),
+					// 			datasets: [
+					// 				{
+					// 					data: res.data.map((element) => element.temp_max),
+					// 					backgroundColor: '#FA8072',
+					// 					borderColor: '#800000',
+					// 					tension: 0.4,
+					// 				},
+					// 			],
+					// 		});
+					// 	})
+					// 	.catch((e) => {
+					// 		console.log(e);
+					// 	});
 				}
 			}
-
 		} else {
 			navigate('/home');
 			window.location.reload();
@@ -212,7 +262,15 @@ export default function BeFreshDashboard() {
 		let value2 = inputRef2.current.value;
 
 		axios
-			.get(API_URL + 'revenues/?db=' + user.db + '&start_date=' + value1 + '&end_date=' + value2)
+			.get(
+				API_URL +
+					'revenues/?db=' +
+					user.db +
+					'&start_date=' +
+					value1 +
+					'&end_date=' +
+					value2
+			)
 			.then((res) => {
 				console.log(res.data);
 				setRevenue({
@@ -232,25 +290,27 @@ export default function BeFreshDashboard() {
 	};
 
 	const resetData = () => {
-		axios.get(API_URL + 'revenues', {
-			params: {
-				'db': user.db
-			}
-		}).then((res) => {
-			setRevenue({
-				...revenue,
-				labels: res.data.map((element) => element.ymd),
-				datasets: [
-					{
-						label: 'Revenue History',
-						data: res.data.map((element) => element.revenue),
-						backgroundColor: 'rgba(54, 162, 235,0.8)',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
+		axios
+			.get(API_URL + 'revenues', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				setRevenue({
+					...revenue,
+					labels: res.data.map((element) => element.ymd),
+					datasets: [
+						{
+							label: 'Revenue History',
+							data: res.data.map((element) => element.revenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
 			});
-		});
 	};
 
 	Chart.register(zoomPlugin);
@@ -313,7 +373,7 @@ export default function BeFreshDashboard() {
 						<div style={{ width: 500 }}>
 							<Barchart
 								chartData={revenueForecast}
-								displayLegend={false}
+								displayLegend={true}
 								displayTitle={true}
 								titleText="Revenue Forecast"
 							/>

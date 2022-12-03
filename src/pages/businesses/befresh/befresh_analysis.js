@@ -2,17 +2,19 @@ import { xLabels, yLabels } from '../../../TempData/HeatmapData';
 import Heatmap from '../../../components/Charts/Heatmap';
 import GaugeChart from '../../../components/Charts/Gaugechart';
 import Barchart from '../../../components/Charts/Barchart';
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Chart } from 'chart.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import LeafletChart from '../../../components/Charts/LeafletChart';
 
 export default function BeFreshAnalysis() {
-	let { businessname } = useParams();
+	// let { businessname } = useParams();
+	const params = useParams();
+	let user = [];
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
-	// const API_URL = 'http://localhost:8000/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
@@ -45,7 +47,7 @@ export default function BeFreshAnalysis() {
 		});
 	};
 
-	const get_general_products_api=()=>{
+	const get_general_products_api = () => {
 		axios.get(API_URL + 'general_products').then((res) => {
 			setGeneralProducts({
 				...general_products,
@@ -61,7 +63,7 @@ export default function BeFreshAnalysis() {
 				],
 			});
 		});
-	}
+	};
 
 	useEffect(() => {
 		get_wastage_products();
