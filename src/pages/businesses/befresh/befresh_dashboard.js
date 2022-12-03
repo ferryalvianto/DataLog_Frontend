@@ -45,12 +45,12 @@ export default function BeFreshDashboard() {
 			.then((res) => {
 				setRevenue({
 					...revenue,
-					labels: res.data.map((element) => element.ymd),
+					labels: res.data.map((element) => element.Date),
 					datasets: [
 						{
-							label: 'Revenue History',
-							data: res.data.map((element) => element.revenue),
-							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							label: 'BeFresh Cypress',
+							data: res.data.map((element) => element.dailyRevenue),
+							backgroundColor: res.data.map((element) => (element.Establishment==1?'rgba(54, 162, 235,0.8)':'#006400')),
 							borderColor: 'black',
 							borderWidth: 1,
 						},
@@ -258,59 +258,58 @@ export default function BeFreshDashboard() {
 	}, []);
 
 	const filterData = () => {
-		let value1 = inputRef1.current.value;
-		let value2 = inputRef2.current.value;
-
-		axios
-			.get(
-				API_URL +
-					'revenues/?db=' +
-					user.db +
-					'&start_date=' +
-					value1 +
-					'&end_date=' +
-					value2
-			)
-			.then((res) => {
-				console.log(res.data);
-				setRevenue({
-					...revenue,
-					labels: res.data.map((element) => element.ymd),
-					datasets: [
-						{
-							label: 'Revenue History',
-							data: res.data.map((element) => element.dailyRevenue),
-							backgroundColor: 'rgba(54, 162, 235,0.8)',
-							borderColor: 'black',
-							borderWidth: 1,
-						},
-					],
-				});
-			});
+		// let value1 = inputRef1.current.value;
+		// let value2 = inputRef2.current.value;
+		// axios
+		// 	.get(
+		// 		API_URL +
+		// 			'revenues/?db=' +
+		// 			user.db +
+		// 			'&start_date=' +
+		// 			value1 +
+		// 			'&end_date=' +
+		// 			value2
+		// 	)
+		// 	.then((res) => {
+		// 		console.log(res.data);
+		// 		setRevenue({
+		// 			...revenue,
+		// 			labels: res.data.map((element) => element.ymd),
+		// 			datasets: [
+		// 				{
+		// 					label: 'Revenue History',
+		// 					data: res.data.map((element) => element.dailyRevenue),
+		// 					backgroundColor: 'rgba(54, 162, 235,0.8)',
+		// 					borderColor: 'black',
+		// 					borderWidth: 1,
+		// 				},
+		// 			],
+		// 		});
+		// 	});
 	};
 
 	const resetData = () => {
-		axios
-			.get(API_URL + 'revenues', {
-				params: {
-					db: user.db,
-				},
-			})
-			.then((res) => {
-				setRevenue({
-					...revenue,
-					labels: res.data.map((element) => element.ymd),
-					datasets: [
-						{
-							label: 'Revenue History',
-							data: res.data.map((element) => element.revenue),
-							backgroundColor: 'rgba(54, 162, 235,0.8)',
-							borderColor: 'black',
-							borderWidth: 1,
-						},
-					],
-				});
-			});
+		// axios
+		// 	.get(API_URL + 'revenues', {
+		// 		params: {
+		// 			db: user.db,
+		// 		},
+		// 	})
+		// 	.then((res) => {
+		// 		setRevenue({
+		// 			...revenue,
+		// 			labels: res.data.map((element) => element.ymd),
+		// 			datasets: [
+		// 				{
+		// 					label: 'Revenue History',
+		// 					data: res.data.map((element) => element.revenue),
+		// 					backgroundColor: 'rgba(54, 162, 235,0.8)',
+		// 					borderColor: 'black',
+		// 					borderWidth: 1,
+		// 				},
+		// 			],
+		// 		});
+		// 	});
 	};
 
 	Chart.register(zoomPlugin);
@@ -352,16 +351,16 @@ export default function BeFreshDashboard() {
 					</div>
 
 					<div style={{ width: 500 }}>
-						<Barchart
-							chartData={revenue}
-							displayLegend={false}
-							displayTitle={true}
-							titleText="Revenue History"
-						/>
 						<input type="date" ref={inputRef1} />
 						<input type="date" ref={inputRef2} />
 						<button onClick={filterData}>Filter</button>
 						<button onClick={resetData}>Reset</button>
+						<Barchart
+							chartData={revenue}
+							displayLegend={true}
+							displayTitle={true}
+							titleText="Revenue History"
+						/>
 					</div>
 				</div>
 				<div
