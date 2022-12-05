@@ -14,8 +14,8 @@ export default function BeFreshAnalysis() {
 	const params = useParams();
 	let user = [];
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
-	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
@@ -142,12 +142,12 @@ export default function BeFreshAnalysis() {
 						<h1>Analysis</h1>
 					</div>
 
-					<div style={{ padding: '2rem 1rem' }}>
+					{/* <div style={{ padding: '2rem 1rem' }}>
 						<h2>Market Basket Analysis</h2>
 					</div>
 					<div style={{ padding: '1rem 2rem' }}>
 						<Heatmap xlabelsProp={xLabels} ylabelsProp={yLabels} />
-					</div>
+					</div> */}
 
 					<div style={{ padding: '2rem 1rem' }}>
 						<h2>Transaction Speed</h2>

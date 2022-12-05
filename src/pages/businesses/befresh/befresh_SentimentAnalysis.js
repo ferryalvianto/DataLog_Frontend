@@ -3,8 +3,8 @@ import Piechart from '../../../components/Charts/Piechart';
 import axios from 'axios';
 
 const BeFreshSentimentAnalysis = () => {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
-	// const API_URL = 'http://localhost:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
+	const API_URL = 'http://localhost:8000/datalog/api/';
 
 	const [sentimentData, setSentimentData] = useState({
 		labels: '',
@@ -22,7 +22,8 @@ const BeFreshSentimentAnalysis = () => {
 				console.log(res.data);
 				setSentimentData({
 					...sentimentData,
-					labels: ['Very Dissatisfied','Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+					// labels: ['Very Dissatisfied','Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+					labels:res.data.map((element)=>element._id==0?"Very Dissatisfied":""),
 					datasets: [
 						{
 							data: res.data.map((element) => element.Total_Count),

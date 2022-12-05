@@ -23,7 +23,7 @@ const LeafletChart = () => {
 					intensityExtractor={(m) => m.quantity}
 				/>
 				<ImageOverlay
-					url={require('../../Assets/Images/grocery_map.jpeg')}
+					url={require('../../Assets/Images/cy.png')}
 					bounds={[
 						[100, 0],
 						[0, 100],
