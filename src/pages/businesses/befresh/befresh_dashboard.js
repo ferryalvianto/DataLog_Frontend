@@ -6,6 +6,7 @@ import { Chart } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import Linechart from '../../../components/Charts/Linechart';
 import { useNavigate, useParams } from 'react-router-dom';
+import ExportExcel from '../../../components/excelExport';
 
 export default function BeFreshDashboard() {
 	const params = useParams();
@@ -14,17 +15,19 @@ export default function BeFreshDashboard() {
 
 	const navigate = useNavigate();
 
-	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
-	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
+	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 
-	const [yesterdayRevenueCY, setYesterdayRevenueCY]=useState(0);
-	const [yesterdayRevenueOA, setYesterdayRevenueOA]=useState(0);
+	const [excelExportData, setExportData] = useState([]);
 
-	const [projectedRevenueCY, setProjectedRevenueCY]=useState(0);
-	const [projectedRevenueOA, setProjectedRevenueOA]=useState(0);
+	const [yesterdayRevenueCY, setYesterdayRevenueCY] = useState(0);
+	const [yesterdayRevenueOA, setYesterdayRevenueOA] = useState(0);
+
+	const [projectedRevenueCY, setProjectedRevenueCY] = useState(0);
+	const [projectedRevenueOA, setProjectedRevenueOA] = useState(0);
 
 	const [revenueForecast, setRevenueForecast] = useState({
 		labels: '',
@@ -41,7 +44,7 @@ export default function BeFreshDashboard() {
 		datasets: [],
 	});
 
-	const getProjectedRevenue=()=>{
+	const getProjectedRevenue = () => {
 		axios
 			.get(API_URL + 'revenue_forecast', {
 				params: {
@@ -56,9 +59,9 @@ export default function BeFreshDashboard() {
 			.catch((e) => {
 				console.log(e);
 			});
-	}
+	};
 
-	const getYesterdayRevenue=()=>{
+	const getYesterdayRevenue = () => {
 		axios
 			.get(API_URL + 'revenues', {
 				params: {
@@ -73,7 +76,7 @@ export default function BeFreshDashboard() {
 			.catch((e) => {
 				console.log(e);
 			});
-	}
+	};
 
 	const get_revenue_history_api = () => {
 		axios
@@ -84,6 +87,7 @@ export default function BeFreshDashboard() {
 			})
 			.then((res) => {
 				// console.log(res.data);
+				setExportData(res.data);
 				setRevenue({
 					...revenue,
 					labels: res.data.map((element) => element.Date),
@@ -214,6 +218,7 @@ export default function BeFreshDashboard() {
 			)
 			.then((res) => {
 				// console.log(res.data);
+				setExportData(res.data);
 				setRevenue({
 					...revenue,
 					labels: res.data.map((element) => element.Date),
@@ -249,7 +254,8 @@ export default function BeFreshDashboard() {
 					JSON.parse(localStorage.getItem('user')).db.toString()
 			)
 			.then((res) => {
-				console.log(res.data);
+				// console.log(res.data);
+				setExportData(res.data);
 				setRevenue({
 					...revenue,
 					labels: res.data.map((element) => element.Date),
@@ -307,14 +313,22 @@ export default function BeFreshDashboard() {
 						>
 							<div className={`card card-container`} id={`smallCard`}>
 								<h5 style={{ margin: '1.3pt' }}>Yesterday's Revenue</h5>
-								<h5 style={{ margin: '1.3pt' }}>BeFresh Cypress: ${yesterdayRevenueCY}</h5>
-								<h5 style={{ margin: '1.3pt' }}>Organic Arces: ${yesterdayRevenueOA}</h5>
+								<h5 style={{ margin: '1.3pt' }}>
+									BeFresh Cypress: ${yesterdayRevenueCY}
+								</h5>
+								<h5 style={{ margin: '1.3pt' }}>
+									Organic Arces: ${yesterdayRevenueOA}
+								</h5>
 								<h5 style={{ margin: '1.3pt', color: 'green' }}>􀄯 12%</h5>
 							</div>
 							<div className={`card card-container`} id={`smallCard`}>
 								<h5 style={{ margin: '1.3pt' }}>Projected Revenue</h5>
-								<h5 style={{ margin: '1.3pt' }}>BeFresh Cypress: ${projectedRevenueCY}</h5>
-								<h5 style={{ margin: '1.3pt' }}>Organic Arces: ${projectedRevenueOA}</h5>
+								<h5 style={{ margin: '1.3pt' }}>
+									BeFresh Cypress: ${projectedRevenueCY}
+								</h5>
+								<h5 style={{ margin: '1.3pt' }}>
+									Organic Arces: ${projectedRevenueOA}
+								</h5>
 								<h5 style={{ margin: '1.3pt', color: 'red' }}>􀄯 8%</h5>
 							</div>
 						</div>
@@ -325,6 +339,11 @@ export default function BeFreshDashboard() {
 						<input type="date" ref={inputRef2} />
 						<button onClick={filterData}>Filter</button>
 						<button onClick={resetData}>Reset</button>
+						<ExportExcel
+							excelData={excelExportData}
+							fileName={'History Revenue'}
+							buttonName={'Export History Revenue Report'}
+						/>
 						<Barchart
 							chartData={revenue}
 							displayLegend={true}

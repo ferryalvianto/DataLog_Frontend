@@ -8,13 +8,16 @@ import { InflationData } from '../../../TempData/RegressionData2';
 import { AllFactorsData } from '../../../TempData/RegressionData3';
 import Linechart from '../../../components/Charts/Linechart';
 import { useNavigate, useParams } from 'react-router-dom';
+import ExportExcel from '../../../components/excelExport';
 
 export default function BeFreshPrediction() {
 	const params = useParams();
 	let user = [];
 
-	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
-	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
+	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+
+	const [excelExportData, setExportData] = useState([]);
 
 	const [revenueForecast, setRevenueForecast] = useState({
 		labels: '',
@@ -84,7 +87,8 @@ export default function BeFreshPrediction() {
 				},
 			})
 			.then((res) => {
-				console.log(res.data);
+				// console.log(res.data);
+				setExportData(res.data);
 				setQuantityForecast({
 					...quantityForecast,
 					labels: res.data
@@ -315,6 +319,11 @@ export default function BeFreshPrediction() {
 							displayTitle={true}
 							maintainAspectRatio={true}
 							titleText="Category Quantity Forecast"
+						/>
+						<ExportExcel
+							excelData={excelExportData}
+							fileName={'Category Quantity Forecast'}
+							buttonName={'Export Category Quantity Forecast Report'}
 						/>
 					</div>
 				</div>
