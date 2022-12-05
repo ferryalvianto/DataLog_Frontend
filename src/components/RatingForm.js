@@ -211,9 +211,9 @@ const RatingForm = () => {
 
 							{isMobile ? (
 								<>
-									<h2 style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+									{/* <h2 style={{ marginTop: '1rem', marginBottom: '1rem' }}>
 										Select location:
-									</h2>
+									</h2> */}
 									{/* <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
 									<select className='sel' onChange={(e) => { setLocation(e.target.value) }}>
 										<option name="CY">Be Fresh–Cypress</option>
@@ -231,7 +231,7 @@ const RatingForm = () => {
 											alignItems: 'center',
 										}}
 									>
-										<h2 style={{ width: '50%' }}>Select location:</h2>
+										{/* <h2 style={{ width: '50%' }}>Select location:</h2> */}
 										{/* <div style={{ width: '50%' }}>
 										<select className='sel' onChange={(e) => { setLocation(e.target.value) }}>
 											<option name="CY">Be Fresh–Cypress</option>
