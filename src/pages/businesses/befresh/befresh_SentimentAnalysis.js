@@ -15,7 +15,7 @@ const BeFreshSentimentAnalysis = () => {
 		axios
 			.get(
 				API_URL +
-					'sentiments?db=' +
+					'/sentiments?db=' +
 					JSON.parse(localStorage.getItem('user')).db.toString()
 			)
 			.then((res) => {
