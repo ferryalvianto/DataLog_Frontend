@@ -262,7 +262,7 @@ const RatingForm = () => {
 								console.log('clicked');
 								axios
 									.get(
-										'http://127.0.0.1:8000/datalog/api/' +
+										'https://datalogwebapp.herokuapp.com/datalog/api/' +
 											'insert_sentiments/?db=' +
 											JSON.parse(localStorage.getItem('user')).db.toString() +
 											'&rating=' +
