@@ -112,6 +112,16 @@ export default function BeFreshPrediction() {
 		});
 	};
 
+	const get_excel_export_api = () => {
+		axios.get(API_URL + 'quantity_forecast_table', {
+			params: {
+				db: user.db,
+			},
+		}).then((res) => {
+			setExportData(res.data);
+		});
+	};
+
 	const get_quantity_forecast_api = () => {
 		axios
 			.get(API_URL + 'quantity_forecast', {
@@ -121,7 +131,7 @@ export default function BeFreshPrediction() {
 			})
 			.then((res) => {
 				// console.log(res.data);
-				setExportData(res.data);
+				// setExportData(res.data);
 				setQuantityForecast({
 					...quantityForecast,
 					labels: res.data
@@ -261,6 +271,7 @@ export default function BeFreshPrediction() {
 					params.businessname == user.db.toLowerCase()
 				) {
 					sessionStorage.clear();
+					get_excel_export_api();
 					get_inflation_api();
 					get_revenue_forecast_api();
 					get_quantity_forecast_api();
