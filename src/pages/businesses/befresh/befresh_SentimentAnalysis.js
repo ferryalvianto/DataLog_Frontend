@@ -3,8 +3,8 @@ import Piechart from '../../../components/Charts/Piechart';
 import axios from 'axios';
 
 const BeFreshSentimentAnalysis = () => {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
-	// const API_URL = 'http://localhost:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
+	const API_URL = 'http://localhost:8000/datalog/api/';
 
 	const [sentimentData, setSentimentData] = useState({
 		labels: '',

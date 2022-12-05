@@ -13,8 +13,13 @@ export default function BeFreshPrediction() {
 	const params = useParams();
 	let user = [];
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
-	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+
+	const [revenueForecast, setRevenueForecast] = useState({
+		labels: '',
+		datasets: [],
+	});
 
 	const [weatherForecast, setWeatherForecast] = useState({
 		labels: '',
@@ -25,6 +30,34 @@ export default function BeFreshPrediction() {
 		labels: '',
 		datasets: [],
 	});
+
+	const get_revenue_forecast_api = () => {
+		axios
+			.get(API_URL + 'revenue_forecast', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				// console.log(res.data);
+				setRevenueForecast({
+					...revenueForecast,
+					labels: res.data.map((element) => element.date),
+					datasets: [
+						{
+							label: 'Revenue Forecast based on Past Sales',
+							data: res.data.map((element) => element.CY_predictedRevenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	};
 
 	const get_weather_forecast_api = () => {
 		axios.get(API_URL + 'forecasted_weather').then((res) => {
@@ -207,6 +240,7 @@ export default function BeFreshPrediction() {
 					params.businessname == user.db.toLowerCase()
 				) {
 					sessionStorage.clear();
+					get_revenue_forecast_api();
 					get_quantity_forecast_api();
 					get_weather_forecast_api();
 				}
@@ -217,35 +251,17 @@ export default function BeFreshPrediction() {
 		}
 	}, []);
 
-	const [regression, setRegression] = useState({
-		labels: TemperatureData.map((data) => data.date),
-		datasets: [
-			{
-				label: 'Regression based on past sales in CAD',
-				data: [5500, 4100, 4900, 6200, 6900, 6100, 6480],
-				backgroundColor: 'rgba(75,192,192,1)',
-				borderColor: 'rgba(75,192,192,1)',
-			},
-			{
-				label: 'Regression based on temperature in CAD',
-				data: TemperatureData.map((data) => data.data),
-				backgroundColor: '#50AF95',
-				borderColor: '#50AF95',
-			},
-			{
-				label: 'Regression based on inflation in CAD',
-				data: InflationData.map((data) => data.data),
-				backgroundColor: '#f3ba2f',
-				borderColor: '#f3ba2f',
-			},
-			{
-				label: 'Regression based on all factors in CAD',
-				data: AllFactorsData.map((data) => data.data),
-				backgroundColor: '#2a71d0',
-				borderColor: '#2a71d0',
-			},
-		],
-	});
+	// const [regression, setRegression] = useState({
+	// 	labels: TemperatureData.map((data) => data.date),
+	// 	datasets: [
+	// 		{
+	// 			label: 'Regression based on past sales in CAD',
+	// 			data: [5500, 4100, 4900, 6200, 6900, 6100, 6480],
+	// 			backgroundColor: 'rgba(75,192,192,1)',
+	// 			borderColor: 'rgba(75,192,192,1)',
+	// 		},
+	// 	],
+	// });
 	Chart.register(zoomPlugin);
 	return (
 		<>
@@ -275,7 +291,7 @@ export default function BeFreshPrediction() {
 						<h2>Regression Analysis</h2>
 					</div>
 					<div style={{ padding: '1rem' }}>
-						<Linechart chartData={regression} hidden={false} />
+						<Linechart chartData={revenueForecast} hidden={false} />
 					</div>
 
 					<div style={{ padding: '2rem 1rem' }}>
