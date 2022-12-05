@@ -112,7 +112,7 @@ export default function BusinessLogin() {
                                             </button>
                                         </div>
                                     </form>
-                                    <p className="text-center" style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>Forgot password? Reset your password <a href='/' style={{ textDecoration: "underline" }}>here</a>.</p>
+                                    {/* <p className="text-center" style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>Forgot password? Reset your password <a href='/' style={{ textDecoration: "underline" }}>here</a>.</p> */}
                                 </div>
                             </div>
                         </div>
