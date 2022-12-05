@@ -66,6 +66,7 @@ export default function BeFreshTrainModel() {
 					document.getElementById('uploadAnotherBtn').style.display = `none`
 					document.getElementById('paymenttype').style.display = `none`
 					document.getElementById('inventorylog').style.display = `none`
+					document.getElementById('orderlog').style.display = `none`
 					document.getElementById('doneText').style.display = `block`
 					document.getElementById('uploadSuccess').style.display = `block`
 					document.getElementById('trainBtn').style.display = `block`
@@ -118,17 +119,20 @@ export default function BeFreshTrainModel() {
 			})
 	}
 
-	// function choosefile(e) {
-	// 	file = e.target.files[0]
-	// 	if (file && file.name.toLowerCase().includes('actionlog')) {
-	// 		document.getElementById('fileSelected').innerText = `Selected file: ${file.name}`
-	// 		document.getElementById('fileSelected').style.display = `block`
-	// 		document.getElementById('uploadFileBtn').style.display = `flex`
-	// 		document.getElementById('uploadFile').innerText = `Upload ${file.name}`
-	// 	} else {
-	// 		alert('Please choose an Action Log Report')
-	// 	}
-	// }
+	function choosefile(e) {
+		file = e.target.files[0]
+		console.log(file)
+		if (!bf && oa) {
+			if (file && file.name.includes('Order_History') && file.name.includes(year + '-' + month + '-' + day) && file.name.includes('fresh')) {
+				document.getElementById('fileSelected').innerText = `Selected file: ${file.name}`
+				document.getElementById('fileSelected').style.display = `block`
+				document.getElementById('uploadFileBtn3').style.display = `flex`
+				document.getElementById('uploadFile3').innerText = `Upload ${file.name}`
+			} else {
+				alert('Please choose an Order History Report for Be Fresh')
+			}
+		}
+	}
 
 	function choosefile2(e) {
 		file = e.target.files[0]
@@ -253,12 +257,22 @@ export default function BeFreshTrainModel() {
 				.then((response) => {
 					id_paymenttype = response.id
 					files.push(response.name)
-					document.getElementById('loadingText').style.display = `none`
-					document.getElementById('chooseDiv').style.display = `block`
-					document.getElementById('inventorylog').style.display = `block`
-					document.getElementById('paymenttype').style.display = `block`
-					document.getElementById('paymentupload').style.display = `none`
-					document.getElementById('paymentuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
+
+					if (response.name.includes('Organic_Acres')) {
+						document.getElementById('loadingText').style.display = `none`
+						document.getElementById('chooseDiv').style.display = `block`
+						document.getElementById('inventorylog').style.display = `block`
+						document.getElementById('paymenttype').style.display = `block`
+						document.getElementById('paymentupload').style.display = `none`
+						document.getElementById('paymentuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
+					} else {
+						document.getElementById('loadingText').style.display = `none`
+						document.getElementById('chooseDiv').style.display = `block`
+						document.getElementById('orderlog').style.display = `block`
+						document.getElementById('paymenttype').style.display = `block`
+						document.getElementById('paymentupload').style.display = `none`
+						document.getElementById('paymentuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
+					}
 				})
 				.catch((e) => console.log(e))
 		}
@@ -316,6 +330,45 @@ export default function BeFreshTrainModel() {
 		}
 	}
 
+	function uploadOrder(e) {
+		document.getElementById('uploadFileBtn3').style.display = `none`
+		document.getElementById('chooseDiv').style.display = `none`
+		document.getElementById('datediv').style.display = `none`
+
+		reader.readAsDataURL(file); //start conversion...
+		reader.onload = function (e) {
+			document.getElementById('loadingText').style.display = `block`
+			var rawLog = reader.result.split(',')[1]
+			var dataSend = {
+				dataReq: { data: rawLog, name: file.name, type: file.type },
+				fname: 'uploadFilesToGoogleDrive',
+			}
+			fetch(
+				'https://script.google.com/macros/s/AKfycbw0dR0qBlv03k5b0Pv8GZlNTMm94XGpJfEL9jE4bLI8BToI_NrWoU9giC0RVNPbBSCJAw/exec', //your AppsScript URL
+				{ method: 'POST', body: JSON.stringify(dataSend) }
+			) //send to Api
+				.then((res) => res.json())
+				.then((response) => {
+					let id_order = response.id
+					files.push(response.name)
+
+					userService.cleanOrder(JSON.parse(localStorage.getItem('user')).db.toString(), id_order).then(
+						(res) => {
+							console.log(res.data)
+							document.getElementById('loadingText').style.display = `none`
+							document.getElementById('chooseDiv').style.display = `block`
+							document.getElementById('inventorylog').style.display = `block`
+							document.getElementById('orderlog').style.display = `block`
+							document.getElementById('orderupload').style.display = `none`
+							document.getElementById('orderuploadtxt').innerText = `${response.name} Uploaded to Cloud 􀁢`
+						}
+					).catch((e) => { console.log(e) })
+
+				})
+				.catch((e) => console.log(e))
+		}
+	}
+
 	function trainModels(e) {
 		document.getElementById('doneText').style.display = `none`
 		document.getElementById('uploadFileBtn2').style.display = `none`
@@ -359,25 +412,6 @@ export default function BeFreshTrainModel() {
 						/>
 					</div>
 
-					{/* <div style={{ padding: '1rem', display: 'none' }} id='actionlog'>
-						<h3>Upload the Action Log Report</h3>
-						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
-							<input
-								type="file"
-								accept=".csv"
-								id="actionlogFile"
-								style={{ visibility: "hidden", display: 'none' }}
-								onChange={(e) => choosefile(e)}
-							/>
-							<button className={`btn bttn`} id='chooseFileBtn'>
-								<label htmlFor="actionlogFile" style={{ width: '15rem', cursor: 'pointer' }}>
-									Choose CSV
-								</label>
-							</button>
-							<p id='fileSelected' style={{ width: '100%', paddingLeft: '2rem', justifySelf: 'center', alignSelf: 'center' }}>No files selected</p>
-						</div>
-					</div> */}
-
 					<div style={{ padding: '1rem', display: 'none' }} id='paymenttype'>
 						<h3 id='paymentuploadtxt'>Upload the Payment Summary Report</h3>
 						<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }} id='paymentupload'>
@@ -394,6 +428,28 @@ export default function BeFreshTrainModel() {
 								</label>
 							</button>
 							<p id='fileSelected2' style={{ width: '100%', paddingLeft: '2rem', justifySelf: 'center', alignSelf: 'center' }}>No files selected</p>
+						</div>
+					</div>
+
+
+
+
+					<div style={{ padding: '1rem', display: 'none' }} id='orderlog'>
+						<h3 id='orderuploadtxt'>Upload the Order History Report</h3>
+						<div id='orderupload' className={`justify-content-between`} style={{ padding: '0.5rem', display: 'inline-flex' }}>
+							<input
+								type="file"
+								accept=".csv"
+								id="orderFile"
+								style={{ visibility: "hidden", display: 'none' }}
+								onChange={(e) => choosefile(e)}
+							/>
+							<button className={`btn bttn`} id='chooseFileBtn'>
+								<label htmlFor="orderFile" style={{ width: '15rem', cursor: 'pointer' }}>
+									Choose CSV
+								</label>
+							</button>
+							<p id='fileSelected' style={{ width: '100%', paddingLeft: '2rem', justifySelf: 'center', alignSelf: 'center' }}>No files selected</p>
 						</div>
 					</div>
 
@@ -415,7 +471,12 @@ export default function BeFreshTrainModel() {
 							<p id='fileSelected3' style={{ width: '100%', paddingLeft: '2rem', justifySelf: 'center', alignSelf: 'center' }}>No files selected</p>
 						</div>
 					</div>
+
 				</div>
+
+
+
+
 
 				<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'none' }} id='uploadFileBtn' >
 					<button className={`btn bttn`} onClick={(e) => uploadPayment(e)}>
@@ -428,7 +489,15 @@ export default function BeFreshTrainModel() {
 				<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'none' }} id='uploadFileBtn2' >
 					<button className={`btn bttn`} onClick={(e) => uploadInventory(e)}>
 						<label htmlFor="uploadFile" id='uploadFile2' style={{ width: '50%', cursor: 'pointer' }}>
-							Upload Payment Type Report
+							Upload Inventory Log Report
+						</label>
+					</button>
+				</div>
+
+				<div className={`justify-content-between`} style={{ padding: '0.5rem', display: 'none' }} id='uploadFileBtn3' >
+					<button className={`btn bttn`} onClick={(e) => uploadOrder(e)}>
+						<label htmlFor="uploadFile" id='uploadFile3' style={{ width: '50%', cursor: 'pointer' }}>
+							Upload Order History Report
 						</label>
 					</button>
 				</div>
@@ -460,6 +529,10 @@ export default function BeFreshTrainModel() {
 					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
 						<button className={`btn bttn2`}
 							onClick={() => {
+								// if (confirm(`You might need to re-upload the files again or come back to the page to train the models.\nAre you sure you want to leave this page?`)) {
+								// 	navigate(`/${url}/dashboard`)
+								// 	window.location.reload()
+								// }
 								userService.getUploadLog(JSON.parse(localStorage.getItem('user')).db.toString(), year.toString(), month.toString(), day.toString())
 									.then((res) => {
 										const user = JSON.parse(localStorage.getItem('user'))

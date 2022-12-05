@@ -20,11 +20,11 @@ export default function BeFreshDashboard() {
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 
-	const [yesterdayRevenueCY, setYesterdayRevenueCY]=useState(0);
-	const [yesterdayRevenueOA, setYesterdayRevenueOA]=useState(0);
+	const [yesterdayRevenueCY, setYesterdayRevenueCY] = useState(0);
+	const [yesterdayRevenueOA, setYesterdayRevenueOA] = useState(0);
 
-	const [projectedRevenueCY, setProjectedRevenueCY]=useState(0);
-	const [projectedRevenueOA, setProjectedRevenueOA]=useState(0);
+	const [projectedRevenueCY, setProjectedRevenueCY] = useState(0);
+	const [projectedRevenueOA, setProjectedRevenueOA] = useState(0);
 
 	const [revenueForecast, setRevenueForecast] = useState({
 		labels: '',
@@ -41,7 +41,7 @@ export default function BeFreshDashboard() {
 		datasets: [],
 	});
 
-	const getProjectedRevenue=()=>{
+	const getProjectedRevenue = () => {
 		axios
 			.get(API_URL + 'revenue_forecast', {
 				params: {
@@ -50,15 +50,15 @@ export default function BeFreshDashboard() {
 			})
 			.then((res) => {
 				console.log(res.data[0]);
-				setProjectedRevenueCY(res.data[0].CY_predictedRevenue);
-				setProjectedRevenueOA(res.data[0].OA_predictedRevenue);
+				setProjectedRevenueCY(res.data[0].CY_predictedRevenue.toFixed(2));
+				setProjectedRevenueOA(res.data[0].OA_predictedRevenue.toFixed(2));
 			})
 			.catch((e) => {
 				console.log(e);
 			});
 	}
 
-	const getYesterdayRevenue=()=>{
+	const getYesterdayRevenue = () => {
 		axios
 			.get(API_URL + 'revenues', {
 				params: {
@@ -67,8 +67,8 @@ export default function BeFreshDashboard() {
 			})
 			.then((res) => {
 				console.log(res.data[12]);
-				setYesterdayRevenueCY(res.data[13].dailyRevenue);
-				setYesterdayRevenueOA(res.data[12].dailyRevenue);
+				setYesterdayRevenueCY(res.data[13].dailyRevenue.toFixed(2));
+				setYesterdayRevenueOA(res.data[12].dailyRevenue.toFixed(2));
 			})
 			.catch((e) => {
 				console.log(e);
@@ -89,7 +89,7 @@ export default function BeFreshDashboard() {
 					labels: res.data.map((element) => element.Date),
 					datasets: [
 						{
-							label: 'BeFresh Cypress',
+							label: 'Be Fresh',
 							data: res.data.map((element) =>
 								element.Establishment == 1 ? element.dailyRevenue : 0
 							),
@@ -128,7 +128,7 @@ export default function BeFreshDashboard() {
 					labels: res.data.map((element) => element.date),
 					datasets: [
 						{
-							label: 'BeFresh Cypress',
+							label: 'Be Fresh',
 							data: res.data.map((element) => element.CY_predictedRevenue),
 							backgroundColor: 'rgba(54, 162, 235,0.8)',
 							borderColor: 'black',
@@ -205,12 +205,12 @@ export default function BeFreshDashboard() {
 		axios
 			.get(
 				API_URL +
-					'revenues/?db=' +
-					JSON.parse(localStorage.getItem('user')).db.toString() +
-					'&start_date=' +
-					value1 +
-					'&end_date=' +
-					value2
+				'revenues/?db=' +
+				JSON.parse(localStorage.getItem('user')).db.toString() +
+				'&start_date=' +
+				value1 +
+				'&end_date=' +
+				value2
 			)
 			.then((res) => {
 				// console.log(res.data);
@@ -219,7 +219,7 @@ export default function BeFreshDashboard() {
 					labels: res.data.map((element) => element.Date),
 					datasets: [
 						{
-							label: 'BeFresh Cypress',
+							label: 'Be Fresh',
 							data: res.data.map((element) =>
 								element.Establishment == 0 ? element.dailyRevenue : 0
 							),
@@ -245,8 +245,8 @@ export default function BeFreshDashboard() {
 		axios
 			.get(
 				API_URL +
-					'revenues?db=' +
-					JSON.parse(localStorage.getItem('user')).db.toString()
+				'revenues?db=' +
+				JSON.parse(localStorage.getItem('user')).db.toString()
 			)
 			.then((res) => {
 				console.log(res.data);
@@ -255,7 +255,7 @@ export default function BeFreshDashboard() {
 					labels: res.data.map((element) => element.Date),
 					datasets: [
 						{
-							label: 'BeFresh Cypress',
+							label: 'Be Fresh',
 							data: res.data.map((element) =>
 								element.Establishment == 0 ? element.dailyRevenue : 0
 							),
@@ -291,11 +291,11 @@ export default function BeFreshDashboard() {
 				>
 					<div
 						className={`d-flex justify-content-between text-start`}
-						style={{ flexDirection: 'column' }}
+						style={{ flexDirection: 'column', marginLeft: '4rem', marginRight: '1rem' }}
 					>
 						<h1>Overview</h1>
 						<h6 style={{ marginTop: '5px', marginLeft: '1px' }}>
-							Good morning, {`${user.firstname}`}! 👋
+							Hello, <strong>{`${JSON.parse(localStorage.getItem('user')).firstname}`}</strong>! 👋
 						</h6>
 						<div
 							style={{
@@ -306,57 +306,59 @@ export default function BeFreshDashboard() {
 							className={`d-flex align-items-center`}
 						>
 							<div className={`card card-container`} id={`smallCard`}>
-								<h5 style={{ margin: '1.3pt' }}>Yesterday's Revenue</h5>
-								<h5 style={{ margin: '1.3pt' }}>BeFresh Cypress: ${yesterdayRevenueCY}</h5>
-								<h5 style={{ margin: '1.3pt' }}>Organic Arces: ${yesterdayRevenueOA}</h5>
-								<h5 style={{ margin: '1.3pt', color: 'green' }}>􀄯 12%</h5>
+								<h4 style={{ margin: '1.3pt' }}><strong>Yesterday's Revenue</strong></h4>
+								<h5 style={{ margin: '1.3pt' }}>Be Fresh: <strong>${yesterdayRevenueCY}</strong></h5>
+								<h5 style={{ margin: '1.3pt' }}>Organic Arces: <strong>${yesterdayRevenueOA}</strong></h5>
 							</div>
 							<div className={`card card-container`} id={`smallCard`}>
-								<h5 style={{ margin: '1.3pt' }}>Projected Revenue</h5>
-								<h5 style={{ margin: '1.3pt' }}>BeFresh Cypress: ${projectedRevenueCY}</h5>
-								<h5 style={{ margin: '1.3pt' }}>Organic Arces: ${projectedRevenueOA}</h5>
-								<h5 style={{ margin: '1.3pt', color: 'red' }}>􀄯 8%</h5>
+								<h4 style={{ margin: '1.3pt' }}><strong>Today's Projected Revenue</strong></h4>
+								<h5 style={{ margin: '1.3pt' }}>Be Fresh:  <strong>${projectedRevenueCY}</strong></h5>
+								<h5 style={{ margin: '1.3pt' }}>Organic Arces:  <strong>${projectedRevenueOA}</strong></h5>
 							</div>
+						</div>
+						<div style={{ marginTop: '3rem', width: 600 }}>
+							<Barchart
+								chartData={revenue}
+								displayLegend={true}
+								displayTitle={true}
+								titleText="Revenue History"
+							/>
+							<input type="date" ref={inputRef1} />
+							<input type="date" ref={inputRef2} />
+							<button onClick={filterData}>Filter</button>
+							<button onClick={resetData}>Reset</button>
 						</div>
 					</div>
 
-					<div style={{ width: 500 }}>
-						<input type="date" ref={inputRef1} />
-						<input type="date" ref={inputRef2} />
-						<button onClick={filterData}>Filter</button>
-						<button onClick={resetData}>Reset</button>
-						<Barchart
-							chartData={revenue}
-							displayLegend={true}
-							displayTitle={true}
-							titleText="Revenue History"
-						/>
-					</div>
+
 				</div>
 				<div
 					className={`d-flex justify-content-between text-start rightDashboard`}
-					style={{}}
+					style={{ marginLeft: '4rem', marginRight: '1rem' }}
 				>
-					<div style={{ paddingLeft: '1rem' }}>
+					<div style={{ paddingLeft: '1rem', }}>
 						<h1>Today's Prediction</h1>
-						<div style={{ width: 500 }}>
-							<Barchart
-								chartData={revenueForecast}
-								displayLegend={true}
-								displayTitle={true}
-								titleText="Revenue Forecast"
-							/>
+						<div style={{ marginTop: '2rem', marginBottom: '2rem', }}>
+							<div style={{ width: 600 }}>
+								<Barchart
+									chartData={revenueForecast}
+									displayLegend={true}
+									displayTitle={true}
+									titleText="Revenue Forecast"
+								/>
+							</div>
+							<div style={{ width: 600 }}>
+								<Linechart
+									chartData={weatherForecast}
+									hidden={true}
+									displayLegend={false}
+									displayTitle={true}
+									maintainAspectRatio={true}
+									titleText="Temperature Forecast (°C)"
+								/>
+							</div>
 						</div>
-						<div style={{ width: 500 }}>
-							<Linechart
-								chartData={weatherForecast}
-								hidden={true}
-								displayLegend={false}
-								displayTitle={true}
-								maintainAspectRatio={true}
-								titleText="Temperature Forecast"
-							/>
-						</div>
+
 					</div>
 				</div>
 			</div>

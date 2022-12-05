@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 
-const API_URL = 'http://127.0.0.1:8000//datalog/api'
+const API_URL = 'http://127.0.0.1:8000/datalog/api'
 // const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api'
 
 class UserService {
@@ -52,6 +52,10 @@ class UserService {
 
     async updateTrainingLog(db){
         return axios.post(API_URL + `/update_training_log?db=${db}`)
+    }
+
+    async cleanOrder(db, id){
+        return axios.get(API_URL + `/clean_csv_order_hist?db=${db}&id_order_hist=${id}`)
     }
 
 }

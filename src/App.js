@@ -16,6 +16,7 @@ import TrainModel from './pages/train-model';
 import WindowWarning from "./components/warning/warning";
 // import CustomerFeedback from './pages/customerFeedback';
 // import Navbar from './components/navbar';
+import Profile from "./pages/profile";
 import SentimentAnalysis from './pages/SentimentAnalysis';
 import Rating from "./pages/Rating";
 import NewUser from "./pages/new-user";
@@ -56,6 +57,7 @@ export default function App() {
                                 <Route path="/not-supported" element={<NotSupported />} />
                                 <Route path="/:businessname/new-user" element={<NewUser />} />
                                 {/* <Route path="*" element={<Home />} /> */}
+                                <Route path="/:businessname/profile" element={<Profile/>} />
                                 <Route path="/befresh/form" element={<Rating />} />
                                 <Route path="/:businessname/feedback" element={<SentimentAnalysis />} />
                                 <Route path='/badpage' element={<BadPage />} />

@@ -24,7 +24,7 @@ const Barchart = ({ chartData, displayLegend, displayTitle, titleText }) => {
 	}
 	return (
 		<>
-			<div style={{ height: '100%', width: '100%', display: 'inline-block', margin:'2rem' }} >
+			<div style={{ height: '100%', width: '100%', display: 'flex' }} >
 				<Bar
 					data={chartData}
 					onMouseEnter={changeCursor}

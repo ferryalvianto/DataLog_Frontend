@@ -92,18 +92,10 @@ export default function BeFreshPrediction() {
 						.map((element) => element.Date),
 					datasets: [
 						{
-							label: 'BOH',
-							data: res.data
-								.filter((item) => item.Category === 'BOH')
-								.map((element) => element.predicted_quantity),
-							backgroundColor: '#D2691E',
-							borderColor: '#FF7F50',
-						},
-						{
 							label: 'Bakery',
 							data: res.data
 								.filter((item) => item.Category === 'Bakery')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#DAA520',
 							borderColor: '#FFD700',
 						},
@@ -111,7 +103,7 @@ export default function BeFreshPrediction() {
 							label: 'Be Fresh Meals',
 							data: res.data
 								.filter((item) => item.Category === 'Be Fresh Meals')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#006400',
 							borderColor: '#556B2F',
 						},
@@ -119,7 +111,7 @@ export default function BeFreshPrediction() {
 							label: 'Be Fresh Products',
 							data: res.data
 								.filter((item) => item.Category === 'Be Fresh Products')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#FF00FF',
 							borderColor: '#FFB6C1',
 						},
@@ -127,7 +119,7 @@ export default function BeFreshPrediction() {
 							label: 'Beverages',
 							data: res.data
 								.filter((item) => item.Category === 'Beverages')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#0000CD',
 							borderColor: '#87CEFA',
 						},
@@ -135,7 +127,7 @@ export default function BeFreshPrediction() {
 							label: 'Coffee Bar',
 							data: res.data
 								.filter((item) => item.Category === 'Coffee Bar')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#663300',
 							borderColor: '#996633',
 						},
@@ -143,7 +135,7 @@ export default function BeFreshPrediction() {
 							label: 'Dairy',
 							data: res.data
 								.filter((item) => item.Category === 'Dairy')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#003300',
 							borderColor: '#33CC33',
 						},
@@ -151,23 +143,15 @@ export default function BeFreshPrediction() {
 							label: 'Deli',
 							data: res.data
 								.filter((item) => item.Category === 'Deli')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#8B0000',
 							borderColor: '#DC143C',
-						},
-						{
-							label: 'Fresh Prep',
-							data: res.data
-								.filter((item) => item.Category === 'Fresh Prep')
-								.map((element) => element.predicted_quantity),
-							backgroundColor: '#8B008B',
-							borderColor: '#9400D3',
 						},
 						{
 							label: 'Grocery',
 							data: res.data
 								.filter((item) => item.Category === 'Grocery')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed(2)),
 							backgroundColor: '#8B0000',
 							borderColor: '#FF0000',
 						},
@@ -175,7 +159,7 @@ export default function BeFreshPrediction() {
 							label: 'Health & Beauty',
 							data: res.data
 								.filter((item) => item.Category === 'Health & Beauty')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#2F4F4F',
 							borderColor: '#696969',
 						},
@@ -183,7 +167,7 @@ export default function BeFreshPrediction() {
 							label: 'Health & Home',
 							data: res.data
 								.filter((item) => item.Category === 'Health & Home')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#7CFC00',
 							borderColor: '#ADFF2F',
 						},
@@ -191,7 +175,7 @@ export default function BeFreshPrediction() {
 							label: 'Heat & Eat',
 							data: res.data
 								.filter((item) => item.Category === 'Heat & Eat')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#FF4500',
 							borderColor: '#FFA07A',
 						},
@@ -199,7 +183,7 @@ export default function BeFreshPrediction() {
 							label: 'Meat & Seafood',
 							data: res.data
 								.filter((item) => item.Category === 'Meat & Seafood')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed(2)),
 							backgroundColor: '#EEE8AA',
 							borderColor: '#F4A460',
 						},
@@ -207,7 +191,7 @@ export default function BeFreshPrediction() {
 							label: 'Produce',
 							data: res.data
 								.filter((item) => item.Category === 'Produce')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed(2)),
 							backgroundColor: '#008080',
 							borderColor: '#40E0D0',
 						},
@@ -215,7 +199,7 @@ export default function BeFreshPrediction() {
 							label: 'Snacks',
 							data: res.data
 								.filter((item) => item.Category === 'Snacks')
-								.map((element) => element.predicted_quantity),
+								.map((element) => element.predicted_quantity.toFixed()),
 							backgroundColor: '#DAA520',
 							borderColor: '#FFFF00',
 						},
@@ -281,6 +265,8 @@ export default function BeFreshPrediction() {
 						justifyContent: 'center',
 						alignItems: 'center',
 						flexDirection: 'column',
+						marginRight:'6rem',
+						marginLeft:'4rem'
 					}}
 					className="text-center"
 				>
@@ -306,6 +292,9 @@ export default function BeFreshPrediction() {
 							maintainAspectRatio={true}
 							titleText="Temperature Forecast"
 						/>
+					</div>
+					<div style={{ padding: '2rem 1rem' }}>
+						<h2>Quantity Forecast by Category</h2>
 					</div>
 					<div style={{ padding: '1rem' }}>
 						<Linechart

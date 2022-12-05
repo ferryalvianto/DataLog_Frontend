@@ -133,6 +133,8 @@ export default function BeFreshAnalysis() {
 						justifyContent: 'center',
 						alignItems: 'center',
 						flexDirection: 'column',
+						marginRight:'6rem',
+						marginLeft:'4rem'
 					}}
 					className="text-center"
 				>

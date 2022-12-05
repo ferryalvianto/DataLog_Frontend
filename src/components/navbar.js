@@ -11,7 +11,7 @@ function Navbar() {
     const [url, setUrl] = useState('')
     const navigate = useNavigate()
     const isHome = useMatch('/')
-    const isHome2 = useMatch('/home')
+    // const isHome2 = useMatch('/home')
     const islogin = useMatch('/login')
     const isbusinessname = useMatch('/:businessname')
     const isdashboard = useMatch('/:businessname/dashboard')
@@ -31,7 +31,7 @@ function Navbar() {
     }
 
     useEffect(() => {
-        if ((isHome || isHome2)
+        if (isHome
             && !(navigator.userAgent.match(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
             setShowLoginBtn(true)
         } else {
@@ -92,7 +92,7 @@ function Navbar() {
                 <div className={`dlSidebar d-flex justify-content-baseline`} style={{ zIndex: '2' }}>
                     <div className={`d-flex justify-content-between text-start`} style={{ flexDirection: 'column' }}>
                         <div onClick={() => {
-                            // navigate('/profile')
+                            navigate(`/${url}/profile`)
                         }} style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row', marginLeft: '0.2rem' }} className={`d-flex align-items-center`}>
                                 <p data-letters={initials}></p>
