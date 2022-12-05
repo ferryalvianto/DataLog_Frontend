@@ -72,62 +72,98 @@ export const leafletData = [
 	},
 	{
 		name: 'Dairy',
-		coordinates: [26.23, 45],
+		coordinates: [
+			26.23,
+			45,
+		],
 		quantity: 186,
 	},
 	{
 		name: 'Dips and Produce',
-		coordinates: [20, 40],
+		coordinates: [
+			20,
+			40,
+		],
 		quantity: 272,
 	},
 	{
 		name: 'Oils',
-		coordinates: [26, 45],
+		coordinates: [
+			26,
+			45,
+		],
 		quantity: 3,
 	},
 	{
 		name: 'Broths',
-		coordinates: [26, 40],
+		coordinates: [
+			26,
+			40,
+		],
 		quantity: 11,
 	},
 	{
 		name: 'Coffee and Teas',
-		coordinates: [45.23, 55.23],
+		coordinates: [
+			45.23,
+			55.23,
+		],
 		quantity: 11,
 	},
 	{
 		name: 'Peanut Butters',
-		coordinates: [28, 45],
+		coordinates: [
+			28,
+			45,
+		],
 		quantity: 6,
 	},
 	{
 		name: 'Pastas',
-		coordinates: [26, 45],
+		coordinates: [
+			26,
+			45,
+		],
 		quantity: 3,
 	},
 	{
 		name: 'Frozen meat and seafood',
-		coordinates: [28.23, 45],
+		coordinates: [
+			28.23,
+			45,
+		],
 		quantity: 101,
 	},
 	{
 		name: 'Vegan',
-		coordinates: [23.45, 70],
+		coordinates: [
+			23.45,
+			70,
+		],
 		quantity: 11,
 	},
 	{
 		name: 'Candies',
-		coordinates: [43, 40],
+		coordinates: [
+			43,
+			40,
+		],
 		quantity: 11,
 	},
 	{
 		name: 'Local Items',
-		coordinates: [23.45, 23.45],
+		coordinates: [
+			23.45,
+			23.45,
+		],
 		quantity: 11,
 	},
 	{
 		name: 'Deli and Cheese and Meals',
-		coordinates: [50, 40],
+		coordinates: [
+			50,
+			40,
+		],
 		quantity: 105,
 	},
 ];
