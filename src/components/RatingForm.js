@@ -14,8 +14,8 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 const RatingForm = () => {
-	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
-	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
+	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const navigate = useNavigate();
 	const [isMobile, setMobile] = useState(false);
