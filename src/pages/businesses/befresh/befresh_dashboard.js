@@ -6,6 +6,7 @@ import { Chart } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import Linechart from '../../../components/Charts/Linechart';
 import { useNavigate, useParams } from 'react-router-dom';
+import ExportExcel from '../../../components/excelExport';
 
 export default function BeFreshDashboard() {
 	const params = useParams();
@@ -19,6 +20,8 @@ export default function BeFreshDashboard() {
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
+
+	const [excelExportData, setExportData] = useState([]);
 
 	const [yesterdayRevenueCY, setYesterdayRevenueCY] = useState(0);
 	const [yesterdayRevenueOA, setYesterdayRevenueOA] = useState(0);
@@ -56,9 +59,9 @@ export default function BeFreshDashboard() {
 			.catch((e) => {
 				console.log(e);
 			});
-	}
+	};
 
-	const getYesterdayRevenue = () => {
+	const getYesterdayRevenue=()=>{
 		axios
 			.get(API_URL + 'revenues', {
 				params: {
@@ -73,7 +76,7 @@ export default function BeFreshDashboard() {
 			.catch((e) => {
 				console.log(e);
 			});
-	}
+	};
 
 	const get_revenue_history_api = () => {
 		axios
@@ -84,6 +87,7 @@ export default function BeFreshDashboard() {
 			})
 			.then((res) => {
 				// console.log(res.data);
+				setExportData(res.data);
 				setRevenue({
 					...revenue,
 					labels: res.data.map((element) => element.Date),
@@ -214,6 +218,7 @@ export default function BeFreshDashboard() {
 			)
 			.then((res) => {
 				// console.log(res.data);
+				setExportData(res.data);
 				setRevenue({
 					...revenue,
 					labels: res.data.map((element) => element.Date),
@@ -249,7 +254,8 @@ export default function BeFreshDashboard() {
 				JSON.parse(localStorage.getItem('user')).db.toString()
 			)
 			.then((res) => {
-				console.log(res.data);
+				// console.log(res.data);
+				setExportData(res.data);
 				setRevenue({
 					...revenue,
 					labels: res.data.map((element) => element.Date),
@@ -316,18 +322,24 @@ export default function BeFreshDashboard() {
 								<h5 style={{ margin: '1.3pt' }}>Organic Arces:  <strong>${projectedRevenueOA}</strong></h5>
 							</div>
 						</div>
-						<div style={{ marginTop: '3rem', width: 600 }}>
-							<Barchart
-								chartData={revenue}
-								displayLegend={true}
-								displayTitle={true}
-								titleText="Revenue History"
-							/>
-							<input type="date" ref={inputRef1} />
-							<input type="date" ref={inputRef2} />
-							<button onClick={filterData}>Filter</button>
-							<button onClick={resetData}>Reset</button>
-						</div>
+					</div>
+
+					<div style={{ width: 500 }}>
+						<input type="date" ref={inputRef1} />
+						<input type="date" ref={inputRef2} />
+						<button onClick={filterData}>Filter</button>
+						<button onClick={resetData}>Reset</button>
+						<ExportExcel
+							excelData={excelExportData}
+							fileName={'History Revenue'}
+							buttonName={'Export History Revenue Report'}
+						/>
+						<Barchart
+							chartData={revenue}
+							displayLegend={true}
+							displayTitle={true}
+							titleText="Revenue History"
+						/>
 					</div>
 
 
