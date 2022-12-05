@@ -61,7 +61,7 @@ export default function BeFreshDashboard() {
 			});
 	};
 
-	const getYesterdayRevenue=()=>{
+	const getYesterdayRevenue = () => {
 		axios
 			.get(API_URL + 'revenues', {
 				params: {
@@ -324,23 +324,27 @@ export default function BeFreshDashboard() {
 						</div>
 					</div>
 
-					<div style={{ width: 500 }}>
-						<input type="date" ref={inputRef1} />
-						<input type="date" ref={inputRef2} />
-						<button onClick={filterData}>Filter</button>
-						<button onClick={resetData}>Reset</button>
-						<ExportExcel
-							excelData={excelExportData}
-							fileName={'History Revenue'}
-							buttonName={'Export History Revenue Report'}
-						/>
+					<div style={{ marginTop: '3rem', width: 600, marginLeft: '4rem', marginRight: '1rem'}}>
 						<Barchart
 							chartData={revenue}
 							displayLegend={true}
 							displayTitle={true}
 							titleText="Revenue History"
 						/>
+						<div>
+							<input type="date" ref={inputRef1} />
+							<input type="date" ref={inputRef2} />
+							<button onClick={filterData}>Filter</button>
+							<button onClick={resetData}>Reset</button>
+							<ExportExcel
+								excelData={excelExportData}
+								fileName={'History Revenue'}
+								buttonName={'Export History Revenue Report'}
+							/>
+						</div>
+
 					</div>
+
 
 
 				</div>
