@@ -1,38 +1,43 @@
-export const leafletData=[
+export const leafletData = [
   {
-		id: 1,
-		name: 'milk',
-    coordinates: [
-      Math.ceil(Math.random() * 15) + 8,
-      Math.ceil(Math.random() * 15) + 8,
-    ],
-    quantity: 10,
-	},
-	{
-		id: 2,
-		name: 'ice-cream',
-	  coordinates: [
-      Math.ceil(Math.random() * 15) + 8,
-      Math.ceil(Math.random() * 15) + 8,
-    ],
-    quantity: 20,
+		name: 'Coffee Bar',
+		coordinates: [
+			Math.ceil(Math.random() * 0) +45,
+			Math.ceil(Math.random() * 0) +23,
+		],
+		quantity: 12,
 	},
   {
-		id: 3,
-		name: 'avocado',
-	  coordinates: [
-      Math.ceil(Math.random() * 15) + 8,
-      Math.ceil(Math.random() * 15) + 8,
-    ],
-    quantity: 2,
+		name: 'Coffee and Teas',
+		coordinates: [
+			Math.ceil(Math.random() * 0) +45.23,
+			Math.ceil(Math.random() * 0) +55.23,
+		],
+		quantity: 8,
+	},
+
+  {
+		name: 'Dairy',
+		coordinates: [
+			Math.ceil(Math.random() * 0) +45,
+			Math.ceil(Math.random() * 0) +23,
+		],
+		quantity: 4,
 	},
   {
-		id: 4,
-		name: 'onion',
-	  coordinates: [
-      Math.ceil(Math.random() * 15) + 8,
-      Math.ceil(Math.random() * 15) + 8,
-    ],
-    quantity: 8,
+		name: 'Frozen meat and seafood',
+		coordinates: [
+			Math.ceil(Math.random() * 0) +23,
+			Math.ceil(Math.random() * 0) +45,
+		],
+		quantity: 10,
+	},
+  {
+		name: 'Dips and Produce',
+		coordinates: [
+			Math.ceil(Math.random() * 0) +45,
+			Math.ceil(Math.random() * 0) +40,
+		],
+		quantity: 11,
 	},
 ];

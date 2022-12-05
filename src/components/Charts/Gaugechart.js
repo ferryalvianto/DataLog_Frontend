@@ -8,8 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 const Gaugechart = () => {
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
-	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const [data,setData]=useState([]);
 	const [gaugeData, setGaugeData] = useState(0);

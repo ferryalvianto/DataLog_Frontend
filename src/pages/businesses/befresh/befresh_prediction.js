@@ -24,6 +24,11 @@ export default function BeFreshPrediction() {
 		datasets: [],
 	});
 
+	const [inflation, setInflation] = useState({
+		labels: '',
+		datasets: [],
+	});
+
 	const [weatherForecast, setWeatherForecast] = useState({
 		labels: '',
 		datasets: [],
@@ -50,6 +55,34 @@ export default function BeFreshPrediction() {
 						{
 							label: 'Revenue Forecast based on Past Sales',
 							data: res.data.map((element) => element.CY_predictedRevenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	};
+
+	const get_inflation_api = () => {
+		axios
+			.get(API_URL + 'inflation', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				// console.log(res.data);
+				setInflation({
+					...inflation,
+					labels: res.data.map((element) => element.date),
+					datasets: [
+						{
+							label: 'Revenue Forecast based on Inflation',
+							data: res.data.map((element) => element.CY_predictedRevenue_Inflation),
 							backgroundColor: 'rgba(54, 162, 235,0.8)',
 							borderColor: 'black',
 							borderWidth: 1,
@@ -228,6 +261,7 @@ export default function BeFreshPrediction() {
 					params.businessname == user.db.toLowerCase()
 				) {
 					sessionStorage.clear();
+					get_inflation_api();
 					get_revenue_forecast_api();
 					get_quantity_forecast_api();
 					get_weather_forecast_api();
@@ -282,6 +316,9 @@ export default function BeFreshPrediction() {
 					</div>
 					<div style={{ padding: '1rem' }}>
 						<Linechart chartData={revenueForecast} hidden={false} />
+					</div>
+					<div style={{ padding: '1rem' }}>
+						<Linechart chartData={inflation} hidden={false} />
 					</div>
 
 					<div style={{ padding: '2rem 1rem' }}>
