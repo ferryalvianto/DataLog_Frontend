@@ -231,7 +231,7 @@ const RatingForm = () => {
 											alignItems: 'center',
 										}}
 									>
-										<h2 style={{ width: '50%' }}>Select location:</h2>
+										{/* <h2 style={{ width: '50%' }}>Select location:</h2> */}
 										{/* <div style={{ width: '50%' }}>
 										<select className='sel' onChange={(e) => { setLocation(e.target.value) }}>
 											<option name="CY">Be Fresh–Cypress</option>
