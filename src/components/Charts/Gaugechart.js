@@ -5,83 +5,57 @@ import { GaugeData } from '../../TempData/GaugeData';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 const Gaugechart = () => {
-	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
-	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
-	
+	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
+	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+
+	const [data,setData]=useState([]);
 	const [gaugeData, setGaugeData] = useState(0);
 	const [name, setName] = useState('Employee name');
 
-	// const getName=()=>{
-	// 	axios.get(API_URL + 'employee_productivity?db='+ 
-	// 	JSON.parse(localStorage.getItem('user')).db.toString() )
-	// 	.then((res) => {
-	// 		console.log(res.data);
-	// 		// setName({
-	// 		// 	...name,
-	// 		// 	labels: res.data.map((element) => element._id),
-	// 		// 	datasets: [
-	// 		// 		{
-	// 		// 			label: 'Wastage Product',
-	// 		// 			data: res.data.map((element) => element.Total_Quantity),
-	// 		// 			backgroundColor: '#50AF95',
-	// 		// 			borderColor: 'black',
-	// 		// 			borderWidth: 1,
-	// 		// 		},
-	// 		// 	],
-	// 		// });
-	// 	});
-	// }
+	const getData = () => {
+		axios
+			.get(
+				API_URL +
+					'employee_productivity?db=' +
+					JSON.parse(localStorage.getItem('user')).db.toString()
+			)
+			.then((res) => {
+				console.log(res.data);
+				setData(res.data);
+			});
+	};
 
-	// useEffect(() => {
-	// 	if ('user' in localStorage) {
-	// 		user = JSON.parse(localStorage.getItem('user'));
-	// 		if (params.businessname != user.db.toLowerCase()) {
-	// 			sessionStorage.setItem('url', params.businessname);
-	// 			navigate('/badpage');
-	// 			window.location.reload();
-	// 		} else {
-	// 			if (
-	// 				'user' in localStorage &&
-	// 				params.businessname == user.db.toLowerCase()
-	// 			) {
-	// 				sessionStorage.clear();
-	// 				getName();
-	// 			}
-	// 		}
-	// 	} else {
-	// 		navigate('/home');
-	// 		window.location.reload();
-	// 	}
-	// }, []);
+	useEffect(() => {
+		getData();
+	}, []);
 
-	
 	const handleClick = (index) => {
-		setGaugeData(GaugeData[index].transactionSpeed);
-		setName(GaugeData[index].employeeName);
+		setGaugeData(data[index].ItemPerSecond.toFixed(3));
+		setName(data[index].Employee);
 	};
 	return (
 		<>
-			<div style={{ height: '100%', width: '50%', display: 'inline-block' }} >
-
+			<div style={{ height: '100%', width: '50%', display: 'inline-block' }}>
 				<GaugeChart
-					id="gauge-chart3"
-					nrOfLevels={7}
+					// id="gauge-chart8"
+					// nrOfLevels={7}
 					colors={['#66CCFF', '#0000CC']}
-					arcWidth={0.3}
+					// arcWidth={0.3}
+					formatTextValue={(value) => value/100}
 					percent={gaugeData}
 					textColor={'#000000'}
 				/>
 				<DropdownButton id="dropdown-item-button" title={name}>
-					{GaugeData.map((element, index) => (
+					{data.map((element, index) => (
 						<Dropdown.Item as="button" onClick={() => handleClick(index)}>
-							{element.employeeName}
+							{element.Employee}
 						</Dropdown.Item>
 					))}
 				</DropdownButton>
 			</div>
-
 		</>
 	);
 };

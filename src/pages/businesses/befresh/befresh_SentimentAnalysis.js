@@ -22,7 +22,8 @@ const BeFreshSentimentAnalysis = () => {
 				console.log(res.data);
 				setSentimentData({
 					...sentimentData,
-					labels: ['Very Dissatisfied','Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+					// labels: ['Very Dissatisfied','Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+					labels:res.data.map((element)=>element._id==0?"Very Dissatisfied":""),
 					datasets: [
 						{
 							data: res.data.map((element) => element.Total_Count),
