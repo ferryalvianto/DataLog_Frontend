@@ -14,8 +14,8 @@ export default function BeFreshAnalysis() {
 	const params = useParams();
 	let user = [];
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
-	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/'
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const inputRef1 = useRef();
 	const inputRef2 = useRef();
@@ -28,26 +28,27 @@ export default function BeFreshAnalysis() {
 	});
 
 	const get_wastage_products = () => {
-		axios.get(API_URL + 'wastage', {
-			params: {
-				db: user.db,
-			},
-		})
-		.then((res) => {
-			setWastage({
-				...wastage,
-				labels: res.data.map((element) => element._id),
-				datasets: [
-					{
-						label: 'Wastage Product',
-						data: res.data.map((element) => element.Total_Quantity),
-						backgroundColor: '#50AF95',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
+		axios
+			.get(API_URL + 'wastage', {
+				params: {
+					db: user.db,
+				},
+			})
+			.then((res) => {
+				setWastage({
+					...wastage,
+					labels: res.data.map((element) => element._id),
+					datasets: [
+						{
+							label: 'Wastage Product',
+							data: res.data.map((element) => element.Total_Quantity),
+							backgroundColor: '#50AF95',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
 			});
-		});
 	};
 
 	const get_general_products_api = () => {
@@ -90,29 +91,30 @@ export default function BeFreshAnalysis() {
 		let value2 = inputRef2.current.value;
 
 		axios
-			.get(API_URL + 'general_products_by_date', {
-				params: {
-					db: "BeFresh",
-					start_date: value1,
-					end_date: value2,
-				},
-			})
+			.get(
+				API_URL +
+					'general_products_by_date?db=' +
+					JSON.parse(localStorage.getItem('user')).db.toString() +
+					'&start_date=' +
+					value1 +
+					'&end_date=' +
+					value2
+			)
 			.then((res) => {
 				console.log(res.data);
-				// setGeneralProducts(res.data);
+				setGeneralProducts(res.data);
 			});
 	};
 
 	const resetData = () => {
 		axios
-			.get(API_URL + 'general_products', {
-				params: {
-					db: user.db,
-				},
-			})
+		.get(
+			API_URL +
+				'general_products?db=' +
+				JSON.parse(localStorage.getItem('user')).db.toString()
+		)
 			.then((res) => {
-				console.log(res.data);
-				// setGeneralProducts(res.data);
+				setGeneralProducts(res.data);
 			});
 	};
 

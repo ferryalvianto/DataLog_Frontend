@@ -13,8 +13,8 @@ export default function BeFreshPrediction() {
 	const params = useParams();
 	let user = [];
 
-	const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
-	// const API_URL = 'http://127.0.0.1:8000/datalog/api/';
+	// const API_URL = 'https://datalogwebapp.herokuapp.com/datalog/api/';
+	const API_URL = 'http://127.0.0.1:8000/datalog/api/';
 
 	const [revenueForecast, setRevenueForecast] = useState({
 		labels: '',
