@@ -122,8 +122,9 @@ export default function BeFreshTrainModel() {
 	function choosefile(e) {
 		file = e.target.files[0]
 		console.log(file)
-		if (!bf && oa) {
+		if ((!bf && oa) || (!bf && !oa)) {
 			if (file && file.name.includes('Order_History') && file.name.includes(year + '-' + month + '-' + day) && file.name.includes('fresh')) {
+				console.log('a')
 				document.getElementById('fileSelected').innerText = `Selected file: ${file.name}`
 				document.getElementById('fileSelected').style.display = `block`
 				document.getElementById('uploadFileBtn3').style.display = `flex`
